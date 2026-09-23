@@ -252,8 +252,10 @@ const mmss = (s) => s ? `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, '0'
     const title = document.getElementById('logtitle');
     const meta = document.getElementById('logmeta');
     const esc = (t) => String(t).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
-    const cls = (k) => k === 'start' ? 'lk-start' : k === 'done' ? 'lk-done'
-                     : k === 'blocked' ? 'lk-block' : 'lk-info';
+    const cls = (k) => ({
+      start: 'lk-start', done: 'lk-done', blocked: 'lk-block', warn: 'lk-warn',
+      gate: 'lk-gate', cmd: 'lk-cmd', out: 'lk-out',
+    }[k] ?? 'lk-info');
 
     const open = (btn) => {
       const rows = JSON.parse(btn.dataset.log);
@@ -266,7 +268,8 @@ const mmss = (s) => s ? `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, '0'
       body.innerHTML = rows.map((e) => {
         const d = Math.round((new Date(e.ts).getTime() - t0) / 1000);
         const stamp = `+${String(Math.floor(d / 60)).padStart(2, '0')}:${String(d % 60).padStart(2, '0')}`;
-        return `<span class="lk-info">${stamp}</span>  <span class="${cls(e.kind)}">${esc(e.kind.padEnd(7))}</span>  ${esc(e.msg)}`;
+        const k = cls(e.kind);
+        return `<span class="lk-info">${stamp}</span>  <span class="${k}">${esc(e.kind.padEnd(6))}</span>  <span class="${k}">${esc(e.msg)}</span>`;
       }).join('\n');
       modal.hidden = false;
       document.body.style.overflow = 'hidden';
@@ -309,6 +312,11 @@ const mmss = (s) => s ? `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, '0'
   .lk-info  { color: var(--mut2); }
   .lk-done  { color: var(--green, #98C379); }
   .lk-block { color: var(--orange); }
+  .lk-warn  { color: var(--amber); }
+  /* The gate lines are the reasoning, not the output - they get the accent. */
+  .lk-gate  { color: var(--amber); }
+  .lk-cmd   { color: var(--cyan); }
+  .lk-out   { color: var(--mut); }
   /* Progress map: same protocol x layer grid as /mapping, colored by session state
      instead of by corpus coverage, so the two read as the same object. */
   .pmap-wrap { overflow-x: auto; margin-top: 20px; padding-bottom: 4px; }
