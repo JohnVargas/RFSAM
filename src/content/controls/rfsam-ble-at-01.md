@@ -111,6 +111,32 @@ resources:
 reviewStatus: verified
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: true
+  tx_steps: [2, 3, 4]
+  tx_modes:
+    - injection
+  legal_tier: T3
+  side_effects:
+    - actuates
+    - dos
+  needs_physical:
+    - proximity
+  containment: none
+  gates:
+    hardware_present:
+      - catsniffer
+    scope_mode_in:
+      - active
+      - lab
+    requires_root: true
+  basis: >-
+    Step 2 hijacks the master role of a live connection and step 4 sends
+    LL_TERMINATE_IND: both inject into an existing third-party link. Step 3 writes a
+    learned command to the peripheral (actuates) and step 5 documents the
+    desynchronisation of the original central, which is a denial of its session.
+    Step 1 is receive-only.
 ---
 ## Mechanism
 

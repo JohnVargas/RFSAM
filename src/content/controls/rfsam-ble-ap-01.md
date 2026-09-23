@@ -107,6 +107,32 @@ resources:
 reviewStatus: reviewed
 confidence: medium
 lastResearched: 2026-07-14
+execution:
+  automatable: assisted
+  requires_tx: true
+  tx_steps: [3, 4, 5]
+  tx_modes:
+    - interrogation
+    - connection-oriented
+  legal_tier: T3
+  side_effects:
+    - none
+  needs_physical:
+    - proximity
+  containment: none
+  gates:
+    hardware_present:
+      - catsniffer
+    scope_mode_in:
+      - active
+      - lab
+    requires_root: true
+  basis: >-
+    Step 3 runs `bluetoothctl scan on` (an active scan, which emits SCAN_REQ) and
+    `connect`, and step 4 drives a BleakClient in the ordinary central role; step 5
+    repeats it under bettercap. No step injects into a third-party link. The optional
+    write_gatt_char in step 4 is the only state-changing action and the control gates
+    it on operator judgement, so side_effects stays 'none' for the default read path.
 ---
 ## Mechanism
 

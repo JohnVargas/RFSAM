@@ -73,6 +73,60 @@ Full schema + table: `CONTRIBUTING.md` / `src/content.config.ts`. The must-gets:
 
 ---
 
+## `execution:` — the block an engine reads before proposing a control
+
+Optional today, required once every control carries one. It restates the control's own
+`## Procedure` in machine-readable form. **If the two disagree, the procedure is the truth
+and the block is the bug** — `npm run validate` enforces that by reading the body.
+
+**The derivation rule.** Any step that connects, pairs, interrogates or energises is a
+transmission. `requires_tx: true` follows from the procedure, never from the control's
+objective: "capture X" says nothing about whether the capture was obtained passively.
+A deauthentication to provoke a re-handshake transmits; power-cycling the bench unit to
+force a re-pair does not. Same goal, opposite legal nature.
+
+**Say which steps emit** in `tx_steps`. TX usually lives in one step of an otherwise
+passive procedure, and naming it is what keeps the passive half runnable in a
+receive-only scope. Mirror it in the prose: mark the step title `(transmits)` and split
+passive from emitting steps in the Procedure header, before the first command —
+`rfsam-zigbee-ll-01` is the house pattern.
+
+**Two independent axes.** `tx_modes` answers *how may I address the target*
+(`interrogation`, `connection-oriented`, `pairing`, `injection`, `rogue-infrastructure`,
+`jamming`); `side_effects` answers *may I change it* (`actuates`, `persistent-state`,
+`dos`). An engagement grants those separately: permission to talk to a lock as a phone
+would is not permission to jam it, and neither is permission to leave a bond on it.
+
+**The tier is a property of the band**, not of intent — a benign transmission on licensed
+spectrum is still T2. It is cross-checked against the protocol, so it cannot drift.
+Jamming and un-addressed transmission (a De Bruijn sweep opens every fixed-code receiver
+in range, not just the target) must be gated to `lab` whatever the tier says.
+
+**`basis` is required**: one sentence naming the step that settles the block. It is the
+only thing keeping the metadata attached to the procedure when the procedure changes.
+
+```yaml
+execution:
+  automatable: assisted          # auto | assisted | manual
+  requires_tx: true
+  tx_steps: [3, 4]
+  tx_modes: [interrogation, connection-oriented]
+  legal_tier: T3                 # only when requires_tx
+  side_effects: [none]
+  needs_physical: [proximity]    # proximity, antenna-placement, teardown, device-access, ...
+  containment: none              # none | conducted | cage
+  gates:
+    hardware_present: [catsniffer]   # must also appear in tools[]
+    scope_mode_in: [active, lab]
+    requires_root: true
+  basis: >-
+    Step 3 runs an active scan and step 4 opens a GATT connection.
+```
+
+Known gap, declared rather than papered over: `legal_tier` is only set when the control
+transmits, but for LTE/GSM the regulated act is *reception*. Until that axis exists, say
+so in `basis` and gate with `scope_mode_in`.
+
 ## reviewStatus / confidence lifecycle
 
 `stub` (placeholder, little real content) → `draft` (researched, cited, may carry `[!FLAG]`s, what a sub-agent produces) → `verified` (a reviewer resolved every flag and confirmed every citation; ≥ 1 reference, zero unresolved flags). Sub-agents stop at `draft`.

@@ -3,9 +3,11 @@ import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import {
   LAYER_IDS, PROTOCOL_IDS, CRITICALITY_IDS, REVIEW_STATUSES, CONFIDENCE_LEVELS,
-  THREAT_RELATIONS,
-  TOOL_STATUSES,
+  THREAT_RELATIONS, AUTOMATABLE_LEVELS, LEGAL_TIERS, TX_MODES, SIDE_EFFECTS,
+  PHYSICAL_NEEDS, SCOPE_MODES, TOOL_STATUSES,
 } from './lib/taxonomy.js';
+
+const enumOf = (v: string[]) => z.enum(v as [string, ...string[]]);
 
 const layer = z.enum(LAYER_IDS as [string, ...string[]]);
 
@@ -37,6 +39,34 @@ const attack = z.object({
   preconditions: z.string().optional(),
   summary: z.string(),
 });
+
+// What an engine needs before PROPOSING this control. Two independent axes:
+// `tx_modes` answers "how may I address the target", `side_effects` answers "may I
+// change it" - an engagement grants those separately. `requires_tx` is derivable
+// from tx_steps and is kept explicit so the assertion can be cross-checked.
+const execution = z.object({
+  automatable: enumOf(AUTOMATABLE_LEVELS),
+  requires_tx: z.boolean(),
+  // Which steps emit. TX usually lives in one step of an otherwise passive
+  // procedure; without this the passive half is unrunnable in a receive-only scope.
+  tx_steps: z.array(z.number().int().positive()).default([]),
+  tx_modes: z.array(enumOf(TX_MODES)).default([]),
+  // Required iff requires_tx - cross-checked in validate.mjs, not here, so the
+  // error names the file the way every other RFSAM validation error does.
+  legal_tier: enumOf(LEGAL_TIERS).optional(),
+  side_effects: z.array(enumOf(SIDE_EFFECTS)).default(['none']),
+  needs_physical: z.array(enumOf(PHYSICAL_NEEDS)).default([]),
+  containment: z.enum(['none', 'conducted', 'cage']).default('none'),
+  gates: z.object({
+    hardware_present: z.array(z.string()).default([]),
+    scope_mode_in: z.array(enumOf(SCOPE_MODES)).min(1),
+    requires_root: z.boolean().default(false),
+  }),
+  // Why this block says what it says, naming the step that settles it. One
+  // sentence. It is the only thing keeping the block attached to the procedure.
+  basis: z.string().min(1),
+// Optional during migration; required once every control carries one.
+}).optional();
 
 const controls = defineCollection({
   loader: glob({ pattern: ['**/*.md', '!**/_*.md'], base: './src/content/controls' }),
@@ -73,6 +103,7 @@ const controls = defineCollection({
     reviewStatus: z.enum(REVIEW_STATUSES as [string, ...string[]]).default('stub'),
     confidence: z.enum(CONFIDENCE_LEVELS as [string, ...string[]]).default('low'),
     lastResearched: z.coerce.date().optional(),
+    execution,
   }),
 });
 

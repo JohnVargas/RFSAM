@@ -16,7 +16,8 @@
       "identity": {
         "bdaddr": "AA:BB:CC:00:11:22"
       },
-      "authorization_ref": "SIMULATED"
+      "authorization_ref": "SIMULATED",
+      "permitted_side_effects": []
     }
   ],
   "spectrum": [
@@ -33,10 +34,6 @@
       "tx_note": "Receive-only for observation. Connection-oriented transmission (a normal GATT client opening a link, as any phone would) is authorised on the bench unit; interrogation (active scan), injection, jamming and hijack are not. tx_modes is the only authority: an empty list means no transmission."
     }
   ],
-  "excluded_controls": [
-    {
-      "id": "RFSAM-BLE-AT-01",
-      "reason": "scope.spectrum.tx_modes authorises connection-oriented only; a hijack needs 'injection'. MANUAL ENTRY - must become a derived gate once controls carry execution.tx_modes"
-    }
-  ]
+  "excluded_controls": [],
+  "_note_excluded": "Empty on purpose: blocking is now derived from each control's execution.tx_modes against spectrum[].tx_modes. An entry here is an operator override and is reported as such, not as an engine decision."
 }

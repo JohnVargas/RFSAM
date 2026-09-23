@@ -145,6 +145,31 @@ resources:
 reviewStatus: verified
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: false
+  side_effects:
+    - none
+  needs_physical:
+    - proximity
+    - device-access
+  containment: none
+  gates:
+    hardware_present:
+      - catsniffer
+    scope_mode_in:
+      - observational
+      - active
+      - lab
+      - defensive
+    requires_root: false
+  basis: >-
+    Every step receives: Sniffle follows the connection passively (CONN_FOLLOW) and
+    crackle works offline on the PCAP. The fresh pairing that step 1 needs is forced
+    by power-cycling or re-pairing the bench device, not by transmitting - which is
+    why this control is runnable in a receive-only scope but needs hands on the
+    device. Not verified: whether `sniffle -e` (extended advertising) emits SCAN_REQ
+    in any release; if it does, this becomes requires_tx: true / T3.
 ---
 
 ## Mechanism

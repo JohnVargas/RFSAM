@@ -1,7 +1,118 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import matter from 'gray-matter';
-import { parseControlId, CRITICALITY_IDS, TOOL_STATUSES } from '../src/lib/taxonomy.js';
+import { parseControlId, CRITICALITY_IDS, TIER_BY_PROTOCOL, TOOL_STATUSES } from '../src/lib/taxonomy.js';
+
+
+// Commands in the corpus that transmit. A superset of the TX re-check list in
+// Skill/SKILL.md, which is purely injection-oriented and therefore does not catch
+// `bluetoothctl connect`, `hf mf info` or `lf search` - all of which emit.
+const TX_COMMAND_RE = new RegExp([
+  // injection / rogue infrastructure
+  'hackrf_transfer\\s+-t', 'gps-sdr-sim', 'hostapd', 'eaphammer', 'wifiphisher', 'mdk4',
+  'btlejack', 'esp32-marauder', 'setModeTX', 'RFxmit', 'aireplay-ng', 'zbstumbler',
+  'hf\\s+mf\\s+sim', '--transmit',
+  // connection-oriented and interrogation - what the list was missing
+  'bluetoothctl', 'rfcomm\\s+connect', 'l2ping', 'sdptool\\s+browse', 'obexftp',
+  'BleakClient', 'gatttool', 'hcitool\\s+(cc|lecc)', 'hcxdumptool', 'reaver',
+  'ble\\.recon', 'chip-tool\\s+pairing',
+  'hf\\s+mf\\s+(info|chk|autopwn|darkside|hardnested|dump)', 'lf\\s+search', 'hf\\s+search',
+].join('|'));
+
+export function checkExecution({ data, body, file }, reg) {
+  const errs = [];
+  const tag = `${file}: `;
+  if (!data.execution) return errs; // optional during migration
+  // gray-matter hands us the raw YAML, so Zod's .default() has not run here:
+  // normalise before asserting, or an absent optional field reads as undefined.
+  const x = {
+    tx_steps: [], tx_modes: [], side_effects: ['none'], needs_physical: [],
+    containment: 'none', ...data.execution,
+  };
+  x.gates = { hardware_present: [], scope_mode_in: [], requires_root: false, ...(x.gates ?? {}) };
+  if (!x.gates.scope_mode_in.length) errs.push(`${tag}execution.gates.scope_mode_in is required`);
+  if (!x.basis?.trim()) errs.push(`${tag}execution.basis is required - name the step that justifies the block`);
+
+  // TX implies a tier and at least one declared mode.
+  if (x.requires_tx) {
+    if (!x.legal_tier) errs.push(`${tag}execution.requires_tx is true but no legal_tier`);
+    if (!x.tx_modes.length) errs.push(`${tag}execution.requires_tx is true but tx_modes is empty - say WHAT it transmits`);
+    if (!x.tx_steps.length) errs.push(`${tag}execution.requires_tx is true but tx_steps is empty - say WHICH steps emit`);
+  } else {
+    if (x.legal_tier) errs.push(`${tag}execution.legal_tier set on a control that declares requires_tx: false`);
+    if (x.tx_modes.length) errs.push(`${tag}execution.tx_modes non-empty with requires_tx: false`);
+    if (x.tx_steps.length) errs.push(`${tag}execution.tx_steps non-empty with requires_tx: false`);
+  }
+
+  // The tier is not an opinion: it follows from the protocol's band.
+  if (x.requires_tx && x.legal_tier) {
+    const expect = TIER_BY_PROTOCOL[data.protocol];
+    if (expect && x.legal_tier !== expect) {
+      errs.push(`${tag}protocol ${data.protocol} is tier ${expect}, control declares ${x.legal_tier}`);
+    }
+  }
+
+  // T1/T2 are never run over the air.
+  if (['T1', 'T2'].includes(x.legal_tier)) {
+    if (x.containment === 'none') errs.push(`${tag}tier ${x.legal_tier} requires containment: conducted|cage`);
+    for (const m of x.gates.scope_mode_in) {
+      if (m !== 'lab') errs.push(`${tag}tier ${x.legal_tier} may only be gated to mode 'lab', not '${m}'`);
+    }
+  }
+
+  // Jamming is not ordinary in-band operation, whatever the tier says.
+  if (x.tx_modes.includes('jamming')) {
+    for (const m of x.gates.scope_mode_in) {
+      if (m !== 'lab') errs.push(`${tag}tx_modes includes 'jamming' - gate it to 'lab' only, not '${m}'`);
+    }
+  }
+
+  // `auto` has to be genuinely runnable.
+  if (x.automatable === 'auto') {
+    if (x.needs_physical.length) errs.push(`${tag}automatable: auto but needs_physical is non-empty (${x.needs_physical.join(', ')})`);
+    if (/\[FILL:/.test(body)) errs.push(`${tag}automatable: auto but the body still carries [FILL: ...] placeholders`);
+  }
+  if (x.automatable === 'manual' && !x.needs_physical.length) {
+    errs.push(`${tag}automatable: manual with an empty needs_physical - say what a machine cannot do`);
+  }
+
+  // Gates must resolve against the tool registry and against the control's own tools[].
+  for (const slug of x.gates.hardware_present) {
+    if (!reg.toolSlugs.has(slug)) errs.push(`${tag}execution.gates.hardware_present unknown tool slug '${slug}'`);
+    else if (!(data.tools ?? []).includes(slug)) errs.push(`${tag}execution.gates.hardware_present '${slug}' is not listed in tools[]`);
+  }
+
+  // A control that does not transmit must be offerable in observational mode.
+  if (!x.requires_tx && !x.gates.scope_mode_in.includes('observational')) {
+    errs.push(`${tag}requires_tx: false but the control is not offered in observational mode`);
+  }
+
+  // Changing the target is incompatible with look-but-do-not-touch modes.
+  const changes = x.side_effects.filter((e) => e !== 'none');
+  if (changes.length) {
+    for (const m of ['observational', 'defensive']) {
+      if (x.gates.scope_mode_in.includes(m)) {
+        errs.push(`${tag}side_effects [${changes.join(', ')}] incompatible with mode '${m}'`);
+      }
+    }
+  }
+
+  // The rule that justifies the whole block: the body contradicting the field.
+  // Every other rule validates the assertion against itself; this one reads the
+  // procedure. It is the antidote to "the metadata lies".
+  if (!x.requires_tx) {
+    const hit = body.match(TX_COMMAND_RE);
+    if (hit) errs.push(`${tag}requires_tx: false but the procedure runs '${hit[0]}', which transmits`);
+  }
+
+  // CR is offline by definition per the phase heading - flag the disagreement at
+  // the control, since 6 of 10 CR controls actually transmit.
+  if (data.layer === 'CR' && x.requires_tx && !x.basis) {
+    errs.push(`${tag}CR-layer control declares requires_tx: true and must say why in basis`);
+  }
+
+  return errs;
+}
 
 export function checkControl({ data, body, file }, reg) {
   const errs = [];
@@ -32,6 +143,7 @@ export function checkControl({ data, body, file }, reg) {
   }
   for (const r of data.resources ?? []) if (!reg.resourceIds.has(r)) errs.push(`${tag}unknown resource id '${r}'`);
   for (const t of data.tools ?? []) if (!reg.toolSlugs.has(t)) errs.push(`${tag}unknown tool slug '${t}'`);
+  errs.push(...checkExecution({ data, body, file }, reg));
 
   if (['draft', 'reviewed', 'verified'].includes(data.reviewStatus)) {
     if (!data.objective?.trim()) errs.push(`${tag}${data.reviewStatus} control needs a non-empty objective`);
