@@ -154,6 +154,30 @@ resources:
 reviewStatus: reviewed
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: false
+  side_effects:
+    - none
+  needs_physical:
+    - device-access
+  containment: none
+  gates:
+    hardware_present: []
+    scope_mode_in:
+      - observational
+      - active
+      - lab
+      - defensive
+    requires_root: false
+  basis: >-
+    Pure offline analysis: prerequisites state "no transmit hardware needed" and the
+    capture is delegated to the LL-layer control. Steps 3 and 4 are tshark and a
+    Python key test over an existing PCAP - the most automatable work in the corpus.
+    Not marked auto for two honest reasons: the body still carries unresolved
+    [FILL: ...] placeholders, and step 5 needs someone to power-cycle an ABP device
+    to see whether its counters reset. Resolve the placeholders and move step 5 out,
+    and this becomes the corpus's first genuine auto.
 ---
 
 ## Mechanism

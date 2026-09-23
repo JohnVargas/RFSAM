@@ -149,6 +149,33 @@ resources:
 reviewStatus: verified
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: true
+  tx_steps: [2, 5]
+  tx_modes:
+    - connection-oriented
+  legal_tier: T3
+  side_effects:
+    - none
+  needs_physical:
+    - proximity
+    - device-access
+  containment: none
+  gates:
+    hardware_present: []
+    scope_mode_in:
+      - active
+      - lab
+    requires_root: true
+  basis: >-
+    The control's authorisation note says "All active capture and any
+    decryption/downgrade steps below" - conceding in passing that the capture itself
+    is active. Step 2 drives the ESP32 BR/EDR baseband sniffer, which pages the
+    target to follow it rather than listening from outside, and step 5 is marked
+    "(Authorised, lab only)". That the word "active" appears only inside a legal
+    disclaimer, and never in the objective, is why a reader takes this for a passive
+    capture control.
 ---
 
 ## Mechanism

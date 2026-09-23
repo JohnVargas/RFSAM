@@ -150,6 +150,37 @@ resources:
 reviewStatus: reviewed
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: manual
+  requires_tx: true
+  tx_steps: [4, 5]
+  tx_modes:
+    - injection
+    - jamming
+  legal_tier: T3
+  side_effects:
+    - actuates
+    - persistent-state
+    - dos
+  needs_physical:
+    - proximity
+    - device-access
+  containment: none
+  gates:
+    hardware_present:
+      - yard-stick-one
+    scope_mode_in:
+      - lab
+    requires_root: false
+  basis: >-
+    Step 4 (RollJam) holds a blocking carrier over the receiver of a gate or vehicle
+    while banking a code - that is jamming a physical access-control device, which
+    no tier describes and which reaches anyone in range. Step 5 (RollBack) replays a
+    run of captured presses and can leave the receiver resynchronised to an older
+    counter: a lasting change to the asset, which is why this is the only CR control
+    carrying persistent-state. Gated to lab for the whole control on account of step
+    4. Manual because someone has to press the fob repeatedly and watch whether the
+    gate actually moves.
 ---
 
 ## Mechanism

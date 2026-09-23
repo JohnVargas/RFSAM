@@ -186,6 +186,38 @@ resources:
 reviewStatus: reviewed
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: true
+  tx_steps: [2, 3, 6]
+  tx_modes:
+    - injection
+    - interrogation
+  legal_tier: T3
+  side_effects:
+    - dos
+  needs_physical:
+    - proximity
+    - antenna-placement
+  containment: none
+  gates:
+    hardware_present: []
+    scope_mode_in:
+      - active
+      - lab
+    requires_root: true
+  basis: >-
+    Step 2 is the trap: it is introduced as needing "no client and no deauth", and
+    four lines later says to let hcxdumptool run "while it associates with the
+    target". Associating is transmitting, and this is the control's recommended
+    first path, so the misreading would be the common case rather than the rare one.
+    Step 3 deauthenticates to force a handshake, and step 6 brute-forces a WPS PIN
+    online, which leaves a real AP in lockout - hence dos. Steps 4, 5 and 7 (hash
+    conversion, hashcat, the WPA3 note) are offline and can run on another machine
+    days later, long after the RF window has closed. Note: the gate lists no
+    hardware because tools[] declares only software, although steps 2, 3 and 6
+    need a monitor-mode, injection-capable adapter - prerequisites.hardware says
+    so in prose. Adding that slug to tools[] would let the gate enforce it.
 ---
 ## Mechanism
 

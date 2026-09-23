@@ -144,6 +144,35 @@ resources:
 reviewStatus: reviewed
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: true
+  tx_steps: [6]
+  tx_modes:
+    - injection
+  legal_tier: T3
+  side_effects:
+    - dos
+  needs_physical:
+    - proximity
+    - device-access
+  containment: none
+  gates:
+    hardware_present:
+      - catsniffer
+    scope_mode_in:
+      - active
+      - lab
+    requires_root: false
+  basis: >-
+    Steps 1-5 are capture and offline key extraction; only step 6 transmits, and the
+    control already says so in three places - the step title reads "(Optional,
+    transmit)", prerequisites separate capture-only dongles from transmit-capable
+    radios and name which cannot inject, and the attack entry repeats it. Forcing a
+    rejoin carries a denial-of-service risk per the rejoin-procedure flaws the
+    control cites. The fresh join that steps 1-5 need is obtained by power-cycling
+    the target, not by transmitting, so 5 of 6 steps run in a receive-only scope
+    with hands on the device.
 ---
 
 ## Mechanism

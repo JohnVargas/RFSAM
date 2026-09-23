@@ -158,6 +158,35 @@ resources:
 reviewStatus: verified
 confidence: high
 lastResearched: 2026-06-18
+execution:
+  automatable: assisted
+  requires_tx: true
+  tx_steps: [1, 2, 3, 4, 6]
+  tx_modes:
+    - interrogation
+  legal_tier: T3
+  side_effects:
+    - none
+  needs_physical:
+    - proximity
+    - device-access
+  containment: none
+  gates:
+    hardware_present:
+      - chameleon-ultra
+    scope_mode_in:
+      - active
+      - lab
+    requires_root: false
+  basis: >-
+    Every hf mf command energises the 13.56 MHz field and challenges the card:
+    `info` fingerprints it, `chk` and `autopwn` run authentications, `dump` reads it
+    back. The control says "All steps below are active interrogation of a
+    credential", which is right, but it never uses the word transmit - and its
+    frequency note says "near-field, magnetically coupled; no far-field radiation to
+    survey", a true statement that reads to a classifier as "no radiation". Step 5
+    is the one genuine exception: `hf 14a sniff` listens between a legitimate reader
+    and a card, where the reader supplies the field.
 ---
 
 ## Mechanism

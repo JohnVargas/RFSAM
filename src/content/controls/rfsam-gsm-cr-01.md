@@ -152,6 +152,32 @@ resources:
 reviewStatus: verified
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: false
+  side_effects:
+    - none
+  needs_physical:
+    - proximity
+    - antenna-placement
+  containment: none
+  gates:
+    hardware_present: []
+    scope_mode_in:
+      - observational
+      - active
+      - lab
+      - defensive
+    requires_root: false
+  basis: >-
+    Receive-only, and unusually well declared: prerequisites say "Reception only -
+    this control transmits nothing" and step 1 repeats "All steps are passive
+    reception of what the network already broadcasts". Even step 6, the A5/1 key
+    recovery, runs offline against a capture. But this is the control that shows
+    what requires_tx cannot carry: intercepting third-party cellular traffic is
+    unlawful in most jurisdictions including Peru, and by the corpus rule a control
+    that does not transmit carries no tier - so nothing machine-readable separates
+    this from an offline LoRa analysis. The mandate and jurisdiction decide it.
 ---
 
 ## Mechanism
