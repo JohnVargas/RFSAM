@@ -94,6 +94,29 @@ resources:
 reviewStatus: verified
 confidence: high
 lastResearched: 2026-09-10
+execution:
+  automatable: assisted
+  requires_tx: false
+  side_effects:
+    - none
+  needs_physical:
+    - proximity
+    - antenna-placement
+  containment: none
+  gates:
+    hardware_present: []
+    scope_mode_in:
+      - observational
+      - active
+      - lab
+      - defensive
+    requires_root: false
+  basis: >-
+    De-chirping and demodulation run over captured I/Q; no step joins a network.
+    Assisted rather than auto for a documentation reason rather than a physical
+    one: steps 3 and 4 say "build/install per its README" and then run a GNU Radio
+    flowgraph or a Flask UI, so there is no invocation an engine could emit. Give
+    those two steps real command lines and most of this control becomes auto.
 ---
 ## Mechanism
 

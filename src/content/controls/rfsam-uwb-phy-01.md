@@ -118,6 +118,40 @@ resources:
 reviewStatus: reviewed
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: manual
+  requires_tx: true
+  tx_steps: [5]
+  tx_modes:
+    - connection-oriented
+  legal_tier: T4
+  side_effects:
+    - none
+  needs_physical:
+    - proximity
+    - device-access
+    - teardown
+  containment: none
+  gates:
+    hardware_present:
+      - dwm3000evb
+      - makerfabs-esp32-uwb-dw3000
+    scope_mode_in:
+      - active
+      - lab
+    requires_root: false
+  basis: >-
+    Step 5 is labelled "Optionally bring up a controllable ranging peer", but the
+    preamble concedes that it transmits and the field case cannot be reproduced
+    without it - two-way ranging is bidirectional by definition. An optional step
+    that the control's own worked example requires is not optional, and this is
+    the same shape as the incident that prompted the schema. The transmission is
+    between the assessor's own boards, hence connection-oriented and no side
+    effects. Manual: solder rework (SB121/SB122), a GUI IDE build, a C struct
+    edited by hand between attempts, and a Wireshark pipe configured through
+    menus. Supply note: steps 2-4 depend on Qorvo's DW3xxx sample code, which the
+    repo's own tooling notes record as no longer downloadable - an honest default
+    state for this control is blocked, not pending.
 ---
 
 ## Mechanism

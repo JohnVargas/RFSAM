@@ -86,6 +86,32 @@ resources:
 reviewStatus: reviewed
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: false
+  side_effects:
+    - none
+  needs_physical:
+    - proximity
+    - antenna-placement
+  containment: none
+  gates:
+    hardware_present:
+      - usrp-b210
+    scope_mode_in:
+      - observational
+      - active
+      - lab
+      - defensive
+    requires_root: false
+  basis: >-
+    The procedure states "All steps below are passive reception only", and it
+    holds: cell_search and pdsch_ue receive, and LTESniffer in step 5 decodes
+    downlink. Nothing keys up a transmitter. This is the clearest case of what
+    legal_tier cannot express - the regulated act here is RECEPTION on licensed
+    spectrum, and step 5 decodes PDSCH belonging to third-party subscribers.
+    Because the control does not transmit, it carries no tier, which understates
+    it. The engagement's mandate and jurisdiction decide this one, not the corpus.
 ---
 ## Mechanism
 

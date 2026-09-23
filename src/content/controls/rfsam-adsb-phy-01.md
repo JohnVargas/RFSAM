@@ -113,6 +113,30 @@ resources:
 reviewStatus: verified
 confidence: high
 lastResearched: 2026-08-20
+execution:
+  automatable: assisted
+  requires_tx: false
+  side_effects:
+    - none
+  needs_physical:
+    - antenna-placement
+  containment: none
+  gates:
+    hardware_present:
+      - rtl-sdr-v4
+    scope_mode_in:
+      - observational
+      - active
+      - lab
+      - defensive
+    requires_root: false
+  basis: >-
+    All six steps receive: dump1090-fa and dump978 demodulate, readsb serves the
+    feed, pyModeS verifies individual frames offline. Nothing transmits, which is
+    what makes this control safe on a T1 safety-of-life band. Its field case is
+    the most automatable thing in the corpus - `modes decode <hex>` over published
+    test vectors, deterministic and requiring no radio at all - but the control as
+    a whole still needs someone to mount and aim a 1090 MHz antenna first.
 ---
 
 ## Mechanism

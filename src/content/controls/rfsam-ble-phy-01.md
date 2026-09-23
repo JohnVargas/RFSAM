@@ -114,6 +114,30 @@ resources:
 reviewStatus: reviewed
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: false
+  side_effects:
+    - none
+  needs_physical:
+    - proximity
+    - device-access
+  containment: none
+  gates:
+    hardware_present: []
+    scope_mode_in:
+      - observational
+      - active
+      - lab
+      - defensive
+    requires_root: false
+  basis: >-
+    Both paths receive. Sniffle is invoked with -a (advertising capture) and with
+    -m to follow a given address, neither of which scans actively; the SDR path
+    channelises captured I/Q. Worth stating explicitly because step 3's
+    "follows the connection" reads like participation and is not. device-access
+    because the pass condition needs frames on a data channel, and that requires
+    somebody to make the bench device connect during the capture window.
 ---
 ## Mechanism
 
