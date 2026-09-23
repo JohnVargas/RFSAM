@@ -104,6 +104,12 @@ tools:
   - catnip
   - minino
   - gqrx
+mitre:
+  - id: T0887
+    relation: assesses
+    rationale: >-
+      The ICS entry names Zigbee-class protocols explicitly and describes RF capture between 300 MHz
+      and 6 GHz; this control is that capture, scoped to one protocol.
 bsam: []
 resources:
   - RFSAM-RES-16

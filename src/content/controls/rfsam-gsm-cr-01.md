@@ -133,6 +133,18 @@ tools:
   - wireshark
   - imsi-catcher
   - kraken-a51
+mitre:
+  - id: T1689
+    relation: assesses
+    rationale: >-
+      Backward compatibility forcing a less secure mode is what this technique describes; here it is
+      A5/0 and A5/2 being accepted.
+fight:
+  - id: FGT1600.501
+    relation: related-to
+    rationale: >-
+      FiGHT frames null ciphering on the radio interface for 5G; GSM's A5/0 is the same failure one
+      generation earlier, so the entry is related rather than a direct match.
 bsam: []
 resources:
   - RFSAM-RES-01

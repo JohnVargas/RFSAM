@@ -141,6 +141,11 @@ tools:
   - pm3-client
   - chameleon-ultra
   - bombercat
+threatMapNote: >-
+  No ATT&CK matrix models proximity-card cloning, emulation or relay. A keyword sweep of the v19.2
+  STIX bundles for RFID, NFC, MIFARE, contactless, card emulation and relay attack returns nothing
+  in Enterprise, ICS or Mobile; T1111 covers intercepting multi-factor tokens but its description is
+  keylogger-centric and names no RF vector. Declared here rather than forced.
 bsam: []
 resources:
   - RFSAM-RES-13

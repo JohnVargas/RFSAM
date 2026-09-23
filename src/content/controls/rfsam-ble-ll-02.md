@@ -125,6 +125,13 @@ tools:
   - ubertooth-tools
   - ice9-bluetooth-sniffer
   - wireshark
+mitre:
+  - id: T1040
+    relation: assesses
+    rationale: >-
+      Capturing BLE frames off the air is the wireless half of this technique, which ATT&CK
+      describes as monitoring traffic over a wired or wireless connection. The control measures
+      whether the link permits it.
 bsam:
   - BSAM-DI-04
   - BSAM-EN-02

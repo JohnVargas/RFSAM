@@ -1,0 +1,100 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { mitre, attackVersion, attackRetrieved } from '../data/mitre.js';
+import { fight, fightBuild } from '../data/fight.js';
+
+const controls = await getCollection('controls');
+
+// Index: corpus entry -> the controls that cite it. Computed at build time, so the
+// page cannot drift from the controls the way a hand-kept table would.
+const byId = {};
+for (const c of controls) {
+  for (const r of c.data.mitre ?? []) (byId[r.id] ??= []).push({ c, relation: r.relation });
+  for (const r of c.data.fight ?? []) (byId[r.id] ??= []).push({ c, relation: r.relation });
+}
+
+const rfEntries = [
+  ...Object.entries(mitre).filter(([, v]) => v.rf && v.kind !== 'mitigation')
+    .map(([id, v]) => ({ id, ...v, corpus: `ATT&CK ${v.matrix}` })),
+  ...Object.entries(fight).filter(([, v]) => v.rf).map(([id, v]) => ({ id, ...v, corpus: 'FiGHT' })),
+];
+const covered = rfEntries.filter((e) => byId[e.id]?.length);
+const gaps = rfEntries.filter((e) => !byId[e.id]?.length);
+const pct = (n) => Math.round((n / rfEntries.length) * 100);
+
+// The reverse direction: RFSAM ground that no corpus models at all.
+const uncharted = controls.filter((c) => c.data.threatMapNote)
+  .map((c) => ({ id: c.data.id, slug: c.id, note: c.data.threatMapNote }));
+
+const mitigations = Object.entries(mitre).filter(([, v]) => v.kind === 'mitigation');
+const COLOR = { enterprise: 'var(--cyan)', ics: 'var(--amber)', mobile: 'var(--purple)' };
+---
+<BaseLayout title="Adversary-behaviour mapping">
+  <div class="container" style="max-width:900px">
+    <h1 style="font-size:34px">Adversary-behaviour mapping</h1>
+    <p style="color:var(--mut);margin-top:8px;max-width:70ch">
+      Where RFSAM controls line up with MITRE ATT&CK and MITRE FiGHT, and — more usefully — where they
+      do not. The mapping is a navigation aid, never a coverage score: a control is not a technique, and
+      an unmapped technique is a question, not a failure. ATT&CK {attackVersion}, retrieved {attackRetrieved};
+      FiGHT build {fightBuild}.
+    </p>
+
+    <div class="mono" style="display:flex;gap:14px;flex-wrap:wrap;margin-top:16px;font-size:11px;color:var(--mut2)">
+      <span>{rfEntries.length} RF-relevant corpus entries —</span>
+      <span style="color:var(--green)">{covered.length} mapped · {pct(covered.length)}%</span>
+      <span style="color:var(--amber)">{gaps.length} with no control · {pct(gaps.length)}%</span>
+      <span style="color:var(--purple)">{uncharted.length} controls no corpus models</span>
+    </div>
+
+    <h2 class="mono" style="font-size:12px;letter-spacing:.14em;color:var(--mut2);margin-top:36px">MAPPED</h2>
+    {covered.map((e) => (
+      <div style="padding:10px 14px;background:var(--bg2);border:1px solid var(--line);border-radius:8px;margin-bottom:6px">
+        <div style="display:flex;gap:12px;align-items:baseline;flex-wrap:wrap">
+          <a href={e.url} target="_blank" rel="noopener" class="mono" style={`font-size:11.5px;color:${COLOR[e.matrix] ?? 'var(--green)'};width:110px`}>{e.id} ↗</a>
+          <span style="font-size:13.5px">{e.title}</span>
+          <span class="mono" style="margin-left:auto;font-size:10px;color:var(--mut2)">{e.corpus}</span>
+        </div>
+        <div class="mono" style="font-size:11px;color:var(--mut);margin-top:6px;padding-left:122px">
+          {byId[e.id].map(({ c, relation }) => (
+            <a href={`/RFSAM/controls/${c.id}`} style="color:var(--amber);margin-right:10px">{c.data.id} <span style="color:var(--mut2)">({relation})</span></a>
+          ))}
+        </div>
+      </div>
+    ))}
+
+    <h2 class="mono" style="font-size:12px;letter-spacing:.14em;color:var(--mut2);margin-top:36px">NO CONTROL YET</h2>
+    <p style="color:var(--mut);font-size:13.5px;max-width:70ch">
+      RF-relevant entries that no control cites. Some are real gaps in the methodology; others are
+      techniques a control already exercises without saying so. The hint says which.
+    </p>
+    {gaps.map((e) => (
+      <div style="padding:10px 14px;border-left:2px solid var(--line2);margin:8px 0">
+        <div style="display:flex;gap:12px;align-items:baseline;flex-wrap:wrap">
+          <a href={e.url} target="_blank" rel="noopener" class="mono" style={`font-size:11.5px;color:${COLOR[e.matrix] ?? 'var(--green)'};width:110px`}>{e.id} ↗</a>
+          <span style="font-size:13.5px">{e.title}</span>
+          <span class="mono" style="margin-left:auto;font-size:10px;color:var(--mut2)">{e.corpus}</span>
+        </div>
+        {e.gapHint && <p style="font-size:12.5px;color:var(--mut);margin-top:5px;padding-left:122px">{e.gapHint}</p>}
+      </div>
+    ))}
+
+    <h2 class="mono" style="font-size:12px;letter-spacing:.14em;color:var(--mut2);margin-top:36px">GROUND NO CORPUS MODELS</h2>
+    <p style="color:var(--mut);font-size:13.5px;max-width:70ch">
+      The reverse direction, and the reason this page is not a score. These controls assess threats
+      that ATT&CK and FiGHT do not describe at all.
+    </p>
+    {uncharted.map((u) => (
+      <div style="padding:10px 14px;border-left:2px solid var(--amber);margin:8px 0">
+        <a href={`/RFSAM/controls/${u.slug}`} class="mono" style="font-size:11.5px;color:var(--amber)">{u.id}</a>
+        <p style="font-size:12.5px;color:var(--mut);line-height:1.6;margin-top:5px">{u.note}</p>
+      </div>
+    ))}
+
+    <p class="mono" style="font-size:11px;color:var(--mut2);margin-top:36px;line-height:1.7">
+      Remediation anchors: {mitigations.map(([id, v]) => <a href={v.url} target="_blank" rel="noopener" style="color:var(--mut);margin-right:8px">{id} {v.title}</a>)}
+      <br />ATT&CK® is a registered trademark of The MITRE Corporation. © 2026 The MITRE Corporation.
+      This work is reproduced and distributed with the permission of The MITRE Corporation.
+    </p>
+  </div>
+</BaseLayout>

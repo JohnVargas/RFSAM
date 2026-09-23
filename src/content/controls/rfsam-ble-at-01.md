@@ -89,6 +89,18 @@ references:
     type: tool
 tools:
   - catsniffer
+mitre:
+  - id: T1557
+    relation: assesses
+    rationale: >-
+      Hijacking a live connection puts the auditor between the two peers, which is what this
+      technique describes. ATT&CK models the position; this control measures whether the BLE link
+      permits reaching it.
+  - id: T1638
+    relation: assesses
+    rationale: >-
+      The Mobile matrix absorbed the revoked rogue-AP and rogue-base-station techniques into this
+      entry, so it is the closest device-side statement of the same position.
 bsam:
   - BSAM-AP-06
   - BSAM-AU-03

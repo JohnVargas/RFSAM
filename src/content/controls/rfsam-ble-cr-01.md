@@ -128,6 +128,12 @@ tools:
   - sniffle
   - catsniffer
   - wireshark
+mitre:
+  - id: T1689
+    relation: assesses
+    rationale: >-
+      Backward compatibility forcing a less secure mode is what this technique describes; here it is
+      LE Legacy pairing against LE Secure Connections.
 bsam:
   - BSAM-PA-01
   - BSAM-PA-04

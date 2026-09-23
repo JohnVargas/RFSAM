@@ -89,6 +89,13 @@ tools:
   - esp32-bt-classic-sniffer
   - ubertooth-tools
   - wireshark
+mitre:
+  - id: T1040
+    relation: assesses
+    rationale: >-
+      Capturing Bluetooth Classic frames off the air is the wireless half of this technique, which
+      ATT&CK describes as monitoring traffic over a wired or wireless connection. The control
+      measures whether the link permits it.
 bsam:
   - BSAM-IG-03
   - BSAM-AP-06

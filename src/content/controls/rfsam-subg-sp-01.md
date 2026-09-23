@@ -88,6 +88,12 @@ tools:
   - rtl-433
   - catnip
   - yard-stick-one
+mitre:
+  - id: T0887
+    relation: assesses
+    rationale: >-
+      The ICS entry names sub-GHz-class protocols explicitly and describes RF capture between 300
+      MHz and 6 GHz; this control is that capture, scoped to one protocol.
 bsam: []
 resources:
   - RFSAM-RES-01

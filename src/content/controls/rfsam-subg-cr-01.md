@@ -138,6 +138,12 @@ tools:
   - universal-radio-hacker
   - hackrf-one
   - rtl-433
+mitre:
+  - id: T1110.002
+    relation: assesses
+    rationale: >-
+      Key material is recovered offline from a handful of captured rolling codes, which is the
+      cracking half of this technique rather than an online guess.
 bsam: []
 resources:
   - RFSAM-RES-15

@@ -6,6 +6,7 @@ import ReviewBadge from '../../components/ReviewBadge.astro';
 import Attacks from '../../components/Attacks.astro';
 import References from '../../components/References.astro';
 import DefersToBsam from '../../components/DefersToBsam.astro';
+import ThreatMap from '../../components/ThreatMap.astro';
 import RelatedResources from '../../components/RelatedResources.astro';
 import Pager from '../../components/Pager.astro';
 import { protocols } from '../../data/protocols.js';
@@ -80,6 +81,11 @@ if (kind === 'control') {
     {data.references?.length > 0 && <><h2 class="mono" style="font-size:12px;letter-spacing:.14em;color:var(--mut2);margin-top:36px">REFERENCES</h2><References references={data.references} /></>}
     {data.resources?.length > 0 && <><h2 class="mono" style="font-size:12px;letter-spacing:.14em;color:var(--mut2);margin-top:36px">RELATED RESOURCES</h2><RelatedResources ids={data.resources} /></>}
     {data.bsam?.length > 0 && <><h2 class="mono" style="font-size:12px;letter-spacing:.14em;color:var(--mut2);margin-top:36px">DEFERS TO BSAM</h2><DefersToBsam ids={data.bsam} deferred={data.deferred} /></>}
+
+    {(data.mitre?.length > 0 || data.fight?.length > 0 || data.threatMapNote) && (
+      <><h2 class="mono" style="font-size:12px;letter-spacing:.14em;color:var(--mut2);margin-top:36px">ADVERSARY-BEHAVIOUR MAPPING</h2>
+      <ThreatMap mitreRefs={data.mitre} fightRefs={data.fight} note={data.threatMapNote} /></>
+    )}
 
     <Pager prev={prev} next={next} />
   </DocsLayout>

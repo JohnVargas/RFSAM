@@ -14,6 +14,10 @@ function base(overrides = {}) {
       id: 'RFSAM-BLE-AT-01', protocol: 'BLE', layer: 'AT', criticality: 'high',
       title: 'Hijack', reviewStatus: 'stub', confidence: 'low',
       attacks: [], references: [], bsam: [], resources: [], tools: [],
+      // The fixture is an AT-layer control, and an AT control that maps to no
+      // ATT&CK/FiGHT technique must declare why. Without this the baseline stub
+      // is not actually clean.
+      threatMapNote: 'Fixture: no mapping asserted.',
       ...overrides.data,
     },
     body: overrides.body ?? '## Mechanism\n\nx\n',

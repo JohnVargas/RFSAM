@@ -168,6 +168,12 @@ tools:
   - braktooth
   - esp32-bluejammer
   - esp32-devkit
+mitre:
+  - id: T1499.004
+    relation: assesses
+    rationale: >-
+      Malformed LMP/baseband traffic that crashes or deadlocks the target is a denial of service
+      induced by exploiting the implementation, which is what this sub-technique covers.
 bsam:
   - BSAM-IG-02
   - BSAM-EN-03

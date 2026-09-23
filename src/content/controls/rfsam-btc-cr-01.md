@@ -130,6 +130,17 @@ references:
 tools:
   - esp32-bt-classic-sniffer
   - wireshark
+mitre:
+  - id: T1689
+    relation: assesses
+    rationale: >-
+      Backward compatibility forcing a less secure mode is what this technique describes; here it is
+      entropy negotiation down to a single byte (KNOB).
+  - id: T1110.002
+    relation: assesses
+    rationale: >-
+      Key material is recovered offline from a captured pairing exchange, which is the cracking half
+      of this technique rather than an online guess.
 bsam:
   - BSAM-PA-04
   - BSAM-EN-03

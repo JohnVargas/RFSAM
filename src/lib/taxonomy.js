@@ -16,6 +16,11 @@ export const CRITICALITY_IDS = ['info', 'low', 'medium', 'high', 'critical'];
 export const REVIEW_STATUSES = ['stub', 'draft', 'reviewed', 'verified'];
 export const CONFIDENCE_LEVELS = ['low', 'medium', 'high'];
 
+// How a control relates to an adversary-behaviour entry (ATT&CK or FiGHT).
+// 'assesses' is the common case: the control tests whether the technique is
+// viable against the target. A control is never asserted to BE a technique.
+export const THREAT_RELATIONS = ['assesses', 'detects', 'mitigates', 'related-to'];
+
 // Lifecycle of a tool entry. Deliberately not derived from commit dates: a frozen
 // protocol tool can be current ('mature') and an archived repo can still be the
 // reference ('archived'). Left unset on entries nobody has checked yet.

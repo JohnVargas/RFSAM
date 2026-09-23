@@ -120,6 +120,17 @@ tools:
   - hackrf-one
   - bladerf-2-micro
   - usrp-b210
+mitre:
+  - id: T1464
+    relation: assesses
+    rationale: >-
+      The Mobile matrix names jamming GPS signals explicitly, so the denial half of this control
+      maps cleanly.
+threatMapNote: >-
+  Only the jamming half maps. No entry in ATT&CK Enterprise, ICS or Mobile models GNSS spoofing -
+  transmitting counterfeit navigation signals to move a receiver's position fix - even though it is
+  the better documented of the two attacks. FiGHT does not cover GNSS either, modelling 5G
+  synchronisation only through PTP.
 bsam: []
 resources:
   - RFSAM-RES-20

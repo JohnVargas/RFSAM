@@ -23,6 +23,13 @@ export function checkControl({ data, body, file }, reg) {
     }
   }
   for (const b of data.bsam ?? []) if (!reg.bsamKeys.has(b)) errs.push(`${tag}unknown BSAM id '${b}'`);
+  for (const m of data.mitre ?? []) if (!reg.mitreIds.has(m.id)) errs.push(`${tag}unknown ATT&CK id '${m.id}'`);
+  for (const g of data.fight ?? []) if (!reg.fightIds.has(g.id)) errs.push(`${tag}unknown FiGHT id '${g.id}'`);
+  // An attack-layer control that maps to nothing must say why. Silence would read
+  // as 'not done yet' when the honest answer is usually 'no corpus models this'.
+  if (data.layer === 'AT' && !(data.mitre ?? []).length && !(data.fight ?? []).length && !data.threatMapNote?.trim()) {
+    errs.push(`${tag}AT-layer control with no ATT&CK/FiGHT mapping needs a threatMapNote saying why`);
+  }
   for (const r of data.resources ?? []) if (!reg.resourceIds.has(r)) errs.push(`${tag}unknown resource id '${r}'`);
   for (const t of data.tools ?? []) if (!reg.toolSlugs.has(t)) errs.push(`${tag}unknown tool slug '${t}'`);
 
@@ -95,8 +102,12 @@ function idsFromDir(dir, field) {
 
 export async function loadRegistries() {
   const { bsam } = await import('../src/data/bsam.js');
+  const { mitre } = await import('../src/data/mitre.js');
+  const { fight } = await import('../src/data/fight.js');
   return {
     bsamKeys: new Set(Object.keys(bsam)),
+    mitreIds: new Set(Object.keys(mitre)),
+    fightIds: new Set(Object.keys(fight)),
     resourceIds: idsFromDir('src/content/resources', 'id'),
     toolSlugs: idsFromDir('src/content/tools', null),
   };

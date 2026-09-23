@@ -1,0 +1,34 @@
+---
+import { mitre, attackVersion } from '../data/mitre.js';
+import { fight } from '../data/fight.js';
+const { mitreRefs = [], fightRefs = [], note } = Astro.props;
+const rows = [
+  ...mitreRefs.map((r) => ({ ...r, reg: mitre[r.id], corpus: `ATT&CK ${attackVersion} · ${mitre[r.id]?.matrix ?? ''}` })),
+  ...fightRefs.map((r) => ({ ...r, reg: fight[r.id], corpus: 'FiGHT' })),
+];
+const MATRIX_COLOR = { enterprise: 'var(--cyan)', ics: 'var(--amber)', mobile: 'var(--purple)' };
+---
+{(rows.length > 0 || note) && (
+  <div>
+    <p style="font-size:13.5px;color:var(--mut);font-style:italic;margin-bottom:10px">
+      What adversary behaviour this control assesses. The mapping is a navigation aid, not a coverage
+      claim — a control is never asserted to be a technique.
+    </p>
+    {rows.map((r) => (
+      <div style="padding:11px 16px;background:var(--bg2);border:1px solid var(--line);border-radius:8px;margin-bottom:6px">
+        <div style="display:flex;gap:14px;align-items:center">
+          <a href={r.reg?.url} target="_blank" rel="noopener" class="mono"
+             style={`font-size:11.5px;color:${MATRIX_COLOR[r.reg?.matrix] ?? 'var(--green)'};width:110px;flex-shrink:0`}>{r.id} ↗</a>
+          <span style="font-size:13.5px">{r.reg?.title ?? r.id}</span>
+          <span class="mono" style="margin-left:auto;font-size:10px;color:var(--mut2)">{r.relation} · {r.corpus}</span>
+        </div>
+        <p style="font-size:12.5px;color:var(--mut);line-height:1.6;margin-top:8px">{r.rationale}</p>
+      </div>
+    ))}
+    {note && (
+      <p style="font-size:13px;color:var(--mut);line-height:1.6;border-left:2px solid var(--amber);padding-left:12px;margin-top:10px">
+        <strong style="color:var(--amber)">No corpus entry.</strong> {note}
+      </p>
+    )}
+  </div>
+)}

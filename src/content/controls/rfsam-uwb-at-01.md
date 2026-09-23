@@ -139,6 +139,10 @@ tools:
   - makerfabs-esp32-uwb-dw3000
   - seemoo-uwb-sniffer
   - wireshark
+threatMapNote: >-
+  No ATT&CK matrix models distance manipulation or relay against ranging protocols. UWB, ultra-
+  wideband, time-of-flight and distance bounding return nothing across the three v19.2 bundles, so
+  the Ghost Peak class of attack has no corpus entry to point at.
 bsam: []
 resources:
   - RFSAM-RES-24

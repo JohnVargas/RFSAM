@@ -124,6 +124,19 @@ tools:
   - qcsuper
   - wireshark
   - usrp-b210
+mitre:
+  - id: T1040
+    relation: assesses
+    rationale: >-
+      Capturing 5G NR frames off the air is the wireless half of this technique, which ATT&CK
+      describes as monitoring traffic over a wired or wireless connection. The control measures
+      whether the link permits it.
+fight:
+  - id: FGT1040.501
+    relation: assesses
+    rationale: >-
+      Same entry, 5G NR side: the control measures what the broadcast and control channels expose
+      before ciphering.
 bsam: []
 resources:
   - RFSAM-RES-22

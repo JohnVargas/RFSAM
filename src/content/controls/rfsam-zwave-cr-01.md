@@ -129,6 +129,12 @@ tools:
   - ez-wave
   - rtl-sdr-v4
   - hackrf-one
+mitre:
+  - id: T1689
+    relation: assesses
+    rationale: >-
+      Backward compatibility forcing a less secure mode is what this technique describes; here it is
+      S0 being accepted where S2 exists.
 bsam: []
 resources:
   - RFSAM-RES-01

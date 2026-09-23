@@ -104,6 +104,13 @@ tools:
   - dump1090
   - readsb
   - pymodes
+mitre:
+  - id: T1040
+    relation: assesses
+    rationale: >-
+      Capturing ADS-B frames off the air is the wireless half of this technique, which ATT&CK
+      describes as monitoring traffic over a wired or wireless connection. The control measures
+      whether the link permits it.
 bsam: []
 resources:
   - RFSAM-RES-01

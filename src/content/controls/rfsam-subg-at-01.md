@@ -158,6 +158,18 @@ tools:
   - catnip
   - yard-stick-one
   - hackrf-one
+mitre:
+  - id: T1692.001
+    relation: assesses
+    rationale: >-
+      Replaying or forging a sub-GHz command is the consumer-side instance of an unauthorized
+      command message; the ICS entry cites the 2017 Dallas siren case, which is this control applied
+      to public infrastructure.
+  - id: T0860
+    relation: assesses
+    rationale: >-
+      Operating a radio on the target's own frequency to act on it is the initial-access framing
+      this control exercises, at the bands declared in its prerequisites.
 bsam: []
 resources:
   - RFSAM-RES-15

@@ -3,10 +3,19 @@ import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import {
   LAYER_IDS, PROTOCOL_IDS, CRITICALITY_IDS, REVIEW_STATUSES, CONFIDENCE_LEVELS,
+  THREAT_RELATIONS,
   TOOL_STATUSES,
 } from './lib/taxonomy.js';
 
 const layer = z.enum(LAYER_IDS as [string, ...string[]]);
+
+// A mapping to an external adversary-behaviour corpus. The rationale is required:
+// CISA's mapping guidance is explicit that a bare list of ids has little value.
+const threatRef = z.object({
+  id: z.string(),
+  relation: z.enum(THREAT_RELATIONS as [string, ...string[]]),
+  rationale: z.string(),
+});
 const protocol = z.enum(PROTOCOL_IDS as [string, ...string[]]);
 
 const reference = z.object({
@@ -55,6 +64,11 @@ const controls = defineCollection({
     references: z.array(reference).default([]),
     tools: z.array(z.string()).default([]),
     bsam: z.array(z.string()).default([]),
+    mitre: z.array(threatRef).default([]),
+    fight: z.array(threatRef).default([]),
+    // Why no mapping exists. Required on AT-layer controls that map to nothing,
+    // so that a gap is declared rather than silent.
+    threatMapNote: z.string().optional(),
     resources: z.array(z.string()).default([]),
     reviewStatus: z.enum(REVIEW_STATUSES as [string, ...string[]]).default('stub'),
     confidence: z.enum(CONFIDENCE_LEVELS as [string, ...string[]]).default('low'),

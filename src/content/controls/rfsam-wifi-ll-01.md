@@ -115,6 +115,13 @@ tools:
   - wireshark
   - alfa-awus036ach
   - minino
+mitre:
+  - id: T1040
+    relation: assesses
+    rationale: >-
+      Capturing Wi-Fi frames off the air is the wireless half of this technique, which ATT&CK
+      describes as monitoring traffic over a wired or wireless connection. The control measures
+      whether the link permits it.
 bsam: []
 resources:
   - RFSAM-RES-11

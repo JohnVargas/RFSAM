@@ -150,6 +150,19 @@ tools:
   - srsran-4g
   - wireshark
   - usrp-b210
+mitre:
+  - id: T1040
+    relation: assesses
+    rationale: >-
+      Capturing LTE frames off the air is the wireless half of this technique, which ATT&CK
+      describes as monitoring traffic over a wired or wireless connection. The control measures
+      whether the link permits it.
+fight:
+  - id: FGT1040.501
+    relation: assesses
+    rationale: >-
+      FiGHT's radio-interface sniffing entry is this control seen from the 5G threat model:
+      unencrypted control-plane traffic read off the air.
 bsam: []
 resources:
   - RFSAM-RES-08
