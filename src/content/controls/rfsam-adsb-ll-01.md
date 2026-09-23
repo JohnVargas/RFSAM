@@ -118,6 +118,29 @@ resources:
 reviewStatus: reviewed
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: false
+  side_effects:
+    - none
+  needs_physical:
+    - antenna-placement
+  containment: none
+  gates:
+    hardware_present: []
+    scope_mode_in:
+      - observational
+      - active
+      - lab
+      - defensive
+    requires_root: false
+  basis: >-
+    Every step receives: dump1090/readsb demodulate 1090 MHz and pyModeS decodes
+    the frames offline. Nothing in the procedure keys up a transmitter - which
+    matters here, because 1090 MHz is a T1 safety-of-life band where an accidental
+    emission is the worst case in the corpus. Steps 2-4 are headless and produce
+    parseable JSON; the assisted rating is for step 1, which needs someone to
+    mount and orient the antenna before any of it works.
 ---
 ## Mechanism
 

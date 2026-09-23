@@ -105,6 +105,32 @@ resources:
 reviewStatus: verified
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: true
+  tx_steps: [2, 3]
+  tx_modes:
+    - connection-oriented
+  legal_tier: T3
+  side_effects:
+    - none
+  needs_physical:
+    - proximity
+    - device-access
+  containment: none
+  gates:
+    hardware_present: []
+    scope_mode_in:
+      - active
+      - lab
+    requires_root: false
+  basis: >-
+    The control's own authorised-testing note says it outright: "the ESP32 sniffer
+    actively connects to the target to follow it", and step 2 adds "the ESP32
+    pages the target, follows the connection, and forwards baseband packets".
+    Paging opens a baseband link with a third-party device. The objective
+    describes frames "pulled off the air", which reads as passive capture and is
+    the reason this control looked safe to schedule in a receive-only scope.
 ---
 ## Mechanism
 

@@ -129,6 +129,34 @@ resources:
 reviewStatus: reviewed
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: true
+  tx_steps: [5]
+  tx_modes:
+    - injection
+  legal_tier: T3
+  side_effects:
+    - dos
+  needs_physical:
+    - proximity
+  containment: none
+  gates:
+    hardware_present:
+      - alfa-awus036ach
+    scope_mode_in:
+      - active
+      - lab
+    requires_root: true
+  basis: >-
+    Steps 1-4 are a monitor-mode capture and offline dissection. Step 5, already
+    marked "(Authorised scope only)", runs `aireplay-ng --deauth` to confirm that
+    a BSS without Protected Management Frames is susceptible - which injects
+    forged management frames and knocks a real client off its session, hence the
+    dos side effect. The control's objective describes working "from a passive
+    monitor-mode capture", so the transmitting step contradicts the framing
+    readers take from the title. Moving step 5 to an AT-layer control would leave
+    steps 1-4 fully observational.
 ---
 ## Mechanism
 

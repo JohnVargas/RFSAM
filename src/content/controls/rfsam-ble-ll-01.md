@@ -121,6 +121,35 @@ resources:
 reviewStatus: reviewed
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: true
+  tx_steps: [5]
+  tx_modes:
+    - interrogation
+  legal_tier: T3
+  side_effects:
+    - none
+  needs_physical:
+    - proximity
+  containment: none
+  gates:
+    hardware_present:
+      - catsniffer
+    scope_mode_in:
+      - active
+      - lab
+    requires_root: false
+  basis: >-
+    Steps 1-4 are passive: a Sniffle-class sniffer parked on the advertising
+    channels, then offline dissection. Step 5 is not. `BleakScanner.discover()`
+    is called without `scanning_mode`, and the default is an ACTIVE scan, so the
+    host sends SCAN_REQ and solicits a response from every advertiser in range.
+    The control's intro calls itself "passive and observational - no connection or
+    transmission" and step 2 of the catnip route explicitly passes
+    `--mode passive_scan`, so the contradiction is confined to step 5. Fixing it
+    is one keyword: `BleakScanner.discover(scanning_mode="passive")` would make
+    this control receive-only and observational again.
 ---
 ## Mechanism
 

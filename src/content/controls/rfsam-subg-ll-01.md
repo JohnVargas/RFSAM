@@ -141,6 +141,30 @@ resources:
 reviewStatus: verified
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: false
+  side_effects:
+    - none
+  needs_physical:
+    - proximity
+    - device-access
+  containment: none
+  gates:
+    hardware_present: []
+    scope_mode_in:
+      - observational
+      - active
+      - lab
+      - defensive
+    requires_root: false
+  basis: >-
+    The procedure states "Receive-only throughout", and the optional step 4
+    cross-check calls `d.RFrecv()` on a CC1101-class radio - receive, despite
+    rfcat and a YARD Stick One being transmit-capable hardware. That is precisely
+    why the field is worth having: a reader inferring TX from the tool list would
+    get it backwards. device-access is needed because someone has to press the
+    fob or trigger the sensor several times to get comparable bursts.
 ---
 ## Mechanism
 

@@ -142,6 +142,28 @@ resources:
 reviewStatus: reviewed
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: false
+  side_effects:
+    - none
+  needs_physical:
+    - proximity
+    - antenna-placement
+  containment: none
+  gates:
+    hardware_present: []
+    scope_mode_in:
+      - observational
+      - active
+      - lab
+      - defensive
+    requires_root: false
+  basis: >-
+    De-chirping and frame dissection run over a capture; no step joins a network
+    or answers a join request. A LoRaWAN node transmits on its own duty cycle, so
+    the characteristic failure here is an empty window rather than a tool error -
+    record that as inconclusive with a stop reason, not as passed.
 ---
 
 ## Mechanism

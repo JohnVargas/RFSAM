@@ -138,6 +138,35 @@ resources:
 reviewStatus: verified
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: true
+  tx_steps: [5]
+  tx_modes:
+    - interrogation
+  legal_tier: T3
+  side_effects:
+    - none
+  needs_physical:
+    - proximity
+  containment: none
+  gates:
+    hardware_present:
+      - catsniffer
+      - cc2531
+      - minino
+    scope_mode_in:
+      - active
+      - lab
+    requires_root: false
+  basis: >-
+    Steps 1-4 are passive capture and dissection; step 5 runs zbstumbler, which
+    emits 802.15.4 beacon requests to provoke discovery. This control is the house
+    pattern and the reason it is worth copying: the emitting step is labelled
+    "(Active, authorised only)" in its own title, the split between passive and
+    transmitting steps is stated in the Procedure header before the first command,
+    and the attack entry repeats it. The metadata here restates what the prose
+    already says correctly, instead of rescuing prose that says the opposite.
 ---
 
 ## Mechanism

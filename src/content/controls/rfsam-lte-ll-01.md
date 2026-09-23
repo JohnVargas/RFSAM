@@ -170,6 +170,33 @@ resources:
 reviewStatus: reviewed
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: false
+  side_effects:
+    - none
+  needs_physical:
+    - proximity
+    - antenna-placement
+  containment: none
+  gates:
+    hardware_present:
+      - usrp-b210
+    scope_mode_in:
+      - observational
+      - active
+      - lab
+      - defensive
+    requires_root: false
+  basis: >-
+    srsUE is invoked with `--rf.dl_earfcn` and PCAP options only: no USIM is
+    configured, so it performs cell search and decodes MIB/SIBs from the downlink
+    without attaching. No PRACH, no uplink. Verified against the command as
+    written - configuring a USIM would add RACH on licensed spectrum and make this
+    T2, so the absence of `--usim.*` is load-bearing and should not be edited away
+    casually. Reception itself is restricted in many jurisdictions even though
+    nothing is transmitted; the corpus records the requirement, the engagement
+    declares the authority.
 ---
 
 ## Mechanism

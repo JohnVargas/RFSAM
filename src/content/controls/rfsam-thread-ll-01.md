@@ -136,6 +136,30 @@ resources:
 reviewStatus: verified
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: false
+  side_effects:
+    - none
+  needs_physical:
+    - proximity
+  containment: none
+  gates:
+    hardware_present:
+      - catsniffer
+    scope_mode_in:
+      - observational
+      - active
+      - lab
+      - defensive
+    requires_root: false
+  basis: >-
+    An 802.15.4 sniffer parked on the mesh channel, reading beacons and MLE
+    discovery responses that the mesh emits on its own. Nothing in the radio path
+    transmits. Note for whoever extends this control: the service-discovery step
+    reaches the Border Router over IP, which requires being on its LAN - a
+    prerequisite the current vocabulary cannot express, since needs_physical
+    covers proximity and hands, not network position.
 ---
 
 ## Mechanism

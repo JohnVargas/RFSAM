@@ -144,6 +144,35 @@ resources:
 reviewStatus: reviewed
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: true
+  tx_steps: [2]
+  tx_modes:
+    - rogue-infrastructure
+  legal_tier: T2
+  side_effects:
+    - none
+  needs_physical:
+    - proximity
+    - antenna-placement
+  containment: none
+  gates:
+    hardware_present:
+      - usrp-b210
+    scope_mode_in:
+      - active
+      - lab
+    requires_root: false
+  basis: >-
+    Step 2 offers two routes. Route A reads the serving cell's signalling off a
+    Qualcomm modem's DIAG interface and is genuinely passive. Route B stands up
+    your own SA gNB, which radiates on licensed spectrum - T2, requiring an
+    assignment, statutory authority, or containment. Because one documented route
+    transmits, the control as a whole is requires_tx: true, which costs the
+    passive route its place in a receive-only scope. Splitting step 2 into 2A
+    (DIAG) and 2B (controlled cell) would let the passive majority of this control
+    run under an observational mandate; recommended, not done here.
 ---
 
 ## Mechanism

@@ -140,6 +140,31 @@ resources:
 reviewStatus: reviewed
 confidence: medium
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: false
+  side_effects:
+    - none
+  needs_physical:
+    - proximity
+    - device-access
+  containment: none
+  gates:
+    hardware_present:
+      - catsniffer
+    scope_mode_in:
+      - observational
+      - active
+      - lab
+      - defensive
+    requires_root: false
+  basis: >-
+    The sniffer follows an established connection without joining it. The fresh
+    connection the capture needs is provoked by opening the vendor app on the
+    bench device - a human action over the air interface of somebody else's
+    choosing, not a transmission by the assessor. That is the distinction this
+    phase turns on: a deauthentication transmits, picking up a phone does not.
+    Hence receive-only with hands required.
 ---
 ## Mechanism
 

@@ -104,7 +104,12 @@ export function checkExecution({ data, body, file }, reg) {
   // Every other rule validates the assertion against itself; this one reads the
   // procedure. It is the antidote to "the metadata lies".
   if (!x.requires_tx) {
-    const hit = body.match(TX_COMMAND_RE);
+    // Only look inside fenced command blocks. Searching the whole body matches
+    // tool names in prose, reference keys and field-case citations - a control
+    // that merely CITES btlejack's README does not run it.
+    const commands = [...body.matchAll(/```(?:bash|sh|console|python)?\n([\s\S]*?)```/g)]
+      .map((m) => m[1]).join('\n');
+    const hit = commands.match(TX_COMMAND_RE);
     if (hit) errs.push(`${tag}requires_tx: false but the procedure runs '${hit[0]}', which transmits`);
   }
 
