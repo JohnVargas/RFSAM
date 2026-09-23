@@ -183,6 +183,35 @@ resources:
 reviewStatus: reviewed
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: manual
+  requires_tx: true
+  tx_steps: [3, 4, 5]
+  tx_modes:
+    - injection
+    - jamming
+  legal_tier: T3
+  side_effects:
+    - dos
+  needs_physical:
+    - proximity
+    - device-access
+    - cage
+  containment: cage
+  gates:
+    hardware_present:
+      - esp32-devkit
+    scope_mode_in:
+      - lab
+    requires_root: true
+  basis: >-
+    Steps 3 and 4 fire malformed LMP frames from BrakTooth at the target's
+    baseband, which is injection, and the control's own note says the target may
+    crash, deadlock or reboot - hence dos, and hence device-access, since clearing
+    a deadlock takes a power cycle. Step 5 is a broadband 2.4 GHz jammer, marked
+    "shielded environment only" in the step title and backed by an RF-shielded
+    test environment in prerequisites. Gated to lab: jamming denies service to
+    everything in the band, including parties who are not in the engagement.
 ---
 ## Mechanism
 

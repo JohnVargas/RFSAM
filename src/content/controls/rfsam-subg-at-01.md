@@ -176,6 +176,40 @@ resources:
 reviewStatus: verified
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: true
+  tx_steps: [2, 3, 4, 5]
+  tx_modes:
+    - injection
+    - jamming
+  legal_tier: T3
+  side_effects:
+    - actuates
+    - persistent-state
+    - dos
+  needs_physical:
+    - proximity
+    - device-access
+  containment: none
+  gates:
+    hardware_present:
+      - yard-stick-one
+      - hackrf-one
+    scope_mode_in:
+      - lab
+    requires_root: false
+  basis: >-
+    Step 2 replays a burst at a real receiver and the gate opens, which is
+    actuation. Step 3 sweeps a De Bruijn sequence, which has no addressing at all
+    and therefore opens every fixed-code receiver in range, not only the target.
+    Step 4 (RollJam) holds a blocking carrier over the receiver, and step 5
+    (RollBack) can leave it resynchronised to an older counter - a lasting change
+    to the asset, hence persistent-state. Gated to lab for the whole control
+    because of steps 3 and 4. Known gap: the control asks for a shielded or
+    conducted setup in its authorisation note but not in prerequisites.hardware,
+    so containment stays 'none' here rather than claiming an enclosure the
+    metadata does not require. Fixing that is a one-line prerequisites change.
 ---
 
 ## Mechanism

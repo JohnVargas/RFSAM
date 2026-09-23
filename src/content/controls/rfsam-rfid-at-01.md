@@ -153,6 +153,38 @@ resources:
 reviewStatus: reviewed
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: manual
+  requires_tx: true
+  tx_steps: [1, 2, 3, 4, 5, 6]
+  tx_modes:
+    - interrogation
+    - rogue-infrastructure
+  legal_tier: T3
+  side_effects:
+    - actuates
+  needs_physical:
+    - proximity
+    - device-access
+  containment: none
+  gates:
+    hardware_present:
+      - chameleon-ultra
+      - bombercat
+    scope_mode_in:
+      - active
+      - lab
+    requires_root: false
+  basis: >-
+    Every step energises the reader field or emulates a credential into one:
+    there is no passive path here, because in RFID "reading" a tag is an
+    interrogation that powers it. Emulating and relaying present a credential the
+    assessor does not hold, which is rogue-infrastructure in kind even at
+    centimetres, and a reader that opens is actuation. The gate that matters is
+    not spectral: cloning a credential you do not own is fraud, which is why the
+    derived mandate for RFID adds credential-ownership on top of authorisation.
+    Manual because someone must physically present card, blank and reader, and
+    the relay needs two operators in two places.
 ---
 ## Mechanism
 

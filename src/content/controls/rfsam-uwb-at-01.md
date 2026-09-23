@@ -149,6 +149,36 @@ resources:
 reviewStatus: reviewed
 confidence: medium
 lastResearched: 2026-06-14
+execution:
+  automatable: manual
+  requires_tx: true
+  tx_steps: [2, 4, 5]
+  tx_modes:
+    - injection
+    - jamming
+  legal_tier: T4
+  side_effects:
+    - dos
+  needs_physical:
+    - proximity
+    - device-access
+    - cage
+  containment: cage
+  gates:
+    hardware_present:
+      - dwm3000evb
+      - makerfabs-esp32-uwb-dw3000
+    scope_mode_in:
+      - lab
+    requires_root: false
+  basis: >-
+    Step 2 transmits between the assessor's own peers to establish a baseline;
+    step 4 injects early pulses at the target's leading-edge estimator; step 5 is
+    a jamming primitive. Step 3 is a passive capture. Prerequisites already call
+    for an RF-shielded enclosure, so containment is declared rather than assumed.
+    T4 is the tier the corpus describes as authorised-only with no turnkey tool -
+    a gap by default - and that is accurate here: the injection path needs custom
+    DW3000 firmware, and the Ghost Peak code is gated and unreleased.
 ---
 
 ## Mechanism

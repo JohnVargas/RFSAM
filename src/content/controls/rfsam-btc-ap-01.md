@@ -126,6 +126,36 @@ resources:
 reviewStatus: reviewed
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: true
+  tx_steps: [2, 3, 4, 5]
+  tx_modes:
+    - interrogation
+    - connection-oriented
+    - pairing
+  legal_tier: T3
+  side_effects:
+    - actuates
+    - persistent-state
+  needs_physical:
+    - proximity
+  containment: none
+  gates:
+    hardware_present:
+      - usb-bt-dongle
+    scope_mode_in:
+      - active
+      - lab
+    requires_root: true
+  basis: >-
+    Step 2 runs an inquiry, step 3 l2pings the host stack and step 4 pages the
+    target for an SDP browse - all transmit. Step 5 goes further than its BLE
+    sibling: an AT channel over RFCOMM actuates a handsfree unit, obexftp -p
+    writes an object onto the client's device, and bluetoothctl pair leaves a bond
+    behind. That is why this control carries persistent-state and BLE-AP-01 does
+    not, although both are filed as "AP, medium, deferred, BSAM-SE-03" and look
+    identical to a machine without this block.
 ---
 ## Mechanism
 
