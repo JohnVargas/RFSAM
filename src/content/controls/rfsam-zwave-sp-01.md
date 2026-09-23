@@ -124,6 +124,35 @@ resources:
 reviewStatus: reviewed
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: false
+  side_effects:
+    - none
+  needs_physical:
+    - proximity
+    - antenna-placement
+    - device-access
+  containment: none
+  gates:
+    hardware_present:
+      - rtl-sdr-v4
+      - hackrf-one
+    scope_mode_in:
+      - observational
+      - active
+      - lab
+      - defensive
+    requires_root: false
+  basis: >-
+    Steps 1-3 receive: gqrx, rtl_sdr piped into waving-z, and rtl_zwave. NOT VERIFIED,
+    and the same open question as RFSAM-ZWAVE-CR-01: step 4 runs EZ-Wave's ezstumbler,
+    which this control calls "passive discovery", while the repository's own tool entry
+    describes ezstumbler as doing "passive discovery AND active network enumeration".
+    The command is elided in the step (`python ezstumbler ...`), so nothing in the text
+    says which mode would run. Left as requires_tx: false because that is what the
+    control asserts; if ezstumbler probes, this becomes T3 and the assertion is wrong.
+    Resolve the command line before relying on this block.
 ---
 ## Mechanism
 

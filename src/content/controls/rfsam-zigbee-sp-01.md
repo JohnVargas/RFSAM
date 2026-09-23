@@ -116,6 +116,33 @@ resources:
 reviewStatus: verified
 confidence: high
 lastResearched: 2026-08-26
+execution:
+  automatable: assisted
+  requires_tx: true
+  tx_steps: [1, 5]
+  tx_modes:
+    - interrogation
+  legal_tier: T3
+  side_effects:
+    - none
+  needs_physical:
+    - proximity
+    - antenna-placement
+  containment: none
+  gates:
+    hardware_present:
+      - minino
+    scope_mode_in:
+      - active
+      - lab
+    requires_root: false
+  basis: >-
+    zbstumbler emits 802.15.4 beacon requests across the 16 channels. This is the
+    house pattern and the reason it is worth copying: the emitting step says
+    "(transmits)" in its own title, the procedure header repeats it and recommends an
+    RF-shielded setup, the attack entry notes that a passive sweep is preferable where
+    stealth matters, and step 2 offers that passive route. The metadata here restates
+    prose that is already correct.
 ---
 ## Mechanism
 

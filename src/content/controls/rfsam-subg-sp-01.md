@@ -101,6 +101,33 @@ resources:
 reviewStatus: verified
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: false
+  side_effects:
+    - none
+  needs_physical:
+    - proximity
+    - antenna-placement
+    - device-access
+  containment: none
+  gates:
+    hardware_present:
+      - rtl-sdr-v4
+      - yard-stick-one
+    scope_mode_in:
+      - observational
+      - active
+      - lab
+      - defensive
+    requires_root: false
+  basis: >-
+    gqrx, rtl_433 and the YARD Stick One step all receive. The intro says the flow
+    "drops to a CC1101-class transceiver to receive and transmit at the recovered
+    settings", which contradicts the procedure's own "Receive-only at this layer"
+    header - the transmitting half belongs to the AT-layer control, and the intro
+    should say so. device-access because somebody has to press the remote or trip the
+    sensor to produce a burst.
 ---
 ## Mechanism
 

@@ -118,6 +118,30 @@ bsam: []
 reviewStatus: reviewed
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: false
+  side_effects:
+    - none
+  needs_physical:
+    - antenna-placement
+    - device-access
+  containment: none
+  gates:
+    hardware_present:
+      - ublox-neo-gps
+    scope_mode_in:
+      - observational
+      - active
+      - lab
+      - defensive
+    requires_root: false
+  basis: >-
+    All five steps receive; rtl_biast only powers an active antenna's LNA, it does
+    not emit. Flagged for whoever extends this control: the Field case describes
+    placing a CW source on L1 in a contained setup. That is T1 - never over the air,
+    conducted or cage only - and it sits in a control whose metadata says
+    requires_tx: false, in the section operators copy as a recipe.
 ---
 
 ## Mechanism

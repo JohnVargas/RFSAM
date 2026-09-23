@@ -124,6 +124,36 @@ resources:
 reviewStatus: verified
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: true
+  tx_steps: [3]
+  tx_modes:
+    - connection-oriented
+  legal_tier: T2
+  side_effects:
+    - none
+  needs_physical:
+    - proximity
+    - antenna-placement
+    - device-access
+  containment: none
+  gates:
+    hardware_present:
+      - usrp-b210
+      - quectel-rm500q
+    scope_mode_in:
+      - active
+      - lab
+    requires_root: false
+  basis: >-
+    Step 3 reads the serving cell off a Qualcomm modem's DIAG port with QCSuper.
+    QCSuper itself is passive, but the modem it reads from carries a registered/test
+    SIM and is therefore camped and transmitting on licensed spectrum. Structural gap
+    worth raising upstream: the objective asks for PLMN, PCI, NR-ARFCN, TAC and
+    SA/NSA, and the only route to those in the procedure is this modem - the passive
+    alternative (5GSniffer cell search) appears solely in the Field case. Until that
+    becomes a numbered step, there is no genuinely observational path here.
 ---
 ## Mechanism
 

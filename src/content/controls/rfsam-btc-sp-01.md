@@ -117,6 +117,34 @@ resources:
 reviewStatus: reviewed
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: true
+  tx_steps: [2, 3, 4]
+  tx_modes:
+    - interrogation
+    - connection-oriented
+  legal_tier: T3
+  side_effects:
+    - none
+  needs_physical:
+    - proximity
+    - device-access
+  containment: none
+  gates:
+    hardware_present: []
+    scope_mode_in:
+      - active
+      - lab
+    requires_root: false
+  basis: >-
+    The inquiry scan emits the GIAC across 79 channels, and the remote-name request
+    goes further: it PAGES the target, opening a baseband link with a third party's
+    device - which the observational mode prohibits outright. The control does note
+    that an inquiry "still transmits inquiry packets in a licensed-free band", but
+    its title, intro and objective all call it a scan and compare it to a BLE
+    advertising scan, which is passive. The name request is never described as an
+    emission anywhere.
 ---
 ## Mechanism
 

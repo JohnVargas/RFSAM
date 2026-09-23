@@ -175,6 +175,33 @@ resources:
 reviewStatus: reviewed
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: true
+  tx_steps: [2]
+  tx_modes:
+    - interrogation
+  legal_tier: T3
+  side_effects:
+    - none
+  needs_physical:
+    - proximity
+    - device-access
+  containment: none
+  gates:
+    hardware_present: []
+    scope_mode_in:
+      - active
+      - lab
+    requires_root: true
+  basis: >-
+    The control states "All steps below are passive (discovery, advertising capture,
+    label inspection)" and step 2 then runs `bettercap -eval "ble.recon on"`, which
+    is an ACTIVE scan: the host emits SCAN_REQ and solicits scan responses from every
+    advertiser in range. Steps 1 and 3-6 are teardown, label reading and passive
+    capture. The word doing the damage is "discovery", which sounds like listening
+    and is not. device-access because the FCC-ID / label inspection means opening the
+    unit.
 ---
 ## Mechanism
 

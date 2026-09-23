@@ -128,6 +128,34 @@ resources:
 reviewStatus: verified
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: true
+  tx_steps: [1, 2, 3]
+  tx_modes:
+    - interrogation
+  legal_tier: T3
+  side_effects:
+    - none
+  needs_physical:
+    - proximity
+    - device-access
+  containment: none
+  gates:
+    hardware_present:
+      - bombercat
+    scope_mode_in:
+      - active
+      - lab
+    requires_root: false
+  basis: >-
+    `lf search`, `hf search` and `hf mf info` energise the reader field to power the
+    tag and interrogate it; `hf mf info` provokes nonces, i.e. it converses with the
+    card. The control never uses the word transmit except in the later sniff step, to
+    say "sniff without transmitting" - which invites reading everything before it as
+    passive. The corpus makes this worse: the RFID wayfinder states that interrogation
+    "is not a spectrum attack TX and does not trigger a TX re-check", so an engine has
+    written permission to treat this as quiet. It is not.
 ---
 ## Mechanism
 

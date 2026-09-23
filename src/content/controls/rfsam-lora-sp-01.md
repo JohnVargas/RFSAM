@@ -98,6 +98,32 @@ resources:
 reviewStatus: verified
 confidence: high
 lastResearched: 2026-09-02
+execution:
+  automatable: assisted
+  requires_tx: false
+  side_effects:
+    - none
+  needs_physical:
+    - proximity
+    - antenna-placement
+  containment: none
+  gates:
+    hardware_present:
+      - rtl-sdr-v4
+      - catsniffer
+    scope_mode_in:
+      - observational
+      - active
+      - lab
+      - defensive
+    requires_root: false
+  basis: >-
+    gqrx, hackrf_transfer -r (receive to file; -a 1 is the RX amplifier) and the
+    gr-lora_sdr receive flowgraph do not emit. One conditional worth watching: the
+    step 5 alternative uses a multi-channel LoRaWAN gateway, which transmits
+    downlinks and join-accepts if it is joined to a network server. In
+    packet-forwarder or listen-only configuration it does not, and the control's text
+    cannot tell you which one you have.
 ---
 ## Mechanism
 

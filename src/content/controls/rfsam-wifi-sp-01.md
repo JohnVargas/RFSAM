@@ -108,6 +108,35 @@ resources:
 reviewStatus: verified
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: true
+  tx_steps: [5, 6]
+  tx_modes:
+    - injection
+    - interrogation
+  legal_tier: T3
+  side_effects:
+    - dos
+  needs_physical:
+    - proximity
+    - antenna-placement
+  containment: none
+  gates:
+    hardware_present:
+      - minino
+    scope_mode_in:
+      - active
+      - lab
+    requires_root: true
+  basis: >-
+    The authorisation note says "Steps 2-6 here transmit nothing; the deauth/injection
+    check in step 5 is an active transmission" - which contradicts itself, since 5 is
+    inside 2-6. It is also wrong about step 6: hcxdumptool is not a receiver, it sends
+    association/EAPOL requests to obtain a clientless PMKID and, depending on version,
+    deauthenticates to provoke it. Step 5's injection test knocks clients off, hence
+    dos. The control carries reviewStatus: verified, which lends that sentence more
+    authority than it has earned.
 ---
 ## Mechanism
 

@@ -81,6 +81,32 @@ resources:
 reviewStatus: reviewed
 confidence: medium
 lastResearched: 2026-07-14
+execution:
+  automatable: assisted
+  requires_tx: false
+  side_effects:
+    - none
+  needs_physical:
+    - proximity
+    - device-access
+  containment: none
+  gates:
+    hardware_present:
+      - catsniffer
+      - minino
+    scope_mode_in:
+      - observational
+      - active
+      - lab
+      - defensive
+    requires_root: false
+  basis: >-
+    Receive-only, and deliberately so: the control uses the CatSniffer's
+    airtag_scanner firmware, which listens on the advertising channels, and
+    explicitly excludes airtag_spoofer, which transmits. The best-declared control of
+    its phase. device-access covers flashing the board; assisted because step 3 asks
+    a human to decide which trackers are the owner's and which are not, and to carry
+    the receiver between two locations to see what follows.
 ---
 ## Mechanism
 

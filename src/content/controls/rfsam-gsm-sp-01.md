@@ -107,6 +107,30 @@ resources:
 reviewStatus: verified
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: false
+  side_effects:
+    - none
+  needs_physical:
+    - proximity
+    - antenna-placement
+  containment: none
+  gates:
+    hardware_present:
+      - rtl-sdr-v4
+    scope_mode_in:
+      - observational
+      - active
+      - lab
+      - defensive
+    requires_root: false
+  basis: >-
+    kalibrate listens for the FCCH tone and gqrx is a view; nothing transmits. This
+    is the most nearly-auto control of its phase - kal's output is parseable line by
+    line (ARFCN, power, ppm) and needs no judgement - but receiving cellular spectrum
+    is itself restricted in many jurisdictions, and by the corpus rule a control that
+    does not transmit carries no tier. The mandate decides this one.
 ---
 ## Mechanism
 

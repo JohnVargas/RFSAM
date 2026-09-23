@@ -80,6 +80,30 @@ resources:
 reviewStatus: reviewed
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: false
+  side_effects:
+    - none
+  needs_physical:
+    - proximity
+    - antenna-placement
+  containment: none
+  gates:
+    hardware_present:
+      - hackrf-one
+      - bladerf-2-micro
+    scope_mode_in:
+      - observational
+      - active
+      - lab
+      - defensive
+    requires_root: false
+  basis: >-
+    All four steps receive: a waterfall in gqrx, bladeRF-cli set to rx, ice9
+    channelising captured I/Q, and Sniffle in its receive-only sniff mode. Assisted
+    because step 1 is a human reading a waterfall to decide whether the band is
+    usable at all - a judgement, not a parseable output.
 ---
 ## Mechanism
 
