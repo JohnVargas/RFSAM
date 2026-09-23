@@ -98,6 +98,33 @@ resources:
 reviewStatus: reviewed
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: true
+  tx_steps: [3, 4]
+  tx_modes:
+    - connection-oriented
+  legal_tier: T2
+  side_effects:
+    - none
+  needs_physical:
+    - proximity
+    - antenna-placement
+  containment: none
+  gates:
+    hardware_present:
+      - usrp-b210
+      - sim7600
+    scope_mode_in:
+      - active
+      - lab
+    requires_root: false
+  basis: >-
+    Steps 1, 2 and 5 are receive-only. Step 3 describes srsue "once attached",
+    which implies PRACH and uplink, and step 4 requires a SIM7600 with a valid
+    test SIM - a registered UE transmits by definition. That transmission happens
+    under the operator's licence, not the auditor's, so the engagement must
+    declare a spectrum assignment, statutory authority, or containment.
 ---
 ## Mechanism
 

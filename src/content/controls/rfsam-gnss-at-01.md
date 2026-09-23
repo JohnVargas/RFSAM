@@ -137,6 +137,34 @@ resources:
 reviewStatus: reviewed
 confidence: high
 lastResearched: 2026-06-14
+execution:
+  automatable: assisted
+  requires_tx: true
+  tx_steps: [2, 3, 5, 6]
+  tx_modes:
+    - rogue-infrastructure
+    - jamming
+  legal_tier: T1
+  side_effects:
+    - dos
+  needs_physical:
+    - proximity
+    - conducted-rf
+  containment: cage
+  gates:
+    hardware_present:
+      - hackrf-one
+      - bladerf-2-micro
+    scope_mode_in:
+      - lab
+    requires_root: false
+  basis: >-
+    Steps 2 and 3 introduce a jamming source and steps 5-6 radiate a synthesised
+    L1 constellation from gps-sdr-sim, so the control emits on a safety-of-life
+    band. Running it requires statutory authority over 1575.42 MHz, a spectrum
+    assignment, or a conducted path / cage; the corpus states the requirement and
+    the engagement declares which of the three it holds. Steps 1, 4 and 7 (gpsmon
+    baseline, baseband synthesis to file, TEXBAT offline replay) do not transmit.
 ---
 ## Mechanism
 

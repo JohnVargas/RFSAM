@@ -1,0 +1,593 @@
+{
+  "_generated": "by scripts/export-mandates.mjs - do not edit by hand",
+  "mandates": [
+    "system-ownership",
+    "written-authorisation",
+    "credential-ownership",
+    "spectrum-licence",
+    "regulatory-authority",
+    "containment"
+  ],
+  "roles": [
+    "auditor",
+    "operator",
+    "regulator",
+    "manufacturer",
+    "defender"
+  ],
+  "tier_by_protocol": {
+    "GNSS": "T1",
+    "ADSB": "T1",
+    "LTE": "T2",
+    "GSM": "T2",
+    "NR5G": "T2",
+    "UWB": "T4",
+    "BLE": "T3",
+    "BTC": "T3",
+    "WIFI": "T3",
+    "LORA": "T3",
+    "SUBG": "T3",
+    "ZIGBEE": "T3",
+    "ZWAVE": "T3",
+    "THREAD": "T3",
+    "RFID": "T3"
+  },
+  "derived": {
+    "BLE|notx": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      }
+    ],
+    "BLE|tx": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      }
+    ],
+    "BLE|jam": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      },
+      {
+        "any_of": [
+          "containment"
+        ],
+        "because": "jamming denies service to third parties who are not part of the engagement"
+      }
+    ],
+    "BTC|notx": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      }
+    ],
+    "BTC|tx": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      }
+    ],
+    "BTC|jam": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      },
+      {
+        "any_of": [
+          "containment"
+        ],
+        "because": "jamming denies service to third parties who are not part of the engagement"
+      }
+    ],
+    "WIFI|notx": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      }
+    ],
+    "WIFI|tx": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      }
+    ],
+    "WIFI|jam": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      },
+      {
+        "any_of": [
+          "containment"
+        ],
+        "because": "jamming denies service to third parties who are not part of the engagement"
+      }
+    ],
+    "LORA|notx": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      }
+    ],
+    "LORA|tx": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      }
+    ],
+    "LORA|jam": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      },
+      {
+        "any_of": [
+          "containment"
+        ],
+        "because": "jamming denies service to third parties who are not part of the engagement"
+      }
+    ],
+    "LTE|notx": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      }
+    ],
+    "LTE|tx": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      },
+      {
+        "any_of": [
+          "spectrum-licence",
+          "regulatory-authority",
+          "containment"
+        ],
+        "because": "LTE is licensed spectrum: transmitting needs the assignment, statutory power, or an enclosure"
+      }
+    ],
+    "LTE|jam": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      },
+      {
+        "any_of": [
+          "containment"
+        ],
+        "because": "jamming denies service to third parties who are not part of the engagement"
+      }
+    ],
+    "RFID|notx": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      },
+      {
+        "any_of": [
+          "credential-ownership",
+          "written-authorisation"
+        ],
+        "because": "energising or cloning a credential you do not own is fraud, not a spectrum question"
+      }
+    ],
+    "RFID|tx": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      },
+      {
+        "any_of": [
+          "credential-ownership",
+          "written-authorisation"
+        ],
+        "because": "energising or cloning a credential you do not own is fraud, not a spectrum question"
+      }
+    ],
+    "RFID|jam": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      },
+      {
+        "any_of": [
+          "credential-ownership",
+          "written-authorisation"
+        ],
+        "because": "energising or cloning a credential you do not own is fraud, not a spectrum question"
+      },
+      {
+        "any_of": [
+          "containment"
+        ],
+        "because": "jamming denies service to third parties who are not part of the engagement"
+      }
+    ],
+    "SUBG|notx": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      }
+    ],
+    "SUBG|tx": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      }
+    ],
+    "SUBG|jam": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      },
+      {
+        "any_of": [
+          "containment"
+        ],
+        "because": "jamming denies service to third parties who are not part of the engagement"
+      }
+    ],
+    "ZIGBEE|notx": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      }
+    ],
+    "ZIGBEE|tx": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      }
+    ],
+    "ZIGBEE|jam": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      },
+      {
+        "any_of": [
+          "containment"
+        ],
+        "because": "jamming denies service to third parties who are not part of the engagement"
+      }
+    ],
+    "ZWAVE|notx": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      }
+    ],
+    "ZWAVE|tx": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      }
+    ],
+    "ZWAVE|jam": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      },
+      {
+        "any_of": [
+          "containment"
+        ],
+        "because": "jamming denies service to third parties who are not part of the engagement"
+      }
+    ],
+    "THREAD|notx": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      }
+    ],
+    "THREAD|tx": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      }
+    ],
+    "THREAD|jam": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      },
+      {
+        "any_of": [
+          "containment"
+        ],
+        "because": "jamming denies service to third parties who are not part of the engagement"
+      }
+    ],
+    "GNSS|notx": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      }
+    ],
+    "GNSS|tx": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      },
+      {
+        "any_of": [
+          "regulatory-authority",
+          "spectrum-licence",
+          "containment"
+        ],
+        "because": "GNSS is a safety-of-life band: transmitting needs statutory power, an assignment, or an enclosure"
+      }
+    ],
+    "GNSS|jam": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      },
+      {
+        "any_of": [
+          "containment"
+        ],
+        "because": "jamming denies service to third parties who are not part of the engagement"
+      }
+    ],
+    "ADSB|notx": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      }
+    ],
+    "ADSB|tx": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      },
+      {
+        "any_of": [
+          "regulatory-authority",
+          "spectrum-licence",
+          "containment"
+        ],
+        "because": "ADSB is a safety-of-life band: transmitting needs statutory power, an assignment, or an enclosure"
+      }
+    ],
+    "ADSB|jam": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      },
+      {
+        "any_of": [
+          "containment"
+        ],
+        "because": "jamming denies service to third parties who are not part of the engagement"
+      }
+    ],
+    "NR5G|notx": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      }
+    ],
+    "NR5G|tx": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      },
+      {
+        "any_of": [
+          "spectrum-licence",
+          "regulatory-authority",
+          "containment"
+        ],
+        "because": "NR5G is licensed spectrum: transmitting needs the assignment, statutory power, or an enclosure"
+      }
+    ],
+    "NR5G|jam": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      },
+      {
+        "any_of": [
+          "containment"
+        ],
+        "because": "jamming denies service to third parties who are not part of the engagement"
+      }
+    ],
+    "GSM|notx": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      }
+    ],
+    "GSM|tx": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      },
+      {
+        "any_of": [
+          "spectrum-licence",
+          "regulatory-authority",
+          "containment"
+        ],
+        "because": "GSM is licensed spectrum: transmitting needs the assignment, statutory power, or an enclosure"
+      }
+    ],
+    "GSM|jam": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      },
+      {
+        "any_of": [
+          "containment"
+        ],
+        "because": "jamming denies service to third parties who are not part of the engagement"
+      }
+    ],
+    "UWB|notx": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      }
+    ],
+    "UWB|tx": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      }
+    ],
+    "UWB|jam": [
+      {
+        "any_of": [
+          "system-ownership",
+          "written-authorisation"
+        ],
+        "because": "the control is exercised against a system that must belong to you or be authorised in writing"
+      },
+      {
+        "any_of": [
+          "containment"
+        ],
+        "because": "jamming denies service to third parties who are not part of the engagement"
+      }
+    ]
+  }
+}

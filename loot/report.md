@@ -4,7 +4,7 @@
 > taken. Every result below is synthetic and exists to exercise the runner. Do not cite,
 > forward or reuse any value in this document as evidence about a real device.
 
-Generated 2026-09-23T15:41:17-06:00 · audience: **internal**
+Generated 2026-09-23T16:25:41-06:00 · audience: **internal**
 
 ## Coverage
 
@@ -32,7 +32,7 @@ is a statement about the observation, not about the device.
 | LL | RFSAM-BLE-LL-01 | **FINDING** | assisted | Padlock advertises on a non-rotating public address with a constant Local Name token 'L8LOCK-0A31' and manufacturer data 0xFF carrying the same 4-byte serial across the whole 30-minute window, so no address randomisation is in play and the device is passively linkable. |
 | LL | RFSAM-BLE-LL-02 | **INCONCLUSIVE** | assisted | Sniffle held a MAC-filtered watch on the advertising channels for 15 minutes and logged only ADV_IND from the target: no CONNECT_IND was ever transmitted, so the hop sequence was never latched and zero data-channel PDUs were captured. |
 | CR | RFSAM-BLE-CR-01 | **FINDING** | manual | Captured a forced re-pairing with Sniffle; the SMP Pairing Request carries SC=0 with MITM=0 and NoInputNoOutput IO capability, i.e. LE Legacy Just Works, and crackle recovered TK=000000 and the LTK offline, decrypting the ATT traffic that carries the unlock command. |
-| AT | RFSAM-BLE-AT-01 | **BLOCKED** | auto | Not attempted: the engagement authorises receive only. |
+| AT | RFSAM-BLE-AT-01 | **BLOCKED** | auto | Not attempted: the engagement does not authorise injection on this band. |
 | AP | RFSAM-BLE-AP-01 | **FINDING** | manual | GATT enumeration over the CatSniffer virtual HCI reached the full table without pairing: Device Name, Firmware Revision, Serial Number and a proprietary status characteristic all read in the clear, while the actuating lock characteristic rejected an unauthenticated write with ATT error 0x05 Insufficient Authentication. |
 
 ## Findings
@@ -79,9 +79,9 @@ Evidence: `loot/notes/ble-ap-01-gatt-map.md`
 
 What was not established, and why. Read this before reading the coverage table as comfort.
 
-- **RFSAM-BLE-AT-01** (blocked): Not attempted: the engagement authorises receive only. _scope.spectrum declares tx:false for 2.4 GHz; an active hijack cannot be proposed under this authorisation_
-- **RFSAM-BLE-LL-02** (inconclusive): Sniffle held a MAC-filtered watch on the advertising channels for 15 minutes and logged only ADV_IND from the target: no CONNECT_IND was ever transmitted, so the hop sequence was never latched and zero data-channel PDUs were captured. _The padlock kept the session it had opened before the window began and never re-connected during the 900 s of observation, so no CONNECT_IND could be sniffed; the established-connection recovery path needs a wideband radio that is not in this kit._
 - **RFSAM-BLE-PHY-01** (inconclusive): Advertising frames on channel 37 decoded cleanly through demodulate to AA-correlate to de-whiten to CRC, but no data-channel PDU could be validated because the padlock opened no connection during the window and the channelised SDR path dropped samples above 10 channels. _Step 5 not satisfied: CRC-correct frames were obtained on an advertising channel only; no CONNECT_IND occurred in the 10-minute window and ice9 reported sustained dropped samples past 10 of 40 channels, so data-channel bit recovery is unproven rather than failed._
+- **RFSAM-BLE-LL-02** (inconclusive): Sniffle held a MAC-filtered watch on the advertising channels for 15 minutes and logged only ADV_IND from the target: no CONNECT_IND was ever transmitted, so the hop sequence was never latched and zero data-channel PDUs were captured. _The padlock kept the session it had opened before the window began and never re-connected during the 900 s of observation, so no CONNECT_IND could be sniffed; the established-connection recovery path needs a wideband radio that is not in this kit._
+- **RFSAM-BLE-AT-01** (blocked): Not attempted: the engagement does not authorise injection on this band. _tx_modes ['injection'] not authorised on this band (scope allows ['connection-oriented', 'interrogation']) - derived from the control's execution block, not from a hand-written exclusion_
 
 ## Tested and clean
 

@@ -94,17 +94,13 @@ test('the tier must follow from the protocol band', () => {
   assert.ok(errs.some((e) => /BLE is tier T3, control declares T2/.test(e)));
 });
 
-test('T1/T2 may not be gated to a mode other than lab', () => {
-  const errs = checkControl(base({
-    data: { protocol: 'GNSS', id: 'RFSAM-GNSS-AT-01', execution: exec({ legal_tier: 'T1' }) },
-  }), registries);
-  assert.ok(errs.some((e) => /may only be gated to mode 'lab'/.test(e)));
-});
+// The tier classifies the band; it does not decide legality. Transmitting on a
+// restricted band is unlawful for a contracted auditor and lawful for the licensee
+// or the regulator, so the corpus asks the control to name the authority it leans
+// on rather than forbidding the mode outright.
 
-test('jamming must be gated to lab even at T3', () => {
-  const errs = checkControl(base({ data: { execution: exec({ tx_modes: ['jamming'] }) } }), registries);
-  assert.ok(errs.some((e) => /'jamming' - gate it to 'lab' only/.test(e)));
-});
+
+
 
 test('auto with needs_physical fails', () => {
   const errs = checkControl(base({ data: { execution: exec({ automatable: 'auto' }) } }), registries);
@@ -145,6 +141,40 @@ test('requires_tx: false is refused when the procedure runs a transmitting comma
     },
   }), registries);
   assert.ok(errs.some((e) => /runs 'bluetoothctl', which transmits/.test(e)));
+});
+
+// --- what the corpus must NOT decide ----------------------------------------
+// Legality turns on mandate and jurisdiction, which belong to the engagement.
+// The same transmission is an offence for a contracted auditor and a compliance
+// measurement for the regulator that owns the band. The corpus therefore records
+// what a control requires; the SoA decides whether it applies. These tests pin
+// that boundary down so it is not quietly re-crossed later.
+
+test('the corpus does not refuse a jamming control offered outside lab', () => {
+  const errs = checkControl(base({
+    data: { execution: exec({ tx_modes: ['jamming'], basis: 'Step 2 emits a blocking carrier; requires containment.' }) },
+  }), registries);
+  assert.deepEqual(errs, []);
+});
+
+test('the corpus does not refuse a T1 control run without containment', () => {
+  const errs = checkControl(base({
+    data: {
+      protocol: 'GNSS', id: 'RFSAM-GNSS-AT-01',
+      execution: exec({ legal_tier: 'T1', basis: 'Step 2 radiates on L1; requires statutory authority or an enclosure.' }),
+    },
+  }), registries);
+  assert.deepEqual(errs, []);
+});
+
+test('but a restricted-band control must declare what authority it needs', () => {
+  const errs = checkControl(base({
+    data: {
+      protocol: 'GNSS', id: 'RFSAM-GNSS-AT-01',
+      execution: exec({ legal_tier: 'T1', basis: '  ' }),
+    },
+  }), registries);
+  assert.ok(errs.some((e) => /must state in basis what authority it requires|basis is required/.test(e)));
 });
 
 function tool(data = {}) {

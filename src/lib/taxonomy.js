@@ -74,6 +74,80 @@ export const TIER_BY_PROTOCOL = {
 // viable against the target. A control is never asserted to BE a technique.
 export const THREAT_RELATIONS = ['assesses', 'detects', 'mitigates', 'related-to'];
 
+// --- Mandate: who may run a control, and under what authority --------------
+// A control's tier is a property of the band; it is not a verdict on legality.
+// The same transmission is unlawful for a contracted auditor and lawful for the
+// operator that holds the assignment, or for the regulator validating it. So the
+// corpus states what authority a control REQUIRES, and the engagement states what
+// authority the assessor HOLDS. The two are crossed to produce applicability.
+export const MANDATES = [
+  'system-ownership',      // the system under test belongs to the assessor
+  'written-authorisation', // explicit written permission from its owner
+  'credential-ownership',  // the credential itself belongs to the assessor (near-field)
+  'spectrum-licence',      // a licence or assignment in the band being used
+  'regulatory-authority',  // statutory power over the band (the regulator itself)
+  'containment',           // a cage or conducted path - the physical substitute for
+                           // band permission, since nothing leaves the enclosure
+];
+
+// Who is running the methodology. Recorded for the record; it grants nothing by
+// itself - mandates are always declared explicitly, never inferred from a title.
+export const ASSESSOR_ROLES = [
+  'auditor',       // third party under contract
+  'operator',      // the licensee of the network or spectrum
+  'regulator',     // the authority validating compliance
+  'manufacturer',  // the vendor testing its own product
+  'defender',      // the owner's own blue team
+];
+
+// What authority a control requires, derived rather than written 51 times.
+// Returns a list of requirement GROUPS: every group must be satisfied, and a group
+// is satisfied by ANY one of its alternatives. Deriving it keeps one source of
+// truth, and means the 48 controls without an execution block are still covered
+// for everything that follows from their band alone.
+export function mandatesFor({ protocol, layer, tx_modes = [], side_effects = [] }) {
+  const groups = [];
+
+  // Touching someone else's equipment at all.
+  groups.push({
+    any_of: ['system-ownership', 'written-authorisation'],
+    because: 'the control is exercised against a system that must belong to you or be authorised in writing',
+  });
+
+  // Near-field credentials: the gate is possession, not spectrum. Cloning a
+  // third-party credential is fraud however small the field is.
+  if (protocol === 'RFID') {
+    groups.push({
+      any_of: ['credential-ownership', 'written-authorisation'],
+      because: 'energising or cloning a credential you do not own is fraud, not a spectrum question',
+    });
+  }
+
+  const tier = TIER_BY_PROTOCOL[protocol];
+  const transmits = tx_modes.length > 0;
+
+  // Denial by emission reaches parties who are not in scope, so containment is
+  // the only acceptable answer - no authorisation substitutes for it.
+  if (tx_modes.includes('jamming')) {
+    groups.push({
+      any_of: ['containment'],
+      because: 'jamming denies service to third parties who are not part of the engagement',
+    });
+  } else if (transmits && tier === 'T1') {
+    groups.push({
+      any_of: ['regulatory-authority', 'spectrum-licence', 'containment'],
+      because: `${protocol} is a safety-of-life band: transmitting needs statutory power, an assignment, or an enclosure`,
+    });
+  } else if (transmits && tier === 'T2') {
+    groups.push({
+      any_of: ['spectrum-licence', 'regulatory-authority', 'containment'],
+      because: `${protocol} is licensed spectrum: transmitting needs the assignment, statutory power, or an enclosure`,
+    });
+  }
+
+  return groups;
+}
+
 // Lifecycle of a tool entry. Deliberately not derived from commit dates: a frozen
 // protocol tool can be current ('mature') and an archived repo can still be the
 // reference ('archived'). Left unset on entries nobody has checked yet.

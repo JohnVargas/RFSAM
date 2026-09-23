@@ -1,23 +1,52 @@
-{"ts": "2026-09-23T15:47:02-06:00", "control": null, "kind": "start", "msg": "session DEMO-2026-001 starting — 9 controls in scope, time compression x400"}
-{"ts": "2026-09-23T15:47:02-06:00", "control": "RFSAM-BLE-IG-01", "kind": "start", "msg": "RFSAM-BLE-IG-01 — Identify the SoC and host stack, then check the publis"}
-{"ts": "2026-09-23T15:47:03-06:00", "control": "RFSAM-BLE-IG-01", "kind": "info", "msg": "operator working: teardown photos"}
-{"ts": "2026-09-23T15:47:05-06:00", "control": "RFSAM-BLE-IG-01", "kind": "info", "msg": "notes recorded, awaiting attestation"}
-{"ts": "2026-09-23T15:47:07-06:00", "control": "RFSAM-BLE-IG-01", "kind": "info", "msg": "attestation received"}
-{"ts": "2026-09-23T15:47:08-06:00", "control": "RFSAM-BLE-IG-01", "kind": "info", "msg": "cross-checking against the published corpus"}
-{"ts": "2026-09-23T15:47:08-06:00", "control": "RFSAM-BLE-IG-01", "kind": "done", "msg": "RFSAM-BLE-IG-01 → FINDING (high)"}
-{"ts": "2026-09-23T15:47:08-06:00", "control": "RFSAM-BLE-SP-01", "kind": "start", "msg": "RFSAM-BLE-SP-01 — Establish BLE channel map and capture feasibility"}
-{"ts": "2026-09-23T15:47:09-06:00", "control": "RFSAM-BLE-SP-01", "kind": "info", "msg": "tuning 2402 MHz — gain 32 dB"}
-{"ts": "2026-09-23T15:47:10-06:00", "control": "RFSAM-BLE-SP-01", "kind": "info", "msg": "noise floor -92 dBm, target at -58 dBm"}
-{"ts": "2026-09-23T15:47:10-06:00", "control": "RFSAM-BLE-SP-01", "kind": "done", "msg": "RFSAM-BLE-SP-01 → PASSED"}
-{"ts": "2026-09-23T15:47:10-06:00", "control": "RFSAM-BLE-SP-02", "kind": "start", "msg": "RFSAM-BLE-SP-02 — Detect and inventory BLE trackers (Find My / AirTag)"}
-{"ts": "2026-09-23T15:47:11-06:00", "control": "RFSAM-BLE-SP-02", "kind": "info", "msg": "tuning 2402 MHz — gain 0 dB"}
-{"ts": "2026-09-23T15:47:12-06:00", "control": "RFSAM-BLE-SP-02", "kind": "info", "msg": "noise floor -95 dBm, target at -49 dBm"}
-{"ts": "2026-09-23T15:47:12-06:00", "control": "RFSAM-BLE-SP-02", "kind": "done", "msg": "RFSAM-BLE-SP-02 → PASSED"}
-{"ts": "2026-09-23T15:47:12-06:00", "control": "RFSAM-BLE-PHY-01", "kind": "start", "msg": "RFSAM-BLE-PHY-01 — Demodulate the air and recover link-layer bits"}
-{"ts": "2026-09-23T15:47:13-06:00", "control": "RFSAM-BLE-PHY-01", "kind": "info", "msg": "tuning 2402 MHz — gain 40 dB"}
-{"ts": "2026-09-23T15:47:14-06:00", "control": "RFSAM-BLE-PHY-01", "kind": "info", "msg": "noise floor -93 dBm, target at -57 dBm"}
-{"ts": "2026-09-23T15:47:14-06:00", "control": "RFSAM-BLE-PHY-01", "kind": "done", "msg": "RFSAM-BLE-PHY-01 → INCONCLUSIVE"}
-{"ts": "2026-09-23T15:47:14-06:00", "control": "RFSAM-BLE-LL-01", "kind": "start", "msg": "RFSAM-BLE-LL-01 — Audit advertising and identifier exposure"}
-{"ts": "2026-09-23T15:47:15-06:00", "control": "RFSAM-BLE-LL-01", "kind": "info", "msg": "command handed to operator, waiting for output"}
-{"ts": "2026-09-23T15:47:17-06:00", "control": "RFSAM-BLE-LL-01", "kind": "info", "msg": "operator reports capture running"}
-{"ts": "2026-09-23T15:47:18-06:00", "control": "RFSAM-BLE-LL-01", "kind": "info", "msg": "3142 PDUs returned so far"}
+{"ts": "2026-09-23T16:21:20-06:00", "control": null, "kind": "start", "msg": "session DEMO-2026-001 starting — 9 controls in scope, time compression x60"}
+{"ts": "2026-09-23T16:21:20-06:00", "control": "RFSAM-BLE-IG-01", "kind": "start", "msg": "RFSAM-BLE-IG-01 — Identify the SoC and host stack, then check the publis"}
+{"ts": "2026-09-23T16:21:31-06:00", "control": "RFSAM-BLE-IG-01", "kind": "info", "msg": "operator working: pairing capture review"}
+{"ts": "2026-09-23T16:21:42-06:00", "control": "RFSAM-BLE-IG-01", "kind": "info", "msg": "notes recorded, awaiting attestation"}
+{"ts": "2026-09-23T16:21:53-06:00", "control": "RFSAM-BLE-IG-01", "kind": "info", "msg": "attestation received"}
+{"ts": "2026-09-23T16:22:05-06:00", "control": "RFSAM-BLE-IG-01", "kind": "info", "msg": "cross-checking against the published corpus"}
+{"ts": "2026-09-23T16:22:05-06:00", "control": "RFSAM-BLE-IG-01", "kind": "done", "msg": "RFSAM-BLE-IG-01 → FINDING (high)"}
+{"ts": "2026-09-23T16:22:05-06:00", "control": "RFSAM-BLE-SP-01", "kind": "start", "msg": "RFSAM-BLE-SP-01 — Establish BLE channel map and capture feasibility"}
+{"ts": "2026-09-23T16:22:06-06:00", "control": "RFSAM-BLE-SP-01", "kind": "info", "msg": "tuning 2402 MHz — gain 32 dB"}
+{"ts": "2026-09-23T16:22:08-06:00", "control": "RFSAM-BLE-SP-01", "kind": "info", "msg": "noise floor -92 dBm, target at -58 dBm"}
+{"ts": "2026-09-23T16:22:09-06:00", "control": "RFSAM-BLE-SP-01", "kind": "info", "msg": "300 frames so far"}
+{"ts": "2026-09-23T16:22:11-06:00", "control": "RFSAM-BLE-SP-01", "kind": "info", "msg": "window 0s remaining"}
+{"ts": "2026-09-23T16:22:11-06:00", "control": "RFSAM-BLE-SP-01", "kind": "done", "msg": "RFSAM-BLE-SP-01 → PASSED"}
+{"ts": "2026-09-23T16:22:11-06:00", "control": "RFSAM-BLE-SP-02", "kind": "start", "msg": "RFSAM-BLE-SP-02 — Detect and inventory BLE trackers (Find My / AirTag)"}
+{"ts": "2026-09-23T16:22:14-06:00", "control": "RFSAM-BLE-SP-02", "kind": "info", "msg": "tuning 2402 MHz — gain 0 dB"}
+{"ts": "2026-09-23T16:22:18-06:00", "control": "RFSAM-BLE-SP-02", "kind": "info", "msg": "noise floor -95 dBm, target at -49 dBm"}
+{"ts": "2026-09-23T16:22:22-06:00", "control": "RFSAM-BLE-SP-02", "kind": "info", "msg": "300 frames so far"}
+{"ts": "2026-09-23T16:22:26-06:00", "control": "RFSAM-BLE-SP-02", "kind": "info", "msg": "window 0s remaining"}
+{"ts": "2026-09-23T16:22:26-06:00", "control": "RFSAM-BLE-SP-02", "kind": "done", "msg": "RFSAM-BLE-SP-02 → PASSED"}
+{"ts": "2026-09-23T16:22:26-06:00", "control": "RFSAM-BLE-PHY-01", "kind": "start", "msg": "RFSAM-BLE-PHY-01 — Demodulate the air and recover link-layer bits"}
+{"ts": "2026-09-23T16:22:28-06:00", "control": "RFSAM-BLE-PHY-01", "kind": "info", "msg": "tuning 2402 MHz — gain 40 dB"}
+{"ts": "2026-09-23T16:22:31-06:00", "control": "RFSAM-BLE-PHY-01", "kind": "info", "msg": "noise floor -93 dBm, target at -57 dBm"}
+{"ts": "2026-09-23T16:22:33-06:00", "control": "RFSAM-BLE-PHY-01", "kind": "info", "msg": "300 frames so far"}
+{"ts": "2026-09-23T16:22:36-06:00", "control": "RFSAM-BLE-PHY-01", "kind": "info", "msg": "window 0s remaining"}
+{"ts": "2026-09-23T16:22:36-06:00", "control": "RFSAM-BLE-PHY-01", "kind": "done", "msg": "RFSAM-BLE-PHY-01 → INCONCLUSIVE"}
+{"ts": "2026-09-23T16:22:36-06:00", "control": "RFSAM-BLE-LL-01", "kind": "start", "msg": "RFSAM-BLE-LL-01 — Audit advertising and identifier exposure"}
+{"ts": "2026-09-23T16:22:43-06:00", "control": "RFSAM-BLE-LL-01", "kind": "info", "msg": "command handed to operator, waiting for output"}
+{"ts": "2026-09-23T16:22:51-06:00", "control": "RFSAM-BLE-LL-01", "kind": "info", "msg": "operator reports capture running"}
+{"ts": "2026-09-23T16:22:59-06:00", "control": "RFSAM-BLE-LL-01", "kind": "info", "msg": "2356 PDUs returned so far"}
+{"ts": "2026-09-23T16:23:07-06:00", "control": "RFSAM-BLE-LL-01", "kind": "info", "msg": "window 0s remaining"}
+{"ts": "2026-09-23T16:23:07-06:00", "control": "RFSAM-BLE-LL-01", "kind": "done", "msg": "RFSAM-BLE-LL-01 → FINDING (medium)"}
+{"ts": "2026-09-23T16:23:07-06:00", "control": "RFSAM-BLE-LL-02", "kind": "start", "msg": "RFSAM-BLE-LL-02 — Capture an established connection's data channel"}
+{"ts": "2026-09-23T16:23:11-06:00", "control": "RFSAM-BLE-LL-02", "kind": "info", "msg": "command handed to operator, waiting for output"}
+{"ts": "2026-09-23T16:23:15-06:00", "control": "RFSAM-BLE-LL-02", "kind": "info", "msg": "operator reports capture running"}
+{"ts": "2026-09-23T16:23:19-06:00", "control": "RFSAM-BLE-LL-02", "kind": "info", "msg": "160 PDUs returned so far"}
+{"ts": "2026-09-23T16:23:24-06:00", "control": "RFSAM-BLE-LL-02", "kind": "info", "msg": "window 0s remaining"}
+{"ts": "2026-09-23T16:23:24-06:00", "control": "RFSAM-BLE-LL-02", "kind": "done", "msg": "RFSAM-BLE-LL-02 → INCONCLUSIVE"}
+{"ts": "2026-09-23T16:23:24-06:00", "control": "RFSAM-BLE-CR-01", "kind": "start", "msg": "RFSAM-BLE-CR-01 — Assess BLE pairing and decrypt weak pairings"}
+{"ts": "2026-09-23T16:23:46-06:00", "control": "RFSAM-BLE-CR-01", "kind": "info", "msg": "operator working: reading the advertising fingerprint"}
+{"ts": "2026-09-23T16:24:09-06:00", "control": "RFSAM-BLE-CR-01", "kind": "info", "msg": "notes recorded, awaiting attestation"}
+{"ts": "2026-09-23T16:24:31-06:00", "control": "RFSAM-BLE-CR-01", "kind": "info", "msg": "attestation received"}
+{"ts": "2026-09-23T16:24:54-06:00", "control": "RFSAM-BLE-CR-01", "kind": "info", "msg": "cross-checking against the published corpus"}
+{"ts": "2026-09-23T16:24:54-06:00", "control": "RFSAM-BLE-CR-01", "kind": "done", "msg": "RFSAM-BLE-CR-01 → FINDING (critical)"}
+{"ts": "2026-09-23T16:24:54-06:00", "control": "RFSAM-BLE-AT-01", "kind": "start", "msg": "RFSAM-BLE-AT-01 — Live connection hijacking"}
+{"ts": "2026-09-23T16:24:54-06:00", "control": "RFSAM-BLE-AT-01", "kind": "blocked", "msg": "blocked: tx_modes ['injection'] not authorised on this band (scope allows ['connection-oriented', '"}
+{"ts": "2026-09-23T16:24:54-06:00", "control": "RFSAM-BLE-AP-01", "kind": "start", "msg": "RFSAM-BLE-AP-01 — Enumerate and exercise GATT over the CatSniffer host c"}
+{"ts": "2026-09-23T16:25:02-06:00", "control": "RFSAM-BLE-AP-01", "kind": "info", "msg": "operator working: reading the advertising fingerprint"}
+{"ts": "2026-09-23T16:25:09-06:00", "control": "RFSAM-BLE-AP-01", "kind": "info", "msg": "notes recorded, awaiting attestation"}
+{"ts": "2026-09-23T16:25:17-06:00", "control": "RFSAM-BLE-AP-01", "kind": "info", "msg": "attestation received"}
+{"ts": "2026-09-23T16:25:24-06:00", "control": "RFSAM-BLE-AP-01", "kind": "info", "msg": "cross-checking against the published corpus"}
+{"ts": "2026-09-23T16:25:24-06:00", "control": "RFSAM-BLE-AP-01", "kind": "done", "msg": "RFSAM-BLE-AP-01 → FINDING (medium)"}
+{"ts": "2026-09-23T16:25:24-06:00", "control": null, "kind": "done", "msg": "session complete"}

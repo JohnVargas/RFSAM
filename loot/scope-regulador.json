@@ -1,5 +1,5 @@
 {
-  "engagement": "DEMO-2026-001",
+  "engagement": "SOA-DEMO",
   "simulated": true,
   "note": "SIMULATED ENGAGEMENT. No radio was operated and no capture was taken. Every result in this session is synthetic and exists to exercise the runner, not to describe a real device.",
   "mode": "active",
@@ -12,12 +12,19 @@
       "id": "T1",
       "kind": "device",
       "protocol": "BLE",
-      "label": "Demo BLE padlock (synthetic)",
-      "identity": {
-        "bdaddr": "AA:BB:CC:00:11:22"
-      },
-      "authorization_ref": "SIMULATED",
-      "permitted_side_effects": []
+      "label": "Bench padlock (synthetic)"
+    },
+    {
+      "id": "T2",
+      "kind": "network",
+      "protocol": "LTE",
+      "label": "Private LTE cell (synthetic)"
+    },
+    {
+      "id": "T3",
+      "kind": "system",
+      "protocol": "ADSB",
+      "label": "Ground receiver (synthetic)"
     }
   ],
   "spectrum": [
@@ -27,21 +34,42 @@
         "BLE"
       ],
       "rx": true,
-      "tx_containment": "none",
       "tx_modes": [
         "connection-oriented",
         "interrogation"
       ],
-      "tx_note": "Receive-only for observation, plus two authorised transmit modes on the bench unit: an active scan (SCAN_REQ) and a normal GATT client opening a link, as any phone would. Injection, jamming and hijack are not authorised. tx_modes is the only authority: an empty list means no transmission."
+      "tx_containment": "none"
+    },
+    {
+      "band": "LTE B3/B7",
+      "protocols": [
+        "LTE"
+      ],
+      "rx": true,
+      "tx_modes": [
+        "rogue-infrastructure"
+      ],
+      "tx_containment": "none"
+    },
+    {
+      "band": "1090 MHz",
+      "protocols": [
+        "ADSB"
+      ],
+      "rx": true,
+      "tx_modes": [
+        "injection"
+      ],
+      "tx_containment": "none"
     }
   ],
   "excluded_controls": [],
   "_note_excluded": "Empty on purpose: blocking is now derived from each control's execution.tx_modes against spectrum[].tx_modes. An entry here is an operator override and is reported as such, not as an engine decision.",
   "assessor": {
-    "role": "auditor",
+    "role": "regulator",
     "mandates": [
-      "written-authorisation"
-    ],
-    "note": "Third party under contract. Holds written permission for the bench unit; no spectrum licence and no containment facility."
+      "written-authorisation",
+      "regulatory-authority"
+    ]
   }
 }

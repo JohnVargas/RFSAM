@@ -13,6 +13,15 @@ const jsonl = (f) => fs.existsSync(path.join(LOOT, f))
 const scope = JSON.parse(fs.readFileSync(path.join(LOOT, 'scope.json'), 'utf8'));
 const plan = jsonl('session_plan.jsonl');
 const results = jsonl('results.jsonl');
+// The execution log, grouped per control. Simulated for now: run_session.py emits
+// these as it replays the script, so the same view works unchanged once a real
+// engine writes real events.
+const events = jsonl('events.jsonl');
+const logByControl = {};
+for (const e of events) {
+  if (!e.control) continue;
+  (logByControl[e.control] ??= []).push(e);
+}
 const byControl = Object.fromEntries(results.map((r) => [r.control, r]));
 
 const V = {
@@ -23,6 +32,11 @@ const V = {
   pending:      { label: 'PENDING',      cls: 'v-pending' },
 };
 const count = (v) => results.filter((r) => r.verdict === v).length;
+// Counts over the whole plan, so PENDING is a filterable tag too: a control nobody
+// has touched is a state worth looking at, not an absence.
+const verdictOf = (row) => byControl[row.control]?.verdict ?? 'pending';
+const countAll = (v) => plan.filter((row) => verdictOf(row) === v).length;
+const LAYERS = ['IG', 'SP', 'PHY', 'LL', 'CR', 'AT', 'AP'];
 const pct = (n) => plan.length ? Math.round((n / plan.length) * 100) : 0;
 const SEV = { critical: 'var(--red, #E06C75)', high: 'var(--orange)', medium: 'var(--amber)', low: 'var(--cyan)', info: 'var(--mut)' };
 const mmss = (s) => s ? `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, '0')}s` : '—';
@@ -44,11 +58,22 @@ const mmss = (s) => s ? `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, '0'
       same as one nobody touched — that distinction is what makes the coverage number mean anything.
     </p>
 
-    <div class="mono" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;font-size:11px">
+    <div class="mono" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px;font-size:11px">
       <span style="color:var(--mut2)">{results.length}/{plan.length} recorded · {pct(results.length)}%</span>
-      {['finding', 'passed', 'inconclusive', 'blocked'].filter((v) => count(v)).map((v) => (
-        <span class={`vbadge ${V[v].cls}`}>{V[v].label} {count(v)}</span>
+      {['finding', 'passed', 'inconclusive', 'blocked', 'pending'].filter((v) => countAll(v)).map((v) => (
+        <button class={`vbadge fchip ${V[v].cls}`} data-verdict={v} aria-pressed="false" type="button">
+          {V[v].label} {countAll(v)}
+        </button>
       ))}
+    </div>
+
+    <div class="mono" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px;font-size:11px">
+      <span style="color:var(--mut2)">layer</span>
+      {LAYERS.filter((l) => plan.some((r) => r.layer === l)).map((l) => (
+        <button class="vbadge fchip v-layer" data-layer={l} aria-pressed="false" type="button">{l}</button>
+      ))}
+      <button id="fclear" class="vbadge fchip" type="button" style="color:var(--mut2)">clear</button>
+      <span id="fcount" style="color:var(--mut2);margin-left:4px"></span>
     </div>
 
     <div style="margin-top:22px">
@@ -56,13 +81,19 @@ const mmss = (s) => s ? `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, '0'
         const r = byControl[row.control];
         const v = r ? r.verdict : 'pending';
         return (
-          <div class="vrow">
+          <div class="vrow" data-verdict={v} data-layer={row.layer}>
             <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
               <span class="mono" style="font-size:10px;color:var(--mut2);width:26px">{row.layer}</span>
               <a href={`/RFSAM/controls/${row.slug}`} class="mono" style="font-size:11.5px;color:var(--amber);width:150px">{row.control}</a>
               <span class={`vbadge ${V[v].cls}`}>{V[v].label}</span>
               {r?.severity && <span class="mono" style={`font-size:10px;color:${SEV[r.severity]}`}>{r.severity}</span>}
               <span class="mono" style="margin-left:auto;font-size:10px;color:var(--mut2)">{r?.method ?? '—'} · {mmss(r?.duration_s)}</span>
+              {logByControl[row.control]?.length && (
+                <button class="vbadge fchip logbtn" type="button"
+                  data-control={row.control}
+                  data-log={JSON.stringify(logByControl[row.control])}
+                  style="color:var(--cyan)">log {logByControl[row.control].length}</button>
+              )}
             </div>
             {r && <p style="font-size:13px;color:#CFD9E4;line-height:1.6;margin:8px 0 0 38px">{r.summary}</p>}
             {r?.stop_reason && <p style="font-size:12.5px;color:var(--mut);line-height:1.6;margin:6px 0 0 38px;border-left:2px solid var(--line2);padding-left:10px"><strong>Why it stopped:</strong> {r.stop_reason}</p>}
@@ -83,15 +114,130 @@ const mmss = (s) => s ? `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, '0'
       })}
     </div>
 
+    <div id="logmodal" hidden>
+      <div class="logbackdrop" data-close></div>
+      <div class="logbox" role="dialog" aria-modal="true" aria-labelledby="logtitle">
+        <div class="loghead">
+          <span class="mono" id="logtitle" style="color:var(--amber);font-size:12px"></span>
+          <span class="mono" id="logmeta" style="color:var(--mut2);font-size:10px;margin-left:auto"></span>
+          <button class="vbadge fchip" type="button" data-close style="color:var(--mut2);margin-left:10px">esc</button>
+        </div>
+        <pre class="mono logbody" id="logbody"></pre>
+        <div class="mono logfoot">
+          simulated execution log · <code>loot/events.jsonl</code>
+        </div>
+      </div>
+    </div>
+
     <p class="mono" style="font-size:11px;color:var(--mut2);margin-top:28px;line-height:1.7">
       Regenerate the written report with <code>python3 runner/render_report.py --audience client</code>.
       Sources: <code>loot/session_plan.jsonl</code>, <code>loot/results.jsonl</code>, <code>loot/scope.json</code>.
     </p>
   </div>
+
+<script is:inline>
+  (() => {
+    const rows = [...document.querySelectorAll('.vrow')];
+    const chips = [...document.querySelectorAll('.fchip[data-verdict], .fchip[data-layer]')];
+    const out = document.getElementById('fcount');
+
+    // Two independent axes, OR inside each and AND between them: picking FINDING
+    // and AT means "findings in the attack layer", not "findings plus everything AT".
+    const apply = () => {
+      const on = (attr) => new Set(
+        chips.filter((c) => c.dataset[attr] && c.getAttribute('aria-pressed') === 'true')
+             .map((c) => c.dataset[attr]),
+      );
+      const v = on('verdict'), l = on('layer');
+      let shown = 0;
+      for (const row of rows) {
+        const ok = (!v.size || v.has(row.dataset.verdict)) && (!l.size || l.has(row.dataset.layer));
+        row.hidden = !ok;
+        if (ok) shown++;
+      }
+      const filtering = v.size || l.size;
+      out.textContent = filtering ? `showing ${shown} of ${rows.length}` : '';
+    };
+
+    for (const c of chips) {
+      c.addEventListener('click', () => {
+        c.setAttribute('aria-pressed', c.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+        apply();
+      });
+    }
+    document.getElementById('fclear').addEventListener('click', () => {
+      for (const c of chips) c.setAttribute('aria-pressed', 'false');
+      apply();
+    });
+    apply();
+  })();
+</script>
+
+<script is:inline>
+  (() => {
+    const modal = document.getElementById('logmodal');
+    if (!modal) return;
+    const body = document.getElementById('logbody');
+    const title = document.getElementById('logtitle');
+    const meta = document.getElementById('logmeta');
+    const esc = (t) => String(t).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+    const cls = (k) => k === 'start' ? 'lk-start' : k === 'done' ? 'lk-done'
+                     : k === 'blocked' ? 'lk-block' : 'lk-info';
+
+    const open = (btn) => {
+      const rows = JSON.parse(btn.dataset.log);
+      title.textContent = btn.dataset.control;
+      const t0 = new Date(rows[0].ts).getTime();
+      const span = Math.round((new Date(rows[rows.length - 1].ts).getTime() - t0) / 1000);
+      meta.textContent = `${rows.length} events · ${span}s wall clock`;
+      // Elapsed time from the first event, so the pacing of a run is readable
+      // without doing clock arithmetic in your head.
+      body.innerHTML = rows.map((e) => {
+        const d = Math.round((new Date(e.ts).getTime() - t0) / 1000);
+        const stamp = `+${String(Math.floor(d / 60)).padStart(2, '0')}:${String(d % 60).padStart(2, '0')}`;
+        return `<span class="lk-info">${stamp}</span>  <span class="${cls(e.kind)}">${esc(e.kind.padEnd(7))}</span>  ${esc(e.msg)}`;
+      }).join('\n');
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+    };
+    const close = () => { modal.hidden = true; document.body.style.overflow = ''; };
+
+    for (const b of document.querySelectorAll('.logbtn')) {
+      b.addEventListener('click', () => open(b));
+    }
+    for (const el of modal.querySelectorAll('[data-close]')) el.addEventListener('click', close);
+    document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && !modal.hidden) close(); });
+  })();
+</script>
 </BaseLayout>
 
 <style>
   .vrow { border-top: 1px solid var(--line); padding: 14px 0; }
+  .fchip { cursor: pointer; background: transparent; user-select: none; transition: background .12s, opacity .12s; }
+  .fchip:hover { background: var(--bg2); }
+  /* Unselected chips stay legible: dimming them would hide the counts, which are
+     the reason to look at this row in the first place. */
+  .fchip[aria-pressed="false"] { opacity: .62; }
+  .fchip[aria-pressed="true"] { opacity: 1; background: var(--bg2); box-shadow: inset 0 0 0 1px currentColor; }
+  .v-layer { color: var(--mut2); }
+  .vrow[hidden] { display: none; }
+  /* Execution log modal. A dialog rather than an iframe: the log is already in the
+     page, so an iframe would mean a second route and a reload per control. */
+  #logmodal[hidden] { display: none; }
+  #logmodal { position: fixed; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .logbackdrop { position: absolute; inset: 0; background: rgba(0,0,0,.66); }
+  .logbox { position: relative; width: min(760px, 100%); max-height: 78vh; display: flex; flex-direction: column;
+            background: var(--bg2); border: 1px solid var(--line2); border-radius: 8px; overflow: hidden;
+            box-shadow: 0 18px 50px rgba(0,0,0,.5); }
+  .loghead { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+  .logbody { margin: 0; padding: 12px 14px; overflow: auto; font-size: 11.5px; line-height: 1.85;
+             white-space: pre-wrap; word-break: break-word; }
+  .logfoot { padding: 8px 12px; border-top: 1px solid var(--line); font-size: 10px; color: var(--mut2); }
+  .logbtn { margin-left: 4px; }
+  .lk-start { color: var(--cyan); }
+  .lk-info  { color: var(--mut2); }
+  .lk-done  { color: var(--green, #98C379); }
+  .lk-block { color: var(--orange); }
   .vbadge { font-family: var(--mono); font-size: 10px; padding: 2px 7px; border-radius: 3px; border: 1px solid var(--line2); letter-spacing: .06em; }
   .v-finding { color: var(--orange); border-color: var(--orange); }
   .v-passed { color: var(--green); border-color: var(--green); }

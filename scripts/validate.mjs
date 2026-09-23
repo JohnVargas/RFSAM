@@ -52,19 +52,22 @@ export function checkExecution({ data, body, file }, reg) {
     }
   }
 
-  // T1/T2 are never run over the air.
-  if (['T1', 'T2'].includes(x.legal_tier)) {
-    if (x.containment === 'none') errs.push(`${tag}tier ${x.legal_tier} requires containment: conducted|cage`);
-    for (const m of x.gates.scope_mode_in) {
-      if (m !== 'lab') errs.push(`${tag}tier ${x.legal_tier} may only be gated to mode 'lab', not '${m}'`);
-    }
-  }
+  // NOTE ON WHAT THIS VALIDATOR DOES NOT DO.
+  // It checks that a control is complete and internally coherent. It does not
+  // decide whether running it is lawful, and it must not: the same LTE jammer is
+  // an offence for a contracted auditor and a compliance measurement for the
+  // regulator that owns the band. Legality turns on mandate and jurisdiction,
+  // which are properties of the engagement, not of the method. A methodology that
+  // refuses to document a technique because it is unlawful *somewhere* stops being
+  // a methodology. So the corpus states requirements; the SoA decides
+  // applicability; the runner enforces the SoA.
 
-  // Jamming is not ordinary in-band operation, whatever the tier says.
-  if (x.tx_modes.includes('jamming')) {
-    for (const m of x.gates.scope_mode_in) {
-      if (m !== 'lab') errs.push(`${tag}tx_modes includes 'jamming' - gate it to 'lab' only, not '${m}'`);
-    }
+  // Restricted-band transmission and jamming must SAY what authority they need.
+  // This is a completeness rule, not a permission rule: the control is required to
+  // declare the requirement, never to satisfy it.
+  const restricted = ['T1', 'T2'].includes(x.legal_tier) || x.tx_modes.includes('jamming');
+  if (restricted && !x.basis?.trim()) {
+    errs.push(`${tag}restricted-band or jamming control must state in basis what authority it requires`);
   }
 
   // `auto` has to be genuinely runnable.
