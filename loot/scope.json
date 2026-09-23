@@ -1,0 +1,42 @@
+{
+  "engagement": "DEMO-2026-001",
+  "simulated": true,
+  "note": "SIMULATED ENGAGEMENT. No radio was operated and no capture was taken. Every result in this session is synthetic and exists to exercise the runner, not to describe a real device.",
+  "mode": "active",
+  "site": {
+    "kind": "lab",
+    "jurisdiction": "PE"
+  },
+  "targets": [
+    {
+      "id": "T1",
+      "kind": "device",
+      "protocol": "BLE",
+      "label": "Demo BLE padlock (synthetic)",
+      "identity": {
+        "bdaddr": "AA:BB:CC:00:11:22"
+      },
+      "authorization_ref": "SIMULATED"
+    }
+  ],
+  "spectrum": [
+    {
+      "band": "2.400-2.4835 GHz",
+      "protocols": [
+        "BLE"
+      ],
+      "rx": true,
+      "tx_containment": "none",
+      "tx_modes": [
+        "connection-oriented"
+      ],
+      "tx_note": "Receive-only for observation. Connection-oriented transmission (a normal GATT client opening a link, as any phone would) is authorised on the bench unit; interrogation (active scan), injection, jamming and hijack are not. tx_modes is the only authority: an empty list means no transmission."
+    }
+  ],
+  "excluded_controls": [
+    {
+      "id": "RFSAM-BLE-AT-01",
+      "reason": "scope.spectrum.tx_modes authorises connection-oriented only; a hijack needs 'injection'. MANUAL ENTRY - must become a derived gate once controls carry execution.tx_modes"
+    }
+  ]
+}

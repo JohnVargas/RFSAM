@@ -1,0 +1,23 @@
+{"ts": "2026-09-23T15:47:02-06:00", "control": null, "kind": "start", "msg": "session DEMO-2026-001 starting — 9 controls in scope, time compression x400"}
+{"ts": "2026-09-23T15:47:02-06:00", "control": "RFSAM-BLE-IG-01", "kind": "start", "msg": "RFSAM-BLE-IG-01 — Identify the SoC and host stack, then check the publis"}
+{"ts": "2026-09-23T15:47:03-06:00", "control": "RFSAM-BLE-IG-01", "kind": "info", "msg": "operator working: teardown photos"}
+{"ts": "2026-09-23T15:47:05-06:00", "control": "RFSAM-BLE-IG-01", "kind": "info", "msg": "notes recorded, awaiting attestation"}
+{"ts": "2026-09-23T15:47:07-06:00", "control": "RFSAM-BLE-IG-01", "kind": "info", "msg": "attestation received"}
+{"ts": "2026-09-23T15:47:08-06:00", "control": "RFSAM-BLE-IG-01", "kind": "info", "msg": "cross-checking against the published corpus"}
+{"ts": "2026-09-23T15:47:08-06:00", "control": "RFSAM-BLE-IG-01", "kind": "done", "msg": "RFSAM-BLE-IG-01 → FINDING (high)"}
+{"ts": "2026-09-23T15:47:08-06:00", "control": "RFSAM-BLE-SP-01", "kind": "start", "msg": "RFSAM-BLE-SP-01 — Establish BLE channel map and capture feasibility"}
+{"ts": "2026-09-23T15:47:09-06:00", "control": "RFSAM-BLE-SP-01", "kind": "info", "msg": "tuning 2402 MHz — gain 32 dB"}
+{"ts": "2026-09-23T15:47:10-06:00", "control": "RFSAM-BLE-SP-01", "kind": "info", "msg": "noise floor -92 dBm, target at -58 dBm"}
+{"ts": "2026-09-23T15:47:10-06:00", "control": "RFSAM-BLE-SP-01", "kind": "done", "msg": "RFSAM-BLE-SP-01 → PASSED"}
+{"ts": "2026-09-23T15:47:10-06:00", "control": "RFSAM-BLE-SP-02", "kind": "start", "msg": "RFSAM-BLE-SP-02 — Detect and inventory BLE trackers (Find My / AirTag)"}
+{"ts": "2026-09-23T15:47:11-06:00", "control": "RFSAM-BLE-SP-02", "kind": "info", "msg": "tuning 2402 MHz — gain 0 dB"}
+{"ts": "2026-09-23T15:47:12-06:00", "control": "RFSAM-BLE-SP-02", "kind": "info", "msg": "noise floor -95 dBm, target at -49 dBm"}
+{"ts": "2026-09-23T15:47:12-06:00", "control": "RFSAM-BLE-SP-02", "kind": "done", "msg": "RFSAM-BLE-SP-02 → PASSED"}
+{"ts": "2026-09-23T15:47:12-06:00", "control": "RFSAM-BLE-PHY-01", "kind": "start", "msg": "RFSAM-BLE-PHY-01 — Demodulate the air and recover link-layer bits"}
+{"ts": "2026-09-23T15:47:13-06:00", "control": "RFSAM-BLE-PHY-01", "kind": "info", "msg": "tuning 2402 MHz — gain 40 dB"}
+{"ts": "2026-09-23T15:47:14-06:00", "control": "RFSAM-BLE-PHY-01", "kind": "info", "msg": "noise floor -93 dBm, target at -57 dBm"}
+{"ts": "2026-09-23T15:47:14-06:00", "control": "RFSAM-BLE-PHY-01", "kind": "done", "msg": "RFSAM-BLE-PHY-01 → INCONCLUSIVE"}
+{"ts": "2026-09-23T15:47:14-06:00", "control": "RFSAM-BLE-LL-01", "kind": "start", "msg": "RFSAM-BLE-LL-01 — Audit advertising and identifier exposure"}
+{"ts": "2026-09-23T15:47:15-06:00", "control": "RFSAM-BLE-LL-01", "kind": "info", "msg": "command handed to operator, waiting for output"}
+{"ts": "2026-09-23T15:47:17-06:00", "control": "RFSAM-BLE-LL-01", "kind": "info", "msg": "operator reports capture running"}
+{"ts": "2026-09-23T15:47:18-06:00", "control": "RFSAM-BLE-LL-01", "kind": "info", "msg": "3142 PDUs returned so far"}

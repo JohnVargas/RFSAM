@@ -1,0 +1,101 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// Reads the runner's own files. In `npm run dev` this page hot-reloads whenever
+// record_result.py appends a row, which is the whole live-report effect - no
+// server, no database, no polling.
+const LOOT = path.resolve('loot');
+const jsonl = (f) => fs.existsSync(path.join(LOOT, f))
+  ? fs.readFileSync(path.join(LOOT, f), 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l))
+  : [];
+const scope = JSON.parse(fs.readFileSync(path.join(LOOT, 'scope.json'), 'utf8'));
+const plan = jsonl('session_plan.jsonl');
+const results = jsonl('results.jsonl');
+const byControl = Object.fromEntries(results.map((r) => [r.control, r]));
+
+const V = {
+  finding:      { label: 'FINDING',      cls: 'v-finding' },
+  passed:       { label: 'PASSED',       cls: 'v-passed' },
+  inconclusive: { label: 'INCONCLUSIVE', cls: 'v-inconc' },
+  blocked:      { label: 'BLOCKED',      cls: 'v-blocked' },
+  pending:      { label: 'PENDING',      cls: 'v-pending' },
+};
+const count = (v) => results.filter((r) => r.verdict === v).length;
+const pct = (n) => plan.length ? Math.round((n / plan.length) * 100) : 0;
+const SEV = { critical: 'var(--red, #E06C75)', high: 'var(--orange)', medium: 'var(--amber)', low: 'var(--cyan)', info: 'var(--mut)' };
+const mmss = (s) => s ? `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, '0')}s` : '—';
+---
+<BaseLayout title="Session runner (demo)">
+  <div class="container" style="max-width:900px">
+    <h1 style="font-size:32px">Session runner <span class="mono" style="font-size:12px;color:var(--mut2)">demo</span></h1>
+
+    {scope.simulated && (
+      <div style="border:1px solid var(--amber);background:rgba(255,194,75,.08);border-radius:8px;padding:12px 16px;margin-top:14px">
+        <strong class="mono" style="font-size:11px;color:var(--amber);letter-spacing:.08em">SIMULATED SESSION — NOT A REAL ASSESSMENT</strong>
+        <p style="font-size:13px;color:var(--mut);margin-top:6px;line-height:1.6">{scope.note}</p>
+      </div>
+    )}
+
+    <p style="color:var(--mut);margin-top:16px;max-width:70ch;font-size:14px">
+      The engine walks the controls in scope, records one row per control whether or not there was a
+      finding, and this page re-renders from those rows. A control that was tested and held is not the
+      same as one nobody touched — that distinction is what makes the coverage number mean anything.
+    </p>
+
+    <div class="mono" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;font-size:11px">
+      <span style="color:var(--mut2)">{results.length}/{plan.length} recorded · {pct(results.length)}%</span>
+      {['finding', 'passed', 'inconclusive', 'blocked'].filter((v) => count(v)).map((v) => (
+        <span class={`vbadge ${V[v].cls}`}>{V[v].label} {count(v)}</span>
+      ))}
+    </div>
+
+    <div style="margin-top:22px">
+      {plan.map((row) => {
+        const r = byControl[row.control];
+        const v = r ? r.verdict : 'pending';
+        return (
+          <div class="vrow">
+            <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+              <span class="mono" style="font-size:10px;color:var(--mut2);width:26px">{row.layer}</span>
+              <a href={`/RFSAM/controls/${row.slug}`} class="mono" style="font-size:11.5px;color:var(--amber);width:150px">{row.control}</a>
+              <span class={`vbadge ${V[v].cls}`}>{V[v].label}</span>
+              {r?.severity && <span class="mono" style={`font-size:10px;color:${SEV[r.severity]}`}>{r.severity}</span>}
+              <span class="mono" style="margin-left:auto;font-size:10px;color:var(--mut2)">{r?.method ?? '—'} · {mmss(r?.duration_s)}</span>
+            </div>
+            {r && <p style="font-size:13px;color:#CFD9E4;line-height:1.6;margin:8px 0 0 38px">{r.summary}</p>}
+            {r?.stop_reason && <p style="font-size:12.5px;color:var(--mut);line-height:1.6;margin:6px 0 0 38px;border-left:2px solid var(--line2);padding-left:10px"><strong>Why it stopped:</strong> {r.stop_reason}</p>}
+            {r?.reason && <p style="font-size:12.5px;color:var(--mut);line-height:1.6;margin:6px 0 0 38px;border-left:2px solid var(--line2);padding-left:10px"><strong>Why blocked:</strong> {r.reason}</p>}
+            {r?.suggested_cmd && (
+              <div style="margin:8px 0 0 38px">
+                <div class="mono" style="font-size:10px;color:var(--mut2);margin-bottom:3px">command handed to the operator</div>
+                <pre class="mono" style="font-size:11px;background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:8px 10px;overflow-x:auto">{r.suggested_cmd}</pre>
+              </div>
+            )}
+            {r?.conditions && Object.keys(r.conditions).length > 0 && (
+              <p class="mono" style="font-size:10.5px;color:var(--mut2);margin:8px 0 0 38px;line-height:1.8">
+                {Object.entries(r.conditions).slice(0, 8).map(([k, val]) => <span style="margin-right:10px">{k}={String(val)}</span>)}
+              </p>
+            )}
+          </div>
+        );
+      })}
+    </div>
+
+    <p class="mono" style="font-size:11px;color:var(--mut2);margin-top:28px;line-height:1.7">
+      Regenerate the written report with <code>python3 runner/render_report.py --audience client</code>.
+      Sources: <code>loot/session_plan.jsonl</code>, <code>loot/results.jsonl</code>, <code>loot/scope.json</code>.
+    </p>
+  </div>
+</BaseLayout>
+
+<style>
+  .vrow { border-top: 1px solid var(--line); padding: 14px 0; }
+  .vbadge { font-family: var(--mono); font-size: 10px; padding: 2px 7px; border-radius: 3px; border: 1px solid var(--line2); letter-spacing: .06em; }
+  .v-finding { color: var(--orange); border-color: var(--orange); }
+  .v-passed { color: var(--green); border-color: var(--green); }
+  .v-inconc { color: var(--amber); border-color: var(--amber); }
+  .v-blocked { color: var(--mut2); }
+  .v-pending { color: var(--mut2); border-style: dashed; }
+</style>
