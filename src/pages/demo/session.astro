@@ -73,7 +73,7 @@ const cellState = (ctrls) => {
     ? String(ctrls.length)
     : { running: '●', blocked: 'B', out: '·', pending: '·' }[state] ?? (V[state]?.label.slice(0, 1) ?? '?');
   const title = ctrls.map((c, i) => `${c.data.id} — ${states[i]}`).join(' · ');
-  return { state, label, title };
+  return { state, label, title, ids: ctrls.map((c) => c.data.id).join(',') };
 };
 
 const byPL = {};
@@ -111,7 +111,8 @@ const mmss = (s) => s ? `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, '0'
     </p>
 
     <div class="mono" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px;font-size:11px">
-      <span style="color:var(--mut2)">{results.length}/{plan.length} recorded · {pct(results.length)}%</span>
+      <button id="playbtn" class="vbadge fchip" type="button" style="color:var(--cyan)">▶ replay session</button>
+      <span id="tally" style="color:var(--mut2)">{results.length}/{plan.length} recorded · {pct(results.length)}%</span>
       {['finding', 'passed', 'inconclusive', 'blocked', 'pending'].filter((v) => countAll(v)).map((v) => (
         <button class={`vbadge fchip ${V[v].cls}`} data-verdict={v} aria-pressed="false" type="button">
           {V[v].label} {countAll(v)}
@@ -136,7 +137,8 @@ const mmss = (s) => s ? `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, '0'
           <>
             <div class={`pname mono ${row.scoped ? '' : 'dim'}`}>{row.p.name ?? row.p.id}</div>
             {row.cells.map((c) => (
-              <div class={`pcell s-${c.state}`} title={c.title ?? 'no control at this layer'}>{c.label}</div>
+              <div class={`pcell s-${c.state}`} data-cell={c.ids} data-final={c.state}
+                   title={c.title ?? 'no control at this layer'}>{c.label}</div>
             ))}
           </>
         ))}
@@ -152,7 +154,7 @@ const mmss = (s) => s ? `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, '0'
         const r = byControl[row.control];
         const v = r ? r.verdict : 'pending';
         return (
-          <div class="vrow" data-verdict={v} data-layer={row.layer}>
+          <div class="vrow" data-verdict={v} data-layer={row.layer} data-control={row.control}>
             <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
               <span class="mono" style="font-size:10px;color:var(--mut2);width:26px">{row.layer}</span>
               <a href={`/RFSAM/controls/${row.slug}`} class="mono" style="font-size:11.5px;color:var(--amber);width:150px">{row.control}</a>
@@ -184,6 +186,8 @@ const mmss = (s) => s ? `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, '0'
         );
       })}
     </div>
+
+    <script type="application/json" id="evdata" set:html={JSON.stringify(events)}></script>
 
     <div id="logmodal" hidden>
       <div class="logbackdrop" data-close></div>
@@ -281,6 +285,106 @@ const mmss = (s) => s ? `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, '0'
     }
     for (const el of modal.querySelectorAll('[data-close]')) el.addEventListener('click', close);
     document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && !modal.hidden) close(); });
+  })();
+</script>
+
+<script is:inline>
+  // Replays the recorded session in the browser. No backend: the events are
+  // already in the page, so this works on the published site exactly as it does
+  // against a live runner - the difference is only whether the file is growing.
+  (() => {
+    const btn = document.getElementById('playbtn');
+    const data = document.getElementById('evdata');
+    if (!btn || !data) return;
+    const events = JSON.parse(data.textContent || '[]').filter((e) => e.control);
+    if (!events.length) { btn.hidden = true; return; }
+
+    const rows = [...document.querySelectorAll('.vrow')];
+    const cells = [...document.querySelectorAll('.pcell[data-cell]')];
+    const tally = document.getElementById('tally');
+    const chips = [...document.querySelectorAll('.fchip[data-verdict]')];
+    const LABEL = { finding: 'FINDING', passed: 'PASSED', inconclusive: 'INCONCLUSIVE',
+                    blocked: 'BLOCKED', pending: 'PENDING', running: 'RUNNING' };
+    const CLS = { finding: 'v-finding', passed: 'v-passed', inconclusive: 'v-inconc',
+                  blocked: 'v-blocked', pending: 'v-pending', running: 'v-pending' };
+    const RANK = ['running', 'blocked', 'finding', 'inconclusive', 'pending', 'passed', 'out'];
+
+    const snapshot = rows.map((r) => r.dataset.verdict);
+    const cellFinal = cells.map((c) => c.dataset.final);
+    const state = {};   // control -> current verdict during replay
+    let timer = null;
+
+    const setRow = (ctrl, v) => {
+      const row = rows.find((r) => r.dataset.control === ctrl);
+      if (!row) return;
+      row.dataset.verdict = v;
+      const b = row.querySelector('.vbadge:not(.fchip):not(.logbtn)');
+      if (b) { b.className = `vbadge ${CLS[v] ?? 'v-pending'}`; b.textContent = LABEL[v] ?? v; }
+    };
+    const paintCells = () => {
+      for (const c of cells) {
+        const ids = (c.dataset.cell || '').split(',').filter(Boolean);
+        if (!ids.length) continue;
+        const here = ids.map((i) => state[i]).filter(Boolean);
+        if (!here.length) { c.className = 'pcell s-pending'; c.textContent = '·'; continue; }
+        const st = RANK.find((r) => here.includes(r)) ?? 'pending';
+        c.className = `pcell s-${st}`;
+        c.textContent = ids.length > 1 ? String(ids.length)
+          : ({ running: '●', blocked: 'B', pending: '·' }[st] ?? (LABEL[st] ?? '?')[0]);
+      }
+    };
+    const paintTally = () => {
+      const done = Object.values(state).filter((v) => v && v !== 'pending' && v !== 'running').length;
+      tally.textContent = `${done}/${rows.length} recorded · ${Math.round(done / rows.length * 100)}%`;
+      for (const chip of chips) {
+        const v = chip.dataset.verdict;
+        const n = Object.values(state).filter((x) => x === v).length
+          + (v === 'pending' ? rows.length - Object.keys(state).length : 0);
+        chip.textContent = `${LABEL[v]} ${n}`;
+      }
+    };
+    const reset = () => {
+      for (const k of Object.keys(state)) delete state[k];
+      for (const r of rows) { state[r.dataset.control] = 'pending'; setRow(r.dataset.control, 'pending'); }
+      paintCells(); paintTally();
+    };
+    const restore = () => {
+      rows.forEach((r, i) => setRow(r.dataset.control, snapshot[i]));
+      cells.forEach((c, i) => { c.className = `pcell s-${cellFinal[i]}`; });
+      location.reload();   // simplest honest restore of labels and counts
+    };
+
+    const play = () => {
+      btn.textContent = '■ stop';
+      btn.dataset.playing = 'true';
+      reset();
+      const t0 = new Date(events[0].ts).getTime();
+      const span = new Date(events[events.length - 1].ts).getTime() - t0;
+      const DURATION = 38000;   // the whole engagement, replayed in well under a minute
+      let i = 0;
+      const step = () => {
+        if (i >= events.length) { btn.textContent = '▶ replay session'; delete btn.dataset.playing; return; }
+        const e = events[i];
+        if (e.kind === 'start') state[e.control] = 'running';
+        else if (e.kind === 'blocked') state[e.control] = 'blocked';
+        else if (e.kind === 'done') {
+          const m = /→ ([A-Z]+)/.exec(e.msg);
+          state[e.control] = m ? m[1].toLowerCase() : 'passed';
+        }
+        setRow(e.control, state[e.control] ?? 'pending');
+        paintCells(); paintTally();
+        i++;
+        const next = events[i];
+        const gap = next ? (new Date(next.ts).getTime() - new Date(e.ts).getTime()) / (span || 1) * DURATION : 0;
+        timer = setTimeout(step, Math.max(90, Math.min(1400, gap)));
+      };
+      step();
+    };
+
+    btn.addEventListener('click', () => {
+      if (btn.dataset.playing) { clearTimeout(timer); delete btn.dataset.playing; restore(); }
+      else play();
+    });
   })();
 </script>
 </BaseLayout>
