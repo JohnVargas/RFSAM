@@ -3,6 +3,8 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { mitre, attackVersion, attackRetrieved } from '../data/mitre.js';
 import { fight, fightBuild } from '../data/fight.js';
+import { protocols } from '../data/protocols.js';
+import { layers } from '../data/layers.js';
 
 const controls = await getCollection('controls');
 
@@ -29,6 +31,33 @@ const uncharted = controls.filter((c) => c.data.threatMapNote)
 
 const mitigations = Object.entries(mitre).filter(([, v]) => v.kind === 'mitigation');
 const COLOR = { enterprise: 'var(--cyan)', ics: 'var(--amber)', mobile: 'var(--purple)' };
+
+// --- Heatmap: protocol x layer, coloured by how the cell relates to the corpora.
+const LAYER_ORDER = layers.map((l) => l.id);
+const cellOf = (pid, lid) => {
+  const cs = controls.filter((c) => c.data.protocol === pid && c.data.layer === lid);
+  if (!cs.length) return { state: 'none', label: '' };
+  const refs = cs.reduce((n, c) => n + (c.data.mitre?.length ?? 0) + (c.data.fight?.length ?? 0), 0);
+  const declared = cs.some((c) => c.data.threatMapNote);
+  const href = `/RFSAM/controls/${cs[0].id}`;
+  if (refs) return { state: 'mapped', label: String(refs), href, title: `${cs.map((c) => c.data.id).join(', ')} — ${refs} corpus ${refs === 1 ? 'entry' : 'entries'}` };
+  if (declared) return { state: 'uncharted', label: '∅', href, title: `${cs[0].data.id} — no corpus models this` };
+  return { state: 'unmapped', label: '?', href, title: `${cs.map((c) => c.data.id).join(', ')} — control exists, cites nothing yet` };
+};
+const heat = protocols.map((p) => ({ p, cells: LAYER_ORDER.map((lid) => ({ lid, ...cellOf(p.id, lid) })) }));
+
+// --- Per-corpus bars
+const corpora = [
+  { key: 'enterprise', label: 'ATT&CK Enterprise' },
+  { key: 'ics', label: 'ATT&CK ICS' },
+  { key: 'mobile', label: 'ATT&CK Mobile' },
+  { key: 'fight', label: 'FiGHT' },
+];
+const byCorpus = corpora.map((c) => {
+  const list = rfEntries.filter((e) => (c.key === 'fight' ? e.corpus === 'FiGHT' : e.matrix === c.key));
+  const done = list.filter((e) => byId[e.id]?.length).length;
+  return { ...c, total: list.length, done, pct: list.length ? Math.round((done / list.length) * 100) : 0 };
+}).filter((c) => c.total);
 ---
 <BaseLayout title="Adversary-behaviour mapping">
   <div class="container" style="max-width:900px">
@@ -45,6 +74,41 @@ const COLOR = { enterprise: 'var(--cyan)', ics: 'var(--amber)', mobile: 'var(--p
       <span style="color:var(--green)">{covered.length} mapped · {pct(covered.length)}%</span>
       <span style="color:var(--amber)">{gaps.length} with no control · {pct(gaps.length)}%</span>
       <span style="color:var(--purple)">{uncharted.length} controls no corpus models</span>
+    </div>
+
+    <div class="heat-wrap">
+      <div class="heat">
+        <div class="hcorner"></div>
+        {LAYER_ORDER.map((lid) => <div class="hhead mono">{lid}</div>)}
+        {heat.map((row) => (
+          <Fragment>
+            <a class="hname" href={`/RFSAM/controls/${row.p.id.toLowerCase()}`}>{row.p.name}</a>
+            {row.cells.map((c) => (c.href
+              ? <a class={`hcell m-${c.state}`} href={c.href} title={c.title}>{c.label}</a>
+              : <div class={`hcell m-${c.state}`} title="not scoped">{c.label}</div>))}
+          </Fragment>
+        ))}
+      </div>
+    </div>
+    <div class="heat-legend mono">
+      <span><i class="c-mapped"></i> cites the corpora (number of entries)</span>
+      <span><i class="c-uncharted"></i> ∅ no corpus models this</span>
+      <span><i class="c-unmapped"></i> ? control exists, cites nothing yet</span>
+      <span><i class="c-none"></i> no control</span>
+    </div>
+
+    <div style="display:grid;gap:8px;margin-top:26px;max-width:560px">
+      {byCorpus.map((c) => (
+        <div>
+          <div class="mono" style="display:flex;font-size:11px;color:var(--mut2)">
+            <span>{c.label}</span>
+            <span style="margin-left:auto">{c.done}/{c.total} · {c.pct}%</span>
+          </div>
+          <div style="height:8px;border-radius:4px;background:rgba(34,52,74,.5);overflow:hidden;margin-top:4px">
+            <div style={`height:100%;width:${c.pct}%;background:rgba(63,209,124,.9)`}></div>
+          </div>
+        </div>
+      ))}
     </div>
 
     <h2 class="mono" style="font-size:12px;letter-spacing:.14em;color:var(--mut2);margin-top:36px">MAPPED</h2>
@@ -98,3 +162,22 @@ const COLOR = { enterprise: 'var(--cyan)', ics: 'var(--amber)', mobile: 'var(--p
     </p>
   </div>
 </BaseLayout>
+
+<style>
+  .heat-wrap { overflow-x: auto; margin-top: 22px; padding-bottom: 4px; }
+  .heat { display: grid; grid-template-columns: 124px repeat(7, minmax(32px, 1fr)); gap: 5px; min-width: 420px; }
+  .heat .hhead { font-size: 10px; text-align: center; letter-spacing: .06em; align-self: end; padding-bottom: 3px; color: var(--mut2); }
+  .heat .hname { font-size: 12px; color: var(--mut); display: flex; align-items: center; height: 34px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 6px; text-decoration: none; }
+  .heat .hname:hover { color: var(--ink); }
+  .heat .hcell { height: 34px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 1px solid transparent; color: inherit; text-decoration: none; }
+  .m-mapped { background: rgba(63,209,124,.9); color: #07120b; font-weight: 700; }
+  .m-uncharted { background: rgba(255,194,75,.12); color: var(--amber); border-color: rgba(255,194,75,.55); }
+  .m-unmapped { background: rgba(122,162,247,.10); color: var(--cyan); border: 1px dashed rgba(122,162,247,.45); }
+  .m-none { background: rgba(34,52,74,.3); }
+  .heat-legend { display: flex; flex-wrap: wrap; gap: 7px 16px; margin-top: 12px; font-size: 11px; color: var(--mut2); }
+  .heat-legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: middle; margin-right: 5px; }
+  .heat-legend .c-mapped { background: rgba(63,209,124,.9); }
+  .heat-legend .c-uncharted { background: rgba(255,194,75,.12); border: 1px solid rgba(255,194,75,.55); }
+  .heat-legend .c-unmapped { background: rgba(122,162,247,.10); border: 1px dashed rgba(122,162,247,.45); }
+  .heat-legend .c-none { background: rgba(34,52,74,.5); }
+</style>
