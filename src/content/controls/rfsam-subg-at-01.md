@@ -158,6 +158,8 @@ tools:
   - catnip
   - yard-stick-one
   - hackrf-one
+  - catsniffer
+  - flipper-zero
 mitre:
   - id: T1692.001
     relation: assesses
@@ -196,6 +198,8 @@ execution:
     hardware_present:
       - yard-stick-one
       - hackrf-one
+      - catsniffer
+      - flipper-zero
     scope_mode_in:
       - lab
     requires_root: false

@@ -102,6 +102,7 @@ tools:
   - kismet
   - aircrack-ng
   - minino
+  - alfa-awus036ach
 bsam: []
 resources:
   - RFSAM-RES-11
@@ -124,7 +125,7 @@ execution:
   containment: none
   gates:
     hardware_present:
-      - minino
+      - alfa-awus036ach
     scope_mode_in:
       - active
       - lab

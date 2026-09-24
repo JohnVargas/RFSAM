@@ -122,6 +122,8 @@ tools:
   - pm3-client
   - chameleon-ultra-gui
   - bombercat
+  - chameleon-ultra
+  - proxmark3
 bsam: []
 resources:
   - RFSAM-RES-13
@@ -143,7 +145,8 @@ execution:
   containment: none
   gates:
     hardware_present:
-      - bombercat
+      - proxmark3
+      - chameleon-ultra
     scope_mode_in:
       - active
       - lab

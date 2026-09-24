@@ -180,6 +180,7 @@ tools:
   - hashcat
   - aircrack-ng
   - reaver
+  - alfa-awus036ach
 resources:
   - RFSAM-RES-11
   - RFSAM-RES-12
@@ -201,7 +202,8 @@ execution:
     - antenna-placement
   containment: none
   gates:
-    hardware_present: []
+    hardware_present:
+      - alfa-awus036ach
     scope_mode_in:
       - active
       - lab

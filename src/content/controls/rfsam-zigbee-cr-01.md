@@ -137,6 +137,10 @@ tools:
   - wireshark
   - catnip
   - catsniffer
+  - apimote
+  - cc2531
+  - minino
+  - nrf52840-dongle
 bsam: []
 resources:
   - RFSAM-RES-16
@@ -160,6 +164,7 @@ execution:
   gates:
     hardware_present:
       - catsniffer
+      - apimote
     scope_mode_in:
       - active
       - lab

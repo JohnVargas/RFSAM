@@ -104,6 +104,10 @@ tools:
   - catnip
   - minino
   - gqrx
+  - catsniffer
+  - cc2531
+  - hackrf-one
+  - nrf52840-dongle
 mitre:
   - id: T0887
     relation: assesses
@@ -131,6 +135,8 @@ execution:
   containment: none
   gates:
     hardware_present:
+      - catsniffer
+      - cc2531
       - minino
     scope_mode_in:
       - active

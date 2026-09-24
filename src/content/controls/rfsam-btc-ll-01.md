@@ -89,6 +89,7 @@ tools:
   - esp32-bt-classic-sniffer
   - ubertooth-tools
   - wireshark
+  - ubertooth-one
 mitre:
   - id: T1040
     relation: assesses

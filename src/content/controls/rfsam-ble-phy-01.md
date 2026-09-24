@@ -106,6 +106,11 @@ tools:
   - ice9-bluetooth-sniffer
   - nrf-sniffer
   - ubertooth-tools
+  - catsniffer
+  - hackrf-one
+  - nrf52840-dongle
+  - ubertooth-one
+  - usrp-b210
 bsam: []
 resources:
   - RFSAM-RES-01

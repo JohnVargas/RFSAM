@@ -89,6 +89,8 @@ references:
     type: tool
 tools:
   - catsniffer
+  - bbc-microbit
+  - nrf52840-dongle
 mitre:
   - id: T1557
     relation: assesses
@@ -127,6 +129,8 @@ execution:
   gates:
     hardware_present:
       - catsniffer
+      - bbc-microbit
+      - nrf52840-dongle
     scope_mode_in:
       - active
       - lab

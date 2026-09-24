@@ -104,6 +104,8 @@ tools:
   - dump1090
   - readsb
   - pymodes
+  - hackrf-one
+  - usrp-b210
 mitre:
   - id: T1040
     relation: assesses

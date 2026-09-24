@@ -138,6 +138,8 @@ tools:
   - universal-radio-hacker
   - hackrf-one
   - rtl-433
+  - catsniffer
+  - flipper-zero
 mitre:
   - id: T1110.002
     relation: assesses

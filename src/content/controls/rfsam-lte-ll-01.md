@@ -150,6 +150,8 @@ tools:
   - srsran-4g
   - wireshark
   - usrp-b210
+  - hackrf-one
+  - signalsdr-pro
 mitre:
   - id: T1040
     relation: assesses

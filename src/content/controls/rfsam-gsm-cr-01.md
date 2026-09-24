@@ -133,6 +133,8 @@ tools:
   - wireshark
   - imsi-catcher
   - kraken-a51
+  - hackrf-one
+  - usrp-b210
 mitre:
   - id: T1689
     relation: assesses

@@ -132,6 +132,7 @@ tools:
   - rtl-sdr-v4
   - hackrf-one
   - yard-stick-one
+  - catsniffer
 bsam: []
 resources:
   - RFSAM-RES-15

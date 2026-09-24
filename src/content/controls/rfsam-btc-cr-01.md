@@ -130,6 +130,7 @@ references:
 tools:
   - esp32-bt-classic-sniffer
   - wireshark
+  - ubertooth-one
 mitre:
   - id: T1689
     relation: assesses

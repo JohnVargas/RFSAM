@@ -72,6 +72,10 @@ tools:
   - bladerf-2-micro
   - sniffle
   - ice9-bluetooth-sniffer
+  - catsniffer
+  - nrf52840-dongle
+  - ubertooth-one
+  - usrp-b210
 bsam: []
 resources:
   - RFSAM-RES-01
@@ -91,6 +95,7 @@ execution:
   containment: none
   gates:
     hardware_present:
+      - catsniffer
       - hackrf-one
       - bladerf-2-micro
     scope_mode_in:

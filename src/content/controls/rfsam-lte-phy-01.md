@@ -79,6 +79,7 @@ tools:
   - gr-lte
   - gqrx
   - hackrf-one
+  - signalsdr-pro
 bsam: []
 resources:
   - RFSAM-RES-08

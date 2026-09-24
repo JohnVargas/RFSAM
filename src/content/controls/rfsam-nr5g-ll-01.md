@@ -124,6 +124,7 @@ tools:
   - qcsuper
   - wireshark
   - usrp-b210
+  - signalsdr-pro
 mitre:
   - id: T1040
     relation: assesses

@@ -128,6 +128,8 @@ tools:
   - sniffle
   - catsniffer
   - wireshark
+  - nrf52840-dongle
+  - ubertooth-one
 mitre:
   - id: T1689
     relation: assesses
@@ -157,6 +159,8 @@ execution:
   gates:
     hardware_present:
       - catsniffer
+      - nrf52840-dongle
+      - ubertooth-one
     scope_mode_in:
       - observational
       - active

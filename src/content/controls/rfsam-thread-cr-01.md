@@ -138,6 +138,8 @@ tools:
   - nrf-sniffer-802154
   - pyspinel
   - catsniffer
+  - minino
+  - nrf52840-dongle
 bsam: []
 resources:
   - RFSAM-RES-17
@@ -162,6 +164,8 @@ execution:
   gates:
     hardware_present:
       - catsniffer
+      - nrf52840-dongle
+      - minino
     scope_mode_in:
       - active
       - lab

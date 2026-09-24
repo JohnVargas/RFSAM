@@ -123,6 +123,7 @@ tools:
   - catsniffer
   - minino
   - wireshark
+  - nrf52840-dongle
 mitre:
   - id: T1040
     relation: assesses
@@ -147,6 +148,7 @@ execution:
   gates:
     hardware_present:
       - catsniffer
+      - nrf52840-dongle
     scope_mode_in:
       - observational
       - active

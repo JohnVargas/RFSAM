@@ -105,6 +105,8 @@ tools:
   - nrf-sniffer
   - wireshark
   - bleak
+  - nrf52840-dongle
+  - ubertooth-one
 mitre:
   - id: T1040
     relation: assesses
@@ -136,6 +138,8 @@ execution:
   gates:
     hardware_present:
       - catsniffer
+      - nrf52840-dongle
+      - ubertooth-one
     scope_mode_in:
       - active
       - lab

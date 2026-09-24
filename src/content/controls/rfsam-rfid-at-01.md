@@ -141,6 +141,7 @@ tools:
   - pm3-client
   - chameleon-ultra
   - bombercat
+  - proxmark3
 threatMapNote: >-
   No ATT&CK matrix models proximity-card cloning, emulation or relay. A keyword sweep of the v19.2
   STIX bundles for RFID, NFC, MIFARE, contactless, card emulation and relay attack returns nothing
@@ -169,6 +170,7 @@ execution:
   containment: none
   gates:
     hardware_present:
+      - proxmark3
       - chameleon-ultra
       - bombercat
     scope_mode_in:

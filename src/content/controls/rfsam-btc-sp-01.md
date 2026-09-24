@@ -110,6 +110,7 @@ tools:
   - esp32-classic-bt-scan
   - esp32-bt-exp
   - gqrx
+  - hackrf-one
 bsam:
   - BSAM-IG-01
 resources:

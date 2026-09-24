@@ -148,6 +148,9 @@ tools:
   - loracrack
   - laf
   - wireshark
+  - hackrf-one
+  - rak-wisgate-connect
+  - usrp-b210
 bsam: []
 resources:
   - RFSAM-RES-07

@@ -129,6 +129,10 @@ tools:
   - catnip
   - lora-wideband-decoder
   - wireshark
+  - hackrf-one
+  - rak-wisgate-connect
+  - stm32wlxx
+  - usrp-b210
 mitre:
   - id: T1040
     relation: assesses

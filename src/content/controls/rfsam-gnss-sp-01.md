@@ -108,9 +108,12 @@ references:
     type: blog
 tools:
   - gqrx
+  - rtl-sdr-v4
   - gpsd
   - ublox-neo-gps
   - gnss-sdr
+  - hackrf-one
+  - usrp-b210
 resources:
   - RFSAM-RES-01
   - RFSAM-RES-19
@@ -129,6 +132,8 @@ execution:
   containment: none
   gates:
     hardware_present:
+      - rtl-sdr-v4
+      - hackrf-one
       - ublox-neo-gps
     scope_mode_in:
       - observational

@@ -88,6 +88,7 @@ tools:
   - rtl-433
   - catnip
   - yard-stick-one
+  - catsniffer
 mitre:
   - id: T0887
     relation: assesses

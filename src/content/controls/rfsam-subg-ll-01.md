@@ -128,6 +128,9 @@ tools:
   - universal-radio-hacker
   - rfcat
   - flipperzero-firmware
+  - flipper-zero
+  - hackrf-one
+  - yard-stick-one
 mitre:
   - id: T1040
     relation: assesses

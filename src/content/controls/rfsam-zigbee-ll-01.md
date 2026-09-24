@@ -125,6 +125,8 @@ tools:
   - killerbee
   - minino
   - wireshark
+  - apimote
+  - nrf52840-dongle
 mitre:
   - id: T1040
     relation: assesses
