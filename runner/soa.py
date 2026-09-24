@@ -20,58 +20,12 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CTRL = os.path.join(ROOT, 'src', 'content', 'controls')
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from plan_session import frontmatter  # noqa: E402  (same minimal reader)
-
-APPLICABLE, EXCLUDED, UNDETERMINED = 'applicable', 'excluded', 'undetermined'
-
-
-def load_mandates():
-    with open(os.path.join(ROOT, 'src', 'data', 'mandates.json'), encoding='utf-8') as fh:
-        return json.load(fh)
+from gate import (  # noqa: E402  the one gate, shared with the session planner
+    evaluate, load_tables, APPLICABLE, EXCLUDED, UNDETERMINED,
+)
 
 
-def profile(execution):
-    """Which transmit profile a control falls into, for the derivation lookup."""
-    if not execution:
-        return None
-    modes = execution.get('tx_modes') or []
-    if 'jamming' in modes:
-        return 'jam'
-    return 'tx' if execution.get('requires_tx') else 'notx'
 
-
-def assess(ctrl, scope, tables):
-    """Return (status, reason, requirements). Never silently drops a control."""
-    ex = ctrl.get('execution')
-    assessor = scope.get('assessor') or {}
-    held = set(assessor.get('mandates') or [])
-    protos = {t['protocol'] for t in scope.get('targets', [])}
-
-    # Out of scope by subject matter. Still listed, still justified - that is the
-    # whole point of a statement of applicability.
-    if ctrl['protocol'] not in protos:
-        return EXCLUDED, f"{ctrl['protocol']} is not among the assessed protocols", []
-
-    prof = profile(ex)
-    if prof is None:
-        return (UNDETERMINED,
-                'the control carries no execution metadata, so its requirements cannot be derived',
-                [])
-
-    reqs = tables['derived'].get(f"{ctrl['protocol']}|{prof}", [])
-    missing = [g for g in reqs if not (set(g['any_of']) & held)]
-    if missing:
-        first = missing[0]
-        return (EXCLUDED,
-                f"requires one of {first['any_of']} - {first['because']}; "
-                f"the assessor declares {sorted(held) or 'no mandate'}",
-                reqs)
-
-    mode = scope.get('mode')
-    allowed = (ex.get('gates') or {}).get('scope_mode_in') or []
-    if allowed and mode not in allowed:
-        return EXCLUDED, f"the control is offered in {allowed}; this engagement runs in '{mode}'", reqs
-
-    return APPLICABLE, None, reqs
 
 
 def main():
@@ -81,7 +35,7 @@ def main():
     a = ap.parse_args()
 
     scope = json.load(open(os.path.join(ROOT, a.scope), encoding='utf-8'))
-    tables = load_mandates()
+    tables = load_tables()
     assessor = scope.get('assessor') or {}
 
     rows = []
@@ -91,7 +45,7 @@ def main():
         d = frontmatter(os.path.join(CTRL, f))
         if not d.get('id'):
             continue
-        status, reason, reqs = assess(d, scope, tables)
+        status, reason, reqs = evaluate(d, scope, tables)
         rows.append({
             'control': d['id'], 'title': d.get('title', ''), 'protocol': d['protocol'],
             'layer': d.get('layer'), 'status': status, 'reason': reason,

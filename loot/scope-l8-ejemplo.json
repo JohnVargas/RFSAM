@@ -1,0 +1,81 @@
+{
+  "engagement": "L8-2026-014",
+  "simulated": true,
+  "note": "EJEMPLO — alcance de muestra, no es un encargo real",
+  "mode": "active",
+  "site": {
+    "jurisdiction": "PE",
+    "label": "Sede del cliente, Lima"
+  },
+  "assessor": {
+    "role": "auditor",
+    "mandates": [
+      "written-authorisation"
+    ],
+    "note": "Tercero bajo contrato. Autorizacion escrita del cliente. Sin licencia de espectro y sin camara anecoica."
+  },
+  "targets": [
+    {
+      "id": "T1",
+      "kind": "device",
+      "protocol": "BLE",
+      "label": "Cerradura BLE de sala de servidores",
+      "authorization_ref": "Anexo B del contrato",
+      "permitted_side_effects": []
+    },
+    {
+      "id": "T2",
+      "kind": "network",
+      "protocol": "WIFI",
+      "label": "WLAN corporativa (SSID CORP-INT)",
+      "authorization_ref": "Anexo B del contrato",
+      "permitted_side_effects": []
+    },
+    {
+      "id": "T3",
+      "kind": "credential",
+      "protocol": "RFID",
+      "label": "Credencial de control de acceso (MIFARE)",
+      "authorization_ref": "Anexo C — tarjetas de prueba emitidas por el cliente",
+      "permitted_side_effects": []
+    }
+  ],
+  "spectrum": [
+    {
+      "band": "2.400-2.4835 GHz",
+      "protocols": [
+        "BLE"
+      ],
+      "rx": true,
+      "tx_modes": [
+        "interrogation",
+        "connection-oriented"
+      ],
+      "tx_containment": "none",
+      "tx_note": "Escaneo activo y conexion como cliente GATT autorizados sobre la cerradura de prueba. Inyeccion y hijack no."
+    },
+    {
+      "band": "2.4 / 5 GHz Wi-Fi",
+      "protocols": [
+        "WIFI"
+      ],
+      "rx": true,
+      "tx_modes": [],
+      "tx_containment": "none",
+      "tx_note": "Solo captura en modo monitor. El cliente NO autoriza deauth ni inyeccion en horario laboral."
+    },
+    {
+      "band": "13.56 MHz / 125 kHz",
+      "protocols": [
+        "RFID"
+      ],
+      "rx": true,
+      "tx_modes": [
+        "interrogation"
+      ],
+      "tx_containment": "none",
+      "tx_note": "Interrogacion permitida unicamente sobre las tarjetas de prueba entregadas por el cliente."
+    }
+  ],
+  "excluded_controls": []
+}

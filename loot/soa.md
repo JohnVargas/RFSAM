@@ -9,38 +9,30 @@ that turns on the mandate and the jurisdiction declared above. This statement re
 a decision for all 51 controls in the corpus, including the ones excluded —
 an exclusion without a reason is not a decision.
 
-**3 applicable · 42 excluded · 6 undetermined**
+**8 applicable · 43 excluded · 0 undetermined**
 
 > **SIMULATED ENGAGEMENT** — not a real assessment.
 
-## Applicable (3)
+## Applicable (8)
 
 | control | layer | requirements met |
 |---|---|---|
 | `RFSAM-BLE-AP-01` | AP | system-ownership/written-authorisation |
-| `RFSAM-BLE-AT-01` | AT | system-ownership/written-authorisation |
 | `RFSAM-BLE-CR-01` | CR | system-ownership/written-authorisation |
+| `RFSAM-BLE-IG-01` | IG | system-ownership/written-authorisation |
+| `RFSAM-BLE-LL-01` | LL | system-ownership/written-authorisation |
+| `RFSAM-BLE-LL-02` | LL | system-ownership/written-authorisation |
+| `RFSAM-BLE-PHY-01` | PHY | system-ownership/written-authorisation |
+| `RFSAM-BLE-SP-01` | SP | system-ownership/written-authorisation |
+| `RFSAM-BLE-SP-02` | SP | system-ownership/written-authorisation |
 
-## Undetermined (6)
-
-These cannot be decided yet: without execution metadata the corpus cannot say
-what authority they need. They are listed rather than assumed either way.
-
-| control | layer | reason |
-|---|---|---|
-| `RFSAM-BLE-IG-01` | IG | the control carries no execution metadata, so its requirements cannot be derived |
-| `RFSAM-BLE-LL-01` | LL | the control carries no execution metadata, so its requirements cannot be derived |
-| `RFSAM-BLE-LL-02` | LL | the control carries no execution metadata, so its requirements cannot be derived |
-| `RFSAM-BLE-PHY-01` | PHY | the control carries no execution metadata, so its requirements cannot be derived |
-| `RFSAM-BLE-SP-01` | SP | the control carries no execution metadata, so its requirements cannot be derived |
-| `RFSAM-BLE-SP-02` | SP | the control carries no execution metadata, so its requirements cannot be derived |
-
-## Excluded (42)
+## Excluded (43)
 
 | control | layer | reason |
 |---|---|---|
 | `RFSAM-ADSB-LL-01` | LL | ADSB is not among the assessed protocols |
 | `RFSAM-ADSB-PHY-01` | PHY | ADSB is not among the assessed protocols |
+| `RFSAM-BLE-AT-01` | AT | transmits ['injection'], which this band does not authorise (scope allows ['connection-oriented', 'interrogation']) - Receive-only for observation, plus two authorised transmit modes on the bench unit: an active scan (SCAN_REQ) and a normal GATT client opening a link, as any phone would. Injection, jamming and hijack are not authorised. tx_modes is the only authority: an empty list means no transmission. |
 | `RFSAM-BTC-AP-01` | AP | BTC is not among the assessed protocols |
 | `RFSAM-BTC-AT-01` | AT | BTC is not among the assessed protocols |
 | `RFSAM-BTC-CR-01` | CR | BTC is not among the assessed protocols |
@@ -84,4 +76,4 @@ what authority they need. They are listed rather than assumed either way.
 
 ---
 
-Generated 2026-09-23T16:38:23 from `loot/scope.json` by `runner/soa.py`.
+Generated 2026-09-23T18:43:27 from `loot/scope.json` by `runner/soa.py`.

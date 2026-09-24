@@ -1,6 +1,6 @@
 # Statement of Applicability
 
-**Engagement** `SOA-DEMO` · **assessor role** `auditor` · **jurisdiction** `PE` · **mode** `active`
+**Engagement** `L8-2026-014` · **assessor role** `auditor` · **jurisdiction** `PE` · **mode** `active`
 
 **Mandates held:** `written-authorisation`
 
@@ -9,18 +9,15 @@ that turns on the mandate and the jurisdiction declared above. This statement re
 a decision for all 51 controls in the corpus, including the ones excluded —
 an exclusion without a reason is not a decision.
 
-**13 applicable · 38 excluded · 0 undetermined**
+**10 applicable · 41 excluded · 0 undetermined**
 
 > **SIMULATED ENGAGEMENT** — not a real assessment.
 
-## Applicable (13)
+## Applicable (10)
 
 | control | layer | requirements met |
 |---|---|---|
-| `RFSAM-ADSB-LL-01` | LL | system-ownership/written-authorisation |
-| `RFSAM-ADSB-PHY-01` | PHY | system-ownership/written-authorisation |
 | `RFSAM-BLE-AP-01` | AP | system-ownership/written-authorisation |
-| `RFSAM-BLE-AT-01` | AT | system-ownership/written-authorisation |
 | `RFSAM-BLE-CR-01` | CR | system-ownership/written-authorisation |
 | `RFSAM-BLE-IG-01` | IG | system-ownership/written-authorisation |
 | `RFSAM-BLE-LL-01` | LL | system-ownership/written-authorisation |
@@ -28,13 +25,16 @@ an exclusion without a reason is not a decision.
 | `RFSAM-BLE-PHY-01` | PHY | system-ownership/written-authorisation |
 | `RFSAM-BLE-SP-01` | SP | system-ownership/written-authorisation |
 | `RFSAM-BLE-SP-02` | SP | system-ownership/written-authorisation |
-| `RFSAM-LTE-LL-01` | LL | system-ownership/written-authorisation |
-| `RFSAM-LTE-PHY-01` | PHY | system-ownership/written-authorisation |
+| `RFSAM-RFID-CR-01` | CR | system-ownership/written-authorisation · credential-ownership/written-authorisation |
+| `RFSAM-RFID-SP-01` | SP | system-ownership/written-authorisation · credential-ownership/written-authorisation |
 
-## Excluded (38)
+## Excluded (41)
 
 | control | layer | reason |
 |---|---|---|
+| `RFSAM-ADSB-LL-01` | LL | ADSB is not among the assessed protocols |
+| `RFSAM-ADSB-PHY-01` | PHY | ADSB is not among the assessed protocols |
+| `RFSAM-BLE-AT-01` | AT | transmits ['injection'], which this band does not authorise (scope allows ['interrogation', 'connection-oriented']) - Escaneo activo y conexion como cliente GATT autorizados sobre la cerradura de prueba. Inyeccion y hijack no. |
 | `RFSAM-BTC-AP-01` | AP | BTC is not among the assessed protocols |
 | `RFSAM-BTC-AT-01` | AT | BTC is not among the assessed protocols |
 | `RFSAM-BTC-CR-01` | CR | BTC is not among the assessed protocols |
@@ -49,13 +49,13 @@ an exclusion without a reason is not a decision.
 | `RFSAM-LORA-LL-01` | LL | LORA is not among the assessed protocols |
 | `RFSAM-LORA-PHY-01` | PHY | LORA is not among the assessed protocols |
 | `RFSAM-LORA-SP-01` | SP | LORA is not among the assessed protocols |
-| `RFSAM-LTE-IG-01` | IG | requires one of ['spectrum-licence', 'regulatory-authority', 'containment'] - LTE is licensed spectrum: transmitting needs the assignment, statutory power, or an enclosure; the assessor declares ['written-authorisation'] |
-| `RFSAM-LTE-SP-01` | SP | requires one of ['spectrum-licence', 'regulatory-authority', 'containment'] - LTE is licensed spectrum: transmitting needs the assignment, statutory power, or an enclosure; the assessor declares ['written-authorisation'] |
+| `RFSAM-LTE-IG-01` | IG | LTE is not among the assessed protocols |
+| `RFSAM-LTE-LL-01` | LL | LTE is not among the assessed protocols |
+| `RFSAM-LTE-PHY-01` | PHY | LTE is not among the assessed protocols |
+| `RFSAM-LTE-SP-01` | SP | LTE is not among the assessed protocols |
 | `RFSAM-NR5G-LL-01` | LL | NR5G is not among the assessed protocols |
 | `RFSAM-NR5G-SP-01` | SP | NR5G is not among the assessed protocols |
-| `RFSAM-RFID-AT-01` | AT | RFID is not among the assessed protocols |
-| `RFSAM-RFID-CR-01` | CR | RFID is not among the assessed protocols |
-| `RFSAM-RFID-SP-01` | SP | RFID is not among the assessed protocols |
+| `RFSAM-RFID-AT-01` | AT | transmits ['rogue-infrastructure'], which this band does not authorise (scope allows ['interrogation']) - Interrogacion permitida unicamente sobre las tarjetas de prueba entregadas por el cliente. |
 | `RFSAM-SUBG-AT-01` | AT | SUBG is not among the assessed protocols |
 | `RFSAM-SUBG-CR-01` | CR | SUBG is not among the assessed protocols |
 | `RFSAM-SUBG-LL-01` | LL | SUBG is not among the assessed protocols |
@@ -65,9 +65,9 @@ an exclusion without a reason is not a decision.
 | `RFSAM-THREAD-LL-01` | LL | THREAD is not among the assessed protocols |
 | `RFSAM-UWB-AT-01` | AT | UWB is not among the assessed protocols |
 | `RFSAM-UWB-PHY-01` | PHY | UWB is not among the assessed protocols |
-| `RFSAM-WIFI-CR-01` | CR | WIFI is not among the assessed protocols |
-| `RFSAM-WIFI-LL-01` | LL | WIFI is not among the assessed protocols |
-| `RFSAM-WIFI-SP-01` | SP | WIFI is not among the assessed protocols |
+| `RFSAM-WIFI-CR-01` | CR | transmits ['injection', 'interrogation'], which this band does not authorise (scope allows nothing) - Solo captura en modo monitor. El cliente NO autoriza deauth ni inyeccion en horario laboral. |
+| `RFSAM-WIFI-LL-01` | LL | transmits ['injection'], which this band does not authorise (scope allows nothing) - Solo captura en modo monitor. El cliente NO autoriza deauth ni inyeccion en horario laboral. |
+| `RFSAM-WIFI-SP-01` | SP | transmits ['injection', 'interrogation'], which this band does not authorise (scope allows nothing) - Solo captura en modo monitor. El cliente NO autoriza deauth ni inyeccion en horario laboral. |
 | `RFSAM-ZIGBEE-CR-01` | CR | ZIGBEE is not among the assessed protocols |
 | `RFSAM-ZIGBEE-LL-01` | LL | ZIGBEE is not among the assessed protocols |
 | `RFSAM-ZIGBEE-SP-01` | SP | ZIGBEE is not among the assessed protocols |
@@ -76,4 +76,4 @@ an exclusion without a reason is not a decision.
 
 ---
 
-Generated 2026-09-23T17:55:29 from `loot/scope-auditor.json` by `runner/soa.py`.
+Generated 2026-09-23T18:42:38 from `loot/scope-l8-ejemplo.json` by `runner/soa.py`.

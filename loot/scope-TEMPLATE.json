@@ -1,0 +1,56 @@
+{
+  "_readme": "Plantilla de alcance. Copia este archivo, edítalo y genera el SoA con: python3 runner/soa.py --scope loot/<tu-archivo>.json --out loot/soa.md",
+
+  "engagement": "CLIENTE-2026-001",
+  "simulated": false,
+  "mode": "observational",
+  "_mode": "observational | active | lab | defensive — observational y defensive NO admiten transmitir",
+
+  "site": {
+    "jurisdiction": "PE",
+    "_jurisdiction": "El SoA la imprime en la cabecera. Hoy no filtra por ella: decide un humano."
+  },
+
+  "assessor": {
+    "_readme": "ESTO es lo que hace que el mismo corpus dé un SoA distinto.",
+    "role": "auditor",
+    "_role": "auditor | operator | regulator | manufacturer | defender — se registra, no concede nada por si solo",
+    "mandates": ["written-authorisation"],
+    "_mandates": [
+      "system-ownership      = el equipo bajo prueba es tuyo",
+      "written-authorisation = permiso escrito de su dueno",
+      "credential-ownership  = la credencial es tuya (RFID: clonar una ajena es fraude)",
+      "spectrum-licence      = licencia o asignacion en la banda",
+      "regulatory-authority  = potestad estatutaria sobre la banda (el regulador)",
+      "containment           = jaula o camino conducido; sustituto fisico del permiso de banda"
+    ]
+  },
+
+  "targets": [
+    {
+      "id": "T1",
+      "kind": "device",
+      "protocol": "BLE",
+      "label": "Describe el activo",
+      "authorization_ref": "Referencia del contrato o carta de autorizacion",
+      "permitted_side_effects": [],
+      "_permitted_side_effects": "actuates | persistent-state | dos — lo concede el DUENO del equipo, no el regulador. Vacio = solo lectura."
+    }
+  ],
+
+  "spectrum": [
+    {
+      "band": "2.400-2.4835 GHz",
+      "protocols": ["BLE"],
+      "rx": true,
+      "tx_modes": [],
+      "_tx_modes": "UNICA autoridad sobre transmitir. Vacio = no se transmite. Valores: interrogation | connection-oriented | pairing | injection | rogue-infrastructure | jamming",
+      "tx_containment": "none",
+      "_tx_containment": "none | conducted | cage",
+      "tx_note": "Explica en una frase que autorizo el cliente y que no."
+    }
+  ],
+
+  "excluded_controls": [],
+  "_excluded_controls": "Dejalo vacio. El bloqueo se DERIVA del corpus. Una entrada aqui es un override humano y el informe lo marca como tal."
+}

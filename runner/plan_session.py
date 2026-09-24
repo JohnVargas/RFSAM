@@ -9,6 +9,7 @@ so it diffs in git and needs no database.
 Stdlib only, on purpose.
 """
 import json, os, re, sys, datetime
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CTRL = os.path.join(ROOT, 'src', 'content', 'controls')
@@ -96,62 +97,13 @@ def execution_block(fm):
     block, _ = parse(0, len(lines[0]) - len(lines[0].lstrip(' ')))
     return block or None
 
-def spectrum_row(scope, protocol):
-    for row in scope.get('spectrum', []):
-        if protocol in row.get('protocols', []):
-            return row
-    return None
-
-
-def gate(ctrl, scope):
-    """Decide whether a control can be proposed. Returns (state, reason).
-
-    Gate order is deliberate: protocol, mode, TX, side effects, kit. The reason
-    reported is the first gate that fails, so it should be the most fundamental
-    one - "the scope is observational" is a better answer than "no antenna".
-
-    A control with no execution block cannot be gated. It stays pending and says
-    so, rather than being silently trusted: that silence is what let a control
-    that opens a GATT connection be proposed into a receive-only scope.
-    """
-    x = ctrl.get('execution')
-    if not x:
-        return 'pending', 'no execution metadata - cannot be gated, review by hand'
-
-    mode = scope.get('mode')
-    allowed = (x.get('gates') or {}).get('scope_mode_in', [])
-    if mode not in allowed:
-        return 'blocked', f"needs mode in {allowed}, scope declares '{mode}'"
-
-    if x.get('requires_tx'):
-        row = spectrum_row(scope, ctrl['protocol'])
-        if row is None:
-            return 'blocked', 'no spectrum authorisation covers this protocol'
-        # The modes, not a boolean. This is the line that catches the incident:
-        # a scope may authorise talking to a device without authorising injection.
-        missing = [m for m in x.get('tx_modes', []) if m not in row.get('tx_modes', [])]
-        if missing:
-            return 'blocked', (f"tx_modes {missing} not authorised on this band "
-                               f"(scope allows {row.get('tx_modes', []) or 'none'})")
-        if x.get('legal_tier') in ('T1', 'T2') and row.get('tx_containment', 'none') == 'none':
-            return 'blocked', f"tier {x['legal_tier']} requires containment; scope declares none"
-
-    target = next((t for t in scope['targets'] if t['protocol'] == ctrl['protocol']), {})
-    permitted = target.get('permitted_side_effects', [])
-    unauth = [e for e in x.get('side_effects', []) if e != 'none' and e not in permitted]
-    if unauth:
-        return 'blocked', f"side effects {unauth} not authorised on {target.get('id', '?')}"
-
-    kit = scope.get('kit')
-    if kit is not None:
-        absent = [h for h in (x.get('gates') or {}).get('hardware_present', []) if h not in kit]
-        if absent:
-            return 'blocked', f"kit missing {absent}"
-
-    return 'pending', None
 
 
 def main():
+    # Imported here so the module stays importable by tools that only want
+    # frontmatter() (soa.py does exactly that) without a circular import.
+    from gate import evaluate, load_tables, APPLICABLE, UNDETERMINED
+
     scope = json.load(open(os.path.join(ROOT, 'loot', 'scope.json'), encoding='utf-8'))
     protos = {t['protocol'] for t in scope['targets']}
     excluded = {e['id']: e['reason'] for e in scope.get('excluded_controls', [])}
@@ -170,8 +122,10 @@ def main():
         }
         row['method'] = (d.get('execution') or {}).get('automatable')
         row['requires_tx'] = (d.get('execution') or {}).get('requires_tx')
-        state, reason = gate(d, scope)
-        row['state'], row['reason'] = state, reason
+        status, reason, _ = evaluate(d, scope, load_tables())
+        # The planner speaks in run states; the gate speaks in applicability.
+        row['state'] = {APPLICABLE: 'pending', UNDETERMINED: 'pending'}.get(status, 'blocked')
+        row['reason'] = reason
         row['gated_by'] = 'derived' if d.get('execution') else 'none'
         # A human may still override the gate, but it is recorded as an override
         # rather than masquerading as a decision the engine made.

@@ -9,37 +9,29 @@ that turns on the mandate and the jurisdiction declared above. This statement re
 a decision for all 51 controls in the corpus, including the ones excluded —
 an exclusion without a reason is not a decision.
 
-**4 applicable · 36 excluded · 11 undetermined**
+**15 applicable · 36 excluded · 0 undetermined**
 
 > **SIMULATED ENGAGEMENT** — not a real assessment.
 
-## Applicable (4)
+## Applicable (15)
 
 | control | layer | requirements met |
 |---|---|---|
+| `RFSAM-ADSB-LL-01` | LL | system-ownership/written-authorisation |
+| `RFSAM-ADSB-PHY-01` | PHY | system-ownership/written-authorisation |
 | `RFSAM-BLE-AP-01` | AP | system-ownership/written-authorisation |
 | `RFSAM-BLE-AT-01` | AT | system-ownership/written-authorisation |
 | `RFSAM-BLE-CR-01` | CR | system-ownership/written-authorisation |
+| `RFSAM-BLE-IG-01` | IG | system-ownership/written-authorisation |
+| `RFSAM-BLE-LL-01` | LL | system-ownership/written-authorisation |
+| `RFSAM-BLE-LL-02` | LL | system-ownership/written-authorisation |
+| `RFSAM-BLE-PHY-01` | PHY | system-ownership/written-authorisation |
+| `RFSAM-BLE-SP-01` | SP | system-ownership/written-authorisation |
+| `RFSAM-BLE-SP-02` | SP | system-ownership/written-authorisation |
+| `RFSAM-LTE-IG-01` | IG | system-ownership/written-authorisation · spectrum-licence/regulatory-authority/containment |
+| `RFSAM-LTE-LL-01` | LL | system-ownership/written-authorisation |
+| `RFSAM-LTE-PHY-01` | PHY | system-ownership/written-authorisation |
 | `RFSAM-LTE-SP-01` | SP | system-ownership/written-authorisation · spectrum-licence/regulatory-authority/containment |
-
-## Undetermined (11)
-
-These cannot be decided yet: without execution metadata the corpus cannot say
-what authority they need. They are listed rather than assumed either way.
-
-| control | layer | reason |
-|---|---|---|
-| `RFSAM-ADSB-LL-01` | LL | the control carries no execution metadata, so its requirements cannot be derived |
-| `RFSAM-ADSB-PHY-01` | PHY | the control carries no execution metadata, so its requirements cannot be derived |
-| `RFSAM-BLE-IG-01` | IG | the control carries no execution metadata, so its requirements cannot be derived |
-| `RFSAM-BLE-LL-01` | LL | the control carries no execution metadata, so its requirements cannot be derived |
-| `RFSAM-BLE-LL-02` | LL | the control carries no execution metadata, so its requirements cannot be derived |
-| `RFSAM-BLE-PHY-01` | PHY | the control carries no execution metadata, so its requirements cannot be derived |
-| `RFSAM-BLE-SP-01` | SP | the control carries no execution metadata, so its requirements cannot be derived |
-| `RFSAM-BLE-SP-02` | SP | the control carries no execution metadata, so its requirements cannot be derived |
-| `RFSAM-LTE-IG-01` | IG | the control carries no execution metadata, so its requirements cannot be derived |
-| `RFSAM-LTE-LL-01` | LL | the control carries no execution metadata, so its requirements cannot be derived |
-| `RFSAM-LTE-PHY-01` | PHY | the control carries no execution metadata, so its requirements cannot be derived |
 
 ## Excluded (36)
 
@@ -84,4 +76,4 @@ what authority they need. They are listed rather than assumed either way.
 
 ---
 
-Generated 2026-09-23T16:37:23 from `loot/scope-operador.json` by `runner/soa.py`.
+Generated 2026-09-23T17:55:29 from `loot/scope-operador.json` by `runner/soa.py`.
