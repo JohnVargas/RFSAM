@@ -145,7 +145,7 @@ lastResearched: 2026-06-14
 execution:
   automatable: assisted
   requires_tx: true
-  tx_steps: [5]
+  tx_steps: [4, 5]
   tx_modes:
     - injection
   legal_tier: T3
@@ -163,16 +163,19 @@ execution:
       - lab
     requires_root: false
   basis: >-
-    Recorded as the control declares it: "Steps 1-4 are passive receive; step 5, if
-    performed, transmits", and step 5 forces a re-inclusion, which re-provisions the
-    node - persistent-state. teardown because step 1 reads the FCC ID / CE marking
-    off the physical device. NOT VERIFIED, and worth checking before anyone relies
-    on this block: step 4 runs EZ-Wave's ezstumbler and ezrecon, labelled "passive
-    discovery", yet the data they return - manufacturer, model, firmware version,
-    supported command classes - does not travel spontaneously on an operating mesh
-    and is normally obtained by sending Version Get / Manufacturer Specific Get.
-    If that is so, step 4 transmits too and the control's own passivity guarantee is
-    wrong. Confirm against ezstumbler.py / ezrecon.py before editing the line.
+    Step 5 forces a re-inclusion, which re-provisions the node - persistent-state.
+    teardown because step 1 reads the FCC ID / CE marking off the physical device.
+    Step 4 also transmits, which contradicts the control's own guarantee that
+    "Steps 1-4 are passive receive". Verified against the source (github.com/cureHsu/EZ-Wave, tools/):
+    ezstumbler.py takes -p/--passive and -a/--active, and with NEITHER flag - which
+    is how this control invokes it - it runs PassiveScanner and then ActiveScanner
+    over every network it found. ActiveScanner.run() builds
+    `ZWave(homeid=..., dst=nodeid, ackreq=1) / ZWaveNOP()` and calls send(pkt) three
+    times per node id. ezrecon.py sends manspec, version, basic and nif frames.
+    So the default path transmits, and the "passive discovery" label is wrong.
+    This is worse than an omission: the control does not merely fail to mention the
+    transmission, it states the opposite in a line readers rely on. Correcting the
+    sentence and pinning `ezstumbler.py -p` are both one-line changes.
 ---
 ## Mechanism
 
