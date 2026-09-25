@@ -1,0 +1,218 @@
+{
+  "engagement": "DEMO-FULL",
+  "simulated": true,
+  "note": "SIMULATED ENGAGEMENT - full-corpus run. Not a real assessment.",
+  "mode": "active",
+  "site": {
+    "kind": "lab",
+    "jurisdiction": "PE"
+  },
+  "targets": [
+    {
+      "id": "T1",
+      "kind": "device",
+      "protocol": "BLE",
+      "label": "BLE target (synthetic)",
+      "authorization_ref": "SIMULATED",
+      "permitted_side_effects": []
+    },
+    {
+      "id": "T2",
+      "kind": "device",
+      "protocol": "BTC",
+      "label": "BTC target (synthetic)",
+      "authorization_ref": "SIMULATED",
+      "permitted_side_effects": []
+    },
+    {
+      "id": "T3",
+      "kind": "device",
+      "protocol": "WIFI",
+      "label": "WIFI target (synthetic)",
+      "authorization_ref": "SIMULATED",
+      "permitted_side_effects": []
+    },
+    {
+      "id": "T4",
+      "kind": "device",
+      "protocol": "ZIGBEE",
+      "label": "ZIGBEE target (synthetic)",
+      "authorization_ref": "SIMULATED",
+      "permitted_side_effects": []
+    },
+    {
+      "id": "T5",
+      "kind": "device",
+      "protocol": "ZWAVE",
+      "label": "ZWAVE target (synthetic)",
+      "authorization_ref": "SIMULATED",
+      "permitted_side_effects": []
+    },
+    {
+      "id": "T6",
+      "kind": "device",
+      "protocol": "THREAD",
+      "label": "THREAD target (synthetic)",
+      "authorization_ref": "SIMULATED",
+      "permitted_side_effects": []
+    },
+    {
+      "id": "T7",
+      "kind": "device",
+      "protocol": "LORA",
+      "label": "LORA target (synthetic)",
+      "authorization_ref": "SIMULATED",
+      "permitted_side_effects": []
+    },
+    {
+      "id": "T8",
+      "kind": "device",
+      "protocol": "SUBG",
+      "label": "SUBG target (synthetic)",
+      "authorization_ref": "SIMULATED",
+      "permitted_side_effects": []
+    },
+    {
+      "id": "T9",
+      "kind": "device",
+      "protocol": "RFID",
+      "label": "RFID target (synthetic)",
+      "authorization_ref": "SIMULATED",
+      "permitted_side_effects": []
+    },
+    {
+      "id": "T10",
+      "kind": "device",
+      "protocol": "GNSS",
+      "label": "GNSS target (synthetic)",
+      "authorization_ref": "SIMULATED",
+      "permitted_side_effects": []
+    },
+    {
+      "id": "T11",
+      "kind": "device",
+      "protocol": "ADSB",
+      "label": "ADSB target (synthetic)",
+      "authorization_ref": "SIMULATED",
+      "permitted_side_effects": []
+    },
+    {
+      "id": "T12",
+      "kind": "device",
+      "protocol": "LTE",
+      "label": "LTE target (synthetic)",
+      "authorization_ref": "SIMULATED",
+      "permitted_side_effects": []
+    },
+    {
+      "id": "T13",
+      "kind": "device",
+      "protocol": "GSM",
+      "label": "GSM target (synthetic)",
+      "authorization_ref": "SIMULATED",
+      "permitted_side_effects": []
+    },
+    {
+      "id": "T14",
+      "kind": "device",
+      "protocol": "NR5G",
+      "label": "NR5G target (synthetic)",
+      "authorization_ref": "SIMULATED",
+      "permitted_side_effects": []
+    },
+    {
+      "id": "T15",
+      "kind": "device",
+      "protocol": "UWB",
+      "label": "UWB target (synthetic)",
+      "authorization_ref": "SIMULATED",
+      "permitted_side_effects": []
+    }
+  ],
+  "spectrum": [
+    {
+      "band": "2.4 GHz ISM",
+      "protocols": [
+        "BLE",
+        "BTC",
+        "ZIGBEE",
+        "THREAD",
+        "WIFI"
+      ],
+      "rx": true,
+      "tx_modes": [
+        "interrogation",
+        "connection-oriented"
+      ],
+      "tx_containment": "none",
+      "tx_note": "Escaneo activo y conexion autorizados en el banco de pruebas. Inyeccion, jamming y hijack no."
+    },
+    {
+      "band": "sub-GHz ISM",
+      "protocols": [
+        "SUBG",
+        "ZWAVE",
+        "LORA"
+      ],
+      "rx": true,
+      "tx_modes": [],
+      "tx_containment": "none",
+      "tx_note": "Solo recepcion en sub-GHz."
+    },
+    {
+      "band": "near-field",
+      "protocols": [
+        "RFID"
+      ],
+      "rx": true,
+      "tx_modes": [
+        "interrogation"
+      ],
+      "tx_containment": "none",
+      "tx_note": "Interrogacion solo sobre las tarjetas de prueba propias."
+    },
+    {
+      "band": "GNSS L1 / 1090 MHz",
+      "protocols": [
+        "GNSS",
+        "ADSB"
+      ],
+      "rx": true,
+      "tx_modes": [],
+      "tx_containment": "none",
+      "tx_note": "Banda de seguridad de la vida: solo recepcion."
+    },
+    {
+      "band": "celular",
+      "protocols": [
+        "LTE",
+        "GSM",
+        "NR5G"
+      ],
+      "rx": true,
+      "tx_modes": [],
+      "tx_containment": "none",
+      "tx_note": "Espectro licenciado: solo recepcion, sin licencia propia."
+    },
+    {
+      "band": "UWB",
+      "protocols": [
+        "UWB"
+      ],
+      "rx": true,
+      "tx_modes": [],
+      "tx_containment": "none",
+      "tx_note": "Sin jaula disponible."
+    }
+  ],
+  "excluded_controls": [],
+  "_note_excluded": "Empty on purpose: blocking is now derived from each control's execution.tx_modes against spectrum[].tx_modes. An entry here is an operator override and is reported as such, not as an engine decision.",
+  "assessor": {
+    "role": "auditor",
+    "mandates": [
+      "written-authorisation",
+      "system-ownership"
+    ],
+    "note": "Tercero bajo contrato, sin licencia de espectro ni camara blindada."
+  }
+}

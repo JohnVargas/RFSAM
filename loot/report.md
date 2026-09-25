@@ -4,7 +4,7 @@
 > taken. Every result below is synthetic and exists to exercise the runner. Do not cite,
 > forward or reuse any value in this document as evidence about a real device.
 
-Generated 2026-09-23T18:39:10-06:00 · audience: **internal**
+Generated 2026-09-25T06:11:01-06:00 · audience: **internal**
 
 ## Coverage
 
