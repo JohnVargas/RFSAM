@@ -39,6 +39,7 @@ Frontmatter (validated by `src/content.config.ts` and `scripts/validate.mjs`):
 | `reviewStatus` | `stub` → `draft` → `verified` |
 | `confidence` | `low medium high`: honest self-assessment of the draft |
 | `lastResearched` | date the sources were pulled |
+| `execution` | optional block an engine reads before proposing the control (what it transmits, what it changes, what a machine cannot do); see [CONTROLS-AUTHORING.md](CONTROLS-AUTHORING.md) |
 
 Body sections, in order: `## Mechanism`, `## Procedure`, `## Field case`, `## Remediation`. Put real commands in fenced code blocks with the expected output. Preserve command strings verbatim.
 

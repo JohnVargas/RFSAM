@@ -34,6 +34,9 @@ src/data/                meta, layers, criticality, protocols, BSAM registry, co
 src/components, src/layouts, src/pages, src/styles   the Astro site
 scripts/migrate.mjs      one-time import of the legacy corpus
 scripts/validate.mjs     ID and cross-reference validation
+scripts/export-mandates.mjs  regenerates src/data/mandates.json for the runner
+runner/                  session runner: gate, planner, SoA and report (Python, stdlib only)
+loot/                    demo engagement: scope files and the session outputs the demo pages read
 src/lib/taxonomy.js      layer/protocol ids and the control-id rule
 reference/               provenance: the original corpus and prototype
 ```
@@ -49,6 +52,19 @@ npm run build      # static build into dist/
 npm run validate   # ID + cross-reference checks
 npm test           # unit tests for the scripts
 ```
+
+## Session runner demo
+
+`runner/` walks the corpus against an engagement scope. Nothing in it touches a radio: the demo replays a canned, clearly labelled simulated session.
+
+```bash
+python3 runner/soa.py --scope loot/scope.json --out loot/soa.md   # Statement of Applicability
+python3 runner/plan_session.py                                    # loot/scope.json -> loot/session_plan.jsonl
+python3 runner/run_session.py --speed 60                          # replay, writes loot/events.jsonl and loot/results.jsonl
+python3 runner/render_report.py --audience client                 # loot/report.md
+```
+
+The site renders the result at `/demo/session` and `/demo/report`. `loot/scope-TEMPLATE.json` documents every scope field.
 
 ## Contributing
 
