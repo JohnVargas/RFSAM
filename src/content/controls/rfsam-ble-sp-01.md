@@ -108,7 +108,7 @@ execution:
     All four steps receive: a waterfall in gqrx, bladeRF-cli set to rx, ice9
     channelising captured I/Q, and Sniffle in its receive-only sniff mode. Assisted
     because step 1 is a human reading a waterfall to decide whether the band is
-    usable at all - a judgement, not a parseable output.
+    usable at all: a judgement, not a parseable output.
 ---
 ## Mechanism
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""gate.py - the single decision about whether a control may be proposed.
+"""gate.py: the single decision about whether a control may be proposed.
 
 plan_session.py and soa.py both need this answer and used to compute it
 separately, which meant the session runner could refuse a control that the
@@ -9,7 +9,7 @@ decision lives here and both import it.
 
 Gate order is deliberate: subject matter, mode, mandate, transmit modes,
 containment, side effects, kit. The reason reported is the first gate that fails,
-so it should be the most fundamental one - "the scope is observational" is a
+so it should be the most fundamental one: "the scope is observational" is a
 better answer than "no antenna".
 """
 import json, os
@@ -71,7 +71,7 @@ def evaluate(ctrl, scope, tables):
     if missing:
         g = missing[0]
         return (EXCLUDED,
-                f"requires one of {g['any_of']} - {g['because']}; "
+                f"requires one of {g['any_of']}: {g['because']}; "
                 f"the assessor declares {sorted(held) or 'no mandate'}",
                 reqs)
 
@@ -84,7 +84,7 @@ def evaluate(ctrl, scope, tables):
         authorised = row.get('tx_modes') or []
         unauthorised = [m for m in (ex.get('tx_modes') or []) if m not in authorised]
         if unauthorised:
-            note = (' - ' + row['tx_note']) if row.get('tx_note') else ''
+            note = ('. ' + row['tx_note']) if row.get('tx_note') else ''
             return (EXCLUDED,
                     f"transmits {unauthorised}, which this band does not authorise "
                     f"(scope allows {authorised or 'nothing'}){note}",

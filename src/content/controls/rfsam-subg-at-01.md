@@ -208,7 +208,7 @@ execution:
     actuation. Step 3 sweeps a De Bruijn sequence, which has no addressing at all
     and therefore opens every fixed-code receiver in range, not only the target.
     Step 4 (RollJam) holds a blocking carrier over the receiver, and step 5
-    (RollBack) can leave it resynchronised to an older counter - a lasting change
+    (RollBack) can leave it resynchronised to an older counter, a lasting change
     to the asset, hence persistent-state. Gated to lab for the whole control
     because of steps 3 and 4. Known gap: the control asks for a shielded or
     conducted setup in its authorisation note but not in prerequisites.hardware,

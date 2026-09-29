@@ -1,5 +1,5 @@
 {
-  "_generated": "by scripts/export-mandates.mjs - do not edit by hand",
+  "_generated": "by scripts/export-mandates.mjs, do not edit by hand",
   "mandates": [
     "system-ownership",
     "written-authorisation",

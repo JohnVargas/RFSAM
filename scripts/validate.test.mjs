@@ -84,7 +84,7 @@ test('requires_tx without legal_tier fails', () => {
   assert.ok(errs.some((e) => /no legal_tier/.test(e)));
 });
 
-test('requires_tx without tx_modes fails - say what it transmits', () => {
+test('requires_tx without tx_modes fails: say what it transmits', () => {
   const errs = checkControl(base({ data: { execution: exec({ tx_modes: [] }) } }), registries);
   assert.ok(errs.some((e) => /tx_modes is empty/.test(e)));
 });

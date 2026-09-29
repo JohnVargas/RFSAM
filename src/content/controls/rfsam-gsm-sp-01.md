@@ -127,8 +127,8 @@ execution:
     requires_root: false
   basis: >-
     kalibrate listens for the FCCH tone and gqrx is a view; nothing transmits. This
-    is the most nearly-auto control of its phase - kal's output is parseable line by
-    line (ARFCN, power, ppm) and needs no judgement - but receiving cellular spectrum
+    is the most nearly-auto control of its phase: kal's output is parseable line by
+    line (ARFCN, power, ppm) and needs no judgement, but receiving cellular spectrum
     is itself restricted in many jurisdictions, and by the corpus rule a control that
     does not transmit carries no tier. The mandate decides this one.
 ---

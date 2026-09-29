@@ -150,7 +150,7 @@ execution:
     requires_root: true
   basis: >-
     Step 2 runs an inquiry, step 3 l2pings the host stack and step 4 pages the
-    target for an SDP browse - all transmit. Step 5 goes further than its BLE
+    target for an SDP browse: all transmit. Step 5 goes further than its BLE
     sibling: an AT channel over RFCOMM actuates a handsfree unit, obexftp -p
     writes an object onto the client's device, and bluetoothctl pair leaves a bond
     behind. That is why this control carries persistent-state and BLE-AP-01 does

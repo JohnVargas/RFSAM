@@ -172,8 +172,8 @@ execution:
     requires_root: false
   basis: >-
     Steps 1-3 and 5 are a passive 802.15.4 capture plus desk assessment. Step 4 runs
-    chip-tool pairing ble-thread, which transmits over two radios - BLE as the
-    onboarding transport, then 802.15.4 - and a successful PASE commissions the node
+    chip-tool pairing ble-thread, which transmits over two radios (BLE as the
+    onboarding transport, then 802.15.4), and a successful PASE commissions the node
     onto a fabric the assessor controls, hence persistent-state. The control also
     notes that repeated failure eventually drives the node out of commissioning
     mode, which is a partial denial of service, so the step is gated to lab-grade

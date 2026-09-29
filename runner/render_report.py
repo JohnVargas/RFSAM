@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""render_report.py - regenerate the engagement report from the recorded results.
+"""render_report.py: regenerate the engagement report from the recorded results.
 
 Idempotent by design: it reads loot/session_plan.jsonl and loot/results.jsonl and
-rewrites the whole report every time. That is what makes it feel live - run it
+rewrites the whole report every time. That is what makes it feel live: run it
 after each result and the document fills itself.
 
   --audience internal   everything, including inconclusive and budgets

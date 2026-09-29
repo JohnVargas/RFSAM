@@ -193,9 +193,9 @@ execution:
     requires_root: true
   basis: >-
     The control's own framing says the steps are "passive identification (an inquiry
-    scan and label inspection - no pairing, no connection, no transmission beyond the
+    scan and label inspection, no pairing, no connection, no transmission beyond the
     standard inquiry the controller performs)". That sentence contradicts itself: an
-    inquiry IS a transmission - the controller broadcasts the GIAC across 79 channels
+    inquiry IS a transmission: the controller broadcasts the GIAC across 79 channels
     and waits for responses. Calling it passive because the controller does it for
     you does not make the antenna quieter.
 ---

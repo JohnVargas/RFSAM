@@ -171,7 +171,7 @@ execution:
     requires_root: true
   basis: >-
     The control's authorisation note says "All active capture and any
-    decryption/downgrade steps below" - conceding in passing that the capture itself
+    decryption/downgrade steps below", conceding in passing that the capture itself
     is active. Step 2 drives the ESP32 BR/EDR baseband sniffer, which pages the
     target to follow it rather than listening from outside, and step 5 is marked
     "(Authorised, lab only)". That the word "active" appears only inside a legal

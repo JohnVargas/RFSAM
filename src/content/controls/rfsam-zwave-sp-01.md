@@ -148,10 +148,10 @@ execution:
     requires_root: false
   basis: >-
     Steps 1-3 receive: gqrx, rtl_sdr piped into waving-z, and rtl_zwave. Step 4 runs
-    EZ-Wave's ezstumbler, which this control labels "passive discovery" - and that
+    EZ-Wave's ezstumbler, which this control labels "passive discovery", and that
     label is wrong. Verified against the source (github.com/cureHsu/EZ-Wave, tools/):
-    ezstumbler.py takes -p/--passive and -a/--active, and with NEITHER flag - which
-    is how this control invokes it - it runs PassiveScanner and then ActiveScanner
+    ezstumbler.py takes -p/--passive and -a/--active, and with NEITHER flag (which
+    is how this control invokes it), it runs PassiveScanner and then ActiveScanner
     over every network it found. ActiveScanner.run() builds
     `ZWave(homeid=..., dst=nodeid, ackreq=1) / ZWaveNOP()` and calls send(pkt) three
     times per node id. ezrecon.py sends manspec, version, basic and nif frames.

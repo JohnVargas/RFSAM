@@ -151,7 +151,7 @@ execution:
     QCSuper itself is passive, but the modem it reads from carries a registered/test
     SIM and is therefore camped and transmitting on licensed spectrum. Structural gap
     worth raising upstream: the objective asks for PLMN, PCI, NR-ARFCN, TAC and
-    SA/NSA, and the only route to those in the procedure is this modem - the passive
+    SA/NSA, and the only route to those in the procedure is this modem; the passive
     alternative (5GSniffer cell search) appears solely in the Field case. Until that
     becomes a numbered step, there is no genuinely observational path here.
 ---

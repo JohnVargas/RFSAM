@@ -207,7 +207,7 @@ execution:
   basis: >-
     Steps 3 and 4 fire malformed LMP frames from BrakTooth at the target's
     baseband, which is injection, and the control's own note says the target may
-    crash, deadlock or reboot - hence dos, and hence device-access, since clearing
+    crash, deadlock or reboot, hence dos, and hence device-access, since clearing
     a deadlock takes a power cycle. Step 5 is a broadband 2.4 GHz jammer, marked
     "shielded environment only" in the step title and backed by an RF-shielded
     test environment in prerequisites. Gated to lab: jamming denies service to

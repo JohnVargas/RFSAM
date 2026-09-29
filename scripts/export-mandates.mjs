@@ -18,7 +18,7 @@ for (const protocol of PROTOCOL_IDS) {
 }
 
 export const payload = {
-  _generated: 'by scripts/export-mandates.mjs - do not edit by hand',
+  _generated: 'by scripts/export-mandates.mjs, do not edit by hand',
   mandates: MANDATES,
   roles: ASSESSOR_ROLES,
   tier_by_protocol: TIER_BY_PROTOCOL,

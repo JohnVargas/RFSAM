@@ -149,7 +149,7 @@ execution:
     channels, then offline dissection. Step 5 is not. `BleakScanner.discover()`
     is called without `scanning_mode`, and the default is an ACTIVE scan, so the
     host sends SCAN_REQ and solicits a response from every advertiser in range.
-    The control's intro calls itself "passive and observational - no connection or
+    The control's intro calls itself "passive and observational, no connection or
     transmission" and step 2 of the catnip route explicitly passes
     `--mode passive_scan`, so the contradiction is confined to step 5. Fixing it
     is one keyword: `BleakScanner.discover(scanning_mode="passive")` would make

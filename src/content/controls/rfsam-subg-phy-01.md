@@ -161,7 +161,7 @@ execution:
     Receive throughout: rtl_433's analyser, a URH session over captured I/Q, and
     an optional hardware cross-check that calls d.RFrecv() on a YARD Stick One.
     The YS1 and rfcat are transmit-capable and appear in tools[], so anyone
-    inferring TX from the tool list gets this backwards - the field is the
+    inferring TX from the tool list gets this backwards; the field is the
     correction. device-access because step 4 needs the same button pressed
     several times to prove the framing is right rather than merely plausible.
 ---

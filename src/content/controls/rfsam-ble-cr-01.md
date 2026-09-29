@@ -170,7 +170,7 @@ execution:
   basis: >-
     Every step receives: Sniffle follows the connection passively (CONN_FOLLOW) and
     crackle works offline on the PCAP. The fresh pairing that step 1 needs is forced
-    by power-cycling or re-pairing the bench device, not by transmitting - which is
+    by power-cycling or re-pairing the bench device, not by transmitting, which is
     why this control is runnable in a receive-only scope but needs hands on the
     device. Not verified: whether `sniffle -e` (extended advertising) emits SCAN_REQ
     in any release; if it does, this becomes requires_tx: true / T3.

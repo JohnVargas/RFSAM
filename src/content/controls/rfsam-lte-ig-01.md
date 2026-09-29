@@ -196,7 +196,7 @@ execution:
   basis: >-
     AT+CGMI, AT+CGMM and AT+CGMR are local reads from the modem and transmit nothing.
     AT+CPSI is different: it returns the SERVING cell, which presupposes a modem
-    camped and registered on a live network - uplink on licensed spectrum, under the
+    camped and registered on a live network: uplink on licensed spectrum, under the
     operator's licence rather than the assessor's. That is the case the tier table
     does not describe: T2 is written for an auditor radiating, not for a subscriber
     device behaving normally. Recorded as T2 with the nuance in prose rather than

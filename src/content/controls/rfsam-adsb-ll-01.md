@@ -138,7 +138,7 @@ execution:
     requires_root: false
   basis: >-
     Every step receives: dump1090/readsb demodulate 1090 MHz and pyModeS decodes
-    the frames offline. Nothing in the procedure keys up a transmitter - which
+    the frames offline. Nothing in the procedure keys up a transmitter, which
     matters here, because 1090 MHz is a T1 safety-of-life band where an accidental
     emission is the worst case in the corpus. Steps 2-4 are headless and produce
     parseable JSON; the assisted rating is for step 1, which needs someone to

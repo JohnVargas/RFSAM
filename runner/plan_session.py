@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""plan_session.py - turn a scope file plus the control corpus into a session plan.
+"""plan_session.py: turn a scope file plus the control corpus into a session plan.
 
 Reads loot/scope.json and src/content/controls/*.md, filters the controls that are
 in scope, and writes one line per control to loot/session_plan.jsonl with its
@@ -15,7 +15,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CTRL = os.path.join(ROOT, 'src', 'content', 'controls')
 
 def frontmatter(path):
-    """Minimal frontmatter reader - we only need scalar fields."""
+    """Minimal frontmatter reader; we only need scalar fields."""
     txt = open(path, encoding='utf-8').read()
     m = re.match(r'^---\n(.*?)\n---', txt, re.S)
     if not m:
@@ -47,7 +47,7 @@ def execution_block(fm):
 
     Handles only the shape the schema permits: scalars, flat lists (block or
     inline), one nested map (`gates`) and folded strings. Anything unexpected
-    yields None, which means the control simply has no execution metadata - the
+    yields None, which means the control simply has no execution metadata, and the
     same state as before this field existed. An unparsable block degrades to
     'no gate', never to a wrong gate.
     """

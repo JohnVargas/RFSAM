@@ -182,7 +182,7 @@ execution:
     Every hf mf command energises the 13.56 MHz field and challenges the card:
     `info` fingerprints it, `chk` and `autopwn` run authentications, `dump` reads it
     back. The control says "All steps below are active interrogation of a
-    credential", which is right, but it never uses the word transmit - and its
+    credential", which is right, but it never uses the word transmit, and its
     frequency note says "near-field, magnetically coupled; no far-field radiation to
     survey", a true statement that reads to a classifier as "no radiation". Step 5
     is the one genuine exception: `hf 14a sniff` listens between a legitimate reader

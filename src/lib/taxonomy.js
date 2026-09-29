@@ -38,13 +38,13 @@ export const LEGAL_TIERS = ['T1', 'T2', 'T3', 'T4'];
 export const TX_MODES = [
   'interrogation',        // active scan / probe request / inquiry / reader field
   'connection-oriented',  // ordinary client role: connect, read, write, in-protocol
-  'pairing',              // bonding / key agreement - leaves state on the target
+  'pairing',              // bonding / key agreement, leaves state on the target
   'injection',            // crafted frames into an existing or third-party link
   'rogue-infrastructure', // impersonating an AP / base station / beacon / satellite
   'jamming',              // denial by emission
 ];
 
-// What the control does TO the target - orthogonal to how it radiates.
+// What the control does TO the target, orthogonal to how it radiates.
 export const SIDE_EFFECTS = ['none', 'actuates', 'persistent-state', 'dos'];
 
 // Conditions an engine cannot satisfy by itself.
@@ -56,7 +56,7 @@ export const PHYSICAL_NEEDS = [
 export const SCOPE_MODES = ['observational', 'active', 'lab', 'defensive'];
 
 // The tier follows from the protocol's band. Stored on the control anyway so it is
-// a cross-checkable assertion rather than an opinion - the same reason validate.mjs
+// a cross-checkable assertion rather than an opinion, for the same reason validate.mjs
 // cross-checks the id's protocol segment against the protocol field.
 // NOTE: SKILL.md enumerates T3 as BLE/Wi-Fi/LoRa/sub-GHz/Zigbee/Z-Wave/Thread and
 // omits BTC and RFID, which are ISM too. Listed here so the omission is closed in
@@ -86,12 +86,12 @@ export const MANDATES = [
   'credential-ownership',  // the credential itself belongs to the assessor (near-field)
   'spectrum-licence',      // a licence or assignment in the band being used
   'regulatory-authority',  // statutory power over the band (the regulator itself)
-  'containment',           // a cage or conducted path - the physical substitute for
+  'containment',           // a cage or conducted path: the physical substitute for
                            // band permission, since nothing leaves the enclosure
 ];
 
 // Who is running the methodology. Recorded for the record; it grants nothing by
-// itself - mandates are always declared explicitly, never inferred from a title.
+// itself: mandates are always declared explicitly, never inferred from a title.
 export const ASSESSOR_ROLES = [
   'auditor',       // third party under contract
   'operator',      // the licensee of the network or spectrum
@@ -127,7 +127,7 @@ export function mandatesFor({ protocol, layer, tx_modes = [], side_effects = [] 
   const transmits = tx_modes.length > 0;
 
   // Denial by emission reaches parties who are not in scope, so containment is
-  // the only acceptable answer - no authorisation substitutes for it.
+  // the only acceptable answer: no authorisation substitutes for it.
   if (tx_modes.includes('jamming')) {
     groups.push({
       any_of: ['containment'],

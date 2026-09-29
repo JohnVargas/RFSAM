@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""record_result.py - record the outcome of one control.
+"""record_result.py: record the outcome of one control.
 
 Generalises the Skill's register_finding.py: a row is written whether or not there
 was a finding, because 'tested and clean' and 'never tested' are different states.

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""run_session.py - walk the session plan, emitting progress as it goes.
+"""run_session.py: walk the session plan, emitting progress as it goes.
 
 The point of this script is the part a static report never shows: a control that
 is *running*. It marks one control at a time as running, emits timestamped events

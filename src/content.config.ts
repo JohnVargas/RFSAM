@@ -42,7 +42,7 @@ const attack = z.object({
 
 // What an engine needs before PROPOSING this control. Two independent axes:
 // `tx_modes` answers "how may I address the target", `side_effects` answers "may I
-// change it" - an engagement grants those separately. `requires_tx` is derivable
+// change it"; an engagement grants those separately. `requires_tx` is derivable
 // from tx_steps and is kept explicit so the assertion can be cross-checked.
 const execution = z.object({
   automatable: enumOf(AUTOMATABLE_LEVELS),
@@ -51,7 +51,7 @@ const execution = z.object({
   // procedure; without this the passive half is unrunnable in a receive-only scope.
   tx_steps: z.array(z.number().int().positive()).default([]),
   tx_modes: z.array(enumOf(TX_MODES)).default([]),
-  // Required iff requires_tx - cross-checked in validate.mjs, not here, so the
+  // Required iff requires_tx, cross-checked in validate.mjs, not here, so the
   // error names the file the way every other RFSAM validation error does.
   legal_tier: enumOf(LEGAL_TIERS).optional(),
   side_effects: z.array(enumOf(SIDE_EFFECTS)).default(['none']),

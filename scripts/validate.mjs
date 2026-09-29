@@ -6,13 +6,13 @@ import { parseControlId, CRITICALITY_IDS, TIER_BY_PROTOCOL, TOOL_STATUSES } from
 
 // Commands in the corpus that transmit. A superset of the TX re-check list in
 // Skill/SKILL.md, which is purely injection-oriented and therefore does not catch
-// `bluetoothctl connect`, `hf mf info` or `lf search` - all of which emit.
+// `bluetoothctl connect`, `hf mf info` or `lf search`, all of which emit.
 const TX_COMMAND_RE = new RegExp([
   // injection / rogue infrastructure
   'hackrf_transfer\\s+-t', 'gps-sdr-sim', 'hostapd', 'eaphammer', 'wifiphisher', 'mdk4',
   'btlejack', 'esp32-marauder', 'setModeTX', 'RFxmit', 'aireplay-ng', 'zbstumbler',
   'hf\\s+mf\\s+sim', '--transmit',
-  // connection-oriented and interrogation - what the list was missing
+  // connection-oriented and interrogation: what the list was missing
   'bluetoothctl', 'rfcomm\\s+connect', 'l2ping', 'sdptool\\s+browse', 'obexftp',
   'BleakClient', 'gatttool', 'hcitool\\s+(cc|lecc)', 'hcxdumptool', 'reaver',
   'ble\\.recon', 'chip-tool\\s+pairing',
@@ -31,13 +31,13 @@ export function checkExecution({ data, body, file }, reg) {
   };
   x.gates = { hardware_present: [], scope_mode_in: [], requires_root: false, ...(x.gates ?? {}) };
   if (!x.gates.scope_mode_in.length) errs.push(`${tag}execution.gates.scope_mode_in is required`);
-  if (!x.basis?.trim()) errs.push(`${tag}execution.basis is required - name the step that justifies the block`);
+  if (!x.basis?.trim()) errs.push(`${tag}execution.basis is required: name the step that justifies the block`);
 
   // TX implies a tier and at least one declared mode.
   if (x.requires_tx) {
     if (!x.legal_tier) errs.push(`${tag}execution.requires_tx is true but no legal_tier`);
-    if (!x.tx_modes.length) errs.push(`${tag}execution.requires_tx is true but tx_modes is empty - say WHAT it transmits`);
-    if (!x.tx_steps.length) errs.push(`${tag}execution.requires_tx is true but tx_steps is empty - say WHICH steps emit`);
+    if (!x.tx_modes.length) errs.push(`${tag}execution.requires_tx is true but tx_modes is empty: say WHAT it transmits`);
+    if (!x.tx_steps.length) errs.push(`${tag}execution.requires_tx is true but tx_steps is empty: say WHICH steps emit`);
   } else {
     if (x.legal_tier) errs.push(`${tag}execution.legal_tier set on a control that declares requires_tx: false`);
     if (x.tx_modes.length) errs.push(`${tag}execution.tx_modes non-empty with requires_tx: false`);
@@ -76,7 +76,7 @@ export function checkExecution({ data, body, file }, reg) {
     if (/\[FILL:/.test(body)) errs.push(`${tag}automatable: auto but the body still carries [FILL: ...] placeholders`);
   }
   if (x.automatable === 'manual' && !x.needs_physical.length) {
-    errs.push(`${tag}automatable: manual with an empty needs_physical - say what a machine cannot do`);
+    errs.push(`${tag}automatable: manual with an empty needs_physical: say what a machine cannot do`);
   }
 
   // Gates must resolve against the tool registry and against the control's own tools[].
@@ -105,7 +105,7 @@ export function checkExecution({ data, body, file }, reg) {
   // procedure. It is the antidote to "the metadata lies".
   if (!x.requires_tx) {
     // Only look inside fenced command blocks. Searching the whole body matches
-    // tool names in prose, reference keys and field-case citations - a control
+    // tool names in prose, reference keys and field-case citations; a control
     // that merely CITES btlejack's README does not run it.
     const commands = [...body.matchAll(/```(?:bash|sh|console|python)?\n([\s\S]*?)```/g)]
       .map((m) => m[1]).join('\n');
@@ -113,7 +113,7 @@ export function checkExecution({ data, body, file }, reg) {
     if (hit) errs.push(`${tag}requires_tx: false but the procedure runs '${hit[0]}', which transmits`);
   }
 
-  // CR is offline by definition per the phase heading - flag the disagreement at
+  // CR is offline by definition per the phase heading, so flag the disagreement at
   // the control, since 6 of 10 CR controls actually transmit.
   if (data.layer === 'CR' && x.requires_tx && !x.basis) {
     errs.push(`${tag}CR-layer control declares requires_tx: true and must say why in basis`);

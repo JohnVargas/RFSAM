@@ -128,7 +128,7 @@ mitre:
       maps cleanly.
 threatMapNote: >-
   Only the jamming half maps. No entry in ATT&CK Enterprise, ICS or Mobile models GNSS spoofing -
-  transmitting counterfeit navigation signals to move a receiver's position fix - even though it is
+  transmitting counterfeit navigation signals to move a receiver's position fix, even though it is
   the better documented of the two attacks. FiGHT does not cover GNSS either, modelling 5G
   synchronisation only through PTP.
 bsam: []

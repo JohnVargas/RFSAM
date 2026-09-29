@@ -177,7 +177,7 @@ execution:
     a jamming primitive. Step 3 is a passive capture. Prerequisites already call
     for an RF-shielded enclosure, so containment is declared rather than assumed.
     T4 is the tier the corpus describes as authorised-only with no turnkey tool -
-    a gap by default - and that is accurate here: the injection path needs custom
+    a gap by default, and that is accurate here: the injection path needs custom
     DW3000 firmware, and the Ghost Peak code is gated and unreleased.
 ---
 

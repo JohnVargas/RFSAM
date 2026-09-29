@@ -144,8 +144,8 @@ execution:
   basis: >-
     All five steps receive; rtl_biast only powers an active antenna's LNA, it does
     not emit. Flagged for whoever extends this control: the Field case describes
-    placing a CW source on L1 in a contained setup. That is T1 - never over the air,
-    conducted or cage only - and it sits in a control whose metadata says
+    placing a CW source on L1 in a contained setup. That is T1 (never over the air,
+    conducted or cage only), and it sits in a control whose metadata says
     requires_tx: false, in the section operators copy as a recipe.
 ---
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""make_demo_script.py - extend the demo script to every control in scope.
+"""make_demo_script.py: extend the demo script to every control in scope.
 
 The nine BLE entries in runner/demo_script.jsonl were written by hand with real
 CVEs, a real recovered LTK and real capture conditions. Those are kept verbatim.
@@ -53,7 +53,7 @@ def main():
         if row['state'] == 'blocked':
             rows.append({
                 'control': cid, 'verdict': 'blocked', 'method': method, 'severity': None,
-                'summary': 'Not attempted - the engagement does not authorise it.',
+                'summary': 'Not attempted: the engagement does not authorise it.',
                 'stop_reason': None, 'reason': row.get('reason'), 'conditions': {},
                 'evidence': '', 'duration_s': None, 'engagement': 'DEMO-FULL', 'simulated': True,
             })
@@ -63,10 +63,10 @@ def main():
         tx = 'transmits' if ex.get('requires_tx') else 'receive-only'
         rows.append({
             'control': cid, 'verdict': verdict, 'method': method, 'severity': severity,
-            'summary': (f'SYNTHETIC PLACEHOLDER - no radio was operated. Generated to exercise the '
+            'summary': (f'SYNTHETIC PLACEHOLDER: no radio was operated. Generated to exercise the '
                         f'runner over the whole corpus. What is real here comes from the control '
                         f'itself: it is {tx} and its method is {method}.'),
-            'stop_reason': ('SYNTHETIC PLACEHOLDER - stands in for an observation window that '
+            'stop_reason': ('SYNTHETIC PLACEHOLDER: stands in for an observation window that '
                             'closed without a verdict.') if verdict == 'inconclusive' else None,
             'reason': None,
             'conditions': {'synthetic': True, 'requires_tx': bool(ex.get('requires_tx')),

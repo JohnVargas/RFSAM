@@ -163,12 +163,12 @@ execution:
       - lab
     requires_root: false
   basis: >-
-    Step 5 forces a re-inclusion, which re-provisions the node - persistent-state.
+    Step 5 forces a re-inclusion, which re-provisions the node: persistent-state.
     teardown because step 1 reads the FCC ID / CE marking off the physical device.
     Step 4 also transmits, which contradicts the control's own guarantee that
     "Steps 1-4 are passive receive". Verified against the source (github.com/cureHsu/EZ-Wave, tools/):
-    ezstumbler.py takes -p/--passive and -a/--active, and with NEITHER flag - which
-    is how this control invokes it - it runs PassiveScanner and then ActiveScanner
+    ezstumbler.py takes -p/--passive and -a/--active, and with NEITHER flag (which
+    is how this control invokes it), it runs PassiveScanner and then ActiveScanner
     over every network it found. ActiveScanner.run() builds
     `ZWave(homeid=..., dst=nodeid, ackreq=1) / ZWaveNOP()` and calls send(pkt) three
     times per node id. ezrecon.py sends manspec, version, basic and nif frames.

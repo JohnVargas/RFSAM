@@ -168,7 +168,7 @@ execution:
   basis: >-
     Step 2 offers two routes. Route A reads the serving cell's signalling off a
     Qualcomm modem's DIAG interface and is genuinely passive. Route B stands up
-    your own SA gNB, which radiates on licensed spectrum - T2, requiring an
+    your own SA gNB, which radiates on licensed spectrum, T2, requiring an
     assignment, statutory authority, or containment. Because one documented route
     transmits, the control as a whole is requires_tx: true, which costs the
     passive route its place in a receive-only scope. Splitting step 2 into 2A

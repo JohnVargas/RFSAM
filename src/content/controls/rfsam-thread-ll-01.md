@@ -159,7 +159,7 @@ execution:
     An 802.15.4 sniffer parked on the mesh channel, reading beacons and MLE
     discovery responses that the mesh emits on its own. Nothing in the radio path
     transmits. Note for whoever extends this control: the service-discovery step
-    reaches the Border Router over IP, which requires being on its LAN - a
+    reaches the Border Router over IP, which requires being on its LAN: a
     prerequisite the current vocabulary cannot express, since needs_physical
     covers proximity and hands, not network position.
 ---

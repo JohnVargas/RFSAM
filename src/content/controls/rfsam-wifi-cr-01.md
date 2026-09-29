@@ -214,11 +214,11 @@ execution:
     target". Associating is transmitting, and this is the control's recommended
     first path, so the misreading would be the common case rather than the rare one.
     Step 3 deauthenticates to force a handshake, and step 6 brute-forces a WPS PIN
-    online, which leaves a real AP in lockout - hence dos. Steps 4, 5 and 7 (hash
+    online, which leaves a real AP in lockout, hence dos. Steps 4, 5 and 7 (hash
     conversion, hashcat, the WPA3 note) are offline and can run on another machine
     days later, long after the RF window has closed. Note: the gate lists no
     hardware because tools[] declares only software, although steps 2, 3 and 6
-    need a monitor-mode, injection-capable adapter - prerequisites.hardware says
+    need a monitor-mode, injection-capable adapter; prerequisites.hardware says
     so in prose. Adding that slug to tools[] would let the gate enforce it.
 ---
 ## Mechanism

@@ -132,7 +132,7 @@ execution:
     requires_root: true
   basis: >-
     The authorisation note says "Steps 2-6 here transmit nothing; the deauth/injection
-    check in step 5 is an active transmission" - which contradicts itself, since 5 is
+    check in step 5 is an active transmission", which contradicts itself, since 5 is
     inside 2-6. It is also wrong about step 6: hcxdumptool is not a receiver, it sends
     association/EAPOL requests to obtain a clientless PMKID and, depending on version,
     deauthenticates to provoke it. Step 5's injection test knocks clients off, hence

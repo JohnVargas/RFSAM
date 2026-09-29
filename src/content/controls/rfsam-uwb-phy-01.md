@@ -143,14 +143,14 @@ execution:
   basis: >-
     Step 5 is labelled "Optionally bring up a controllable ranging peer", but the
     preamble concedes that it transmits and the field case cannot be reproduced
-    without it - two-way ranging is bidirectional by definition. An optional step
+    without it: two-way ranging is bidirectional by definition. An optional step
     that the control's own worked example requires is not optional, and this is
     the same shape as the incident that prompted the schema. The transmission is
     between the assessor's own boards, hence connection-oriented and no side
     effects. Manual: solder rework (SB121/SB122), a GUI IDE build, a C struct
     edited by hand between attempts, and a Wireshark pipe configured through
     menus. Supply note: steps 2-4 depend on Qorvo's DW3xxx sample code, which the
-    repo's own tooling notes record as no longer downloadable - an honest default
+    repo's own tooling notes record as no longer downloadable, an honest default
     state for this control is blocked, not pending.
 ---
 

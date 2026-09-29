@@ -1,7 +1,7 @@
 {
   "engagement": "DEMO-FULL",
   "simulated": true,
-  "note": "SIMULATED ENGAGEMENT - full-corpus run. Not a real assessment.",
+  "note": "SIMULATED ENGAGEMENT: full-corpus run. Not a real assessment.",
   "mode": "active",
   "site": {
     "kind": "lab",

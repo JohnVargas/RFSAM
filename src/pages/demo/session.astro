@@ -7,7 +7,7 @@ import { protocols } from '../../data/protocols.js';
 import { layers } from '../../data/layers.js';
 
 // Reads the runner's own files. In `npm run dev` this page hot-reloads whenever
-// record_result.py appends a row, which is the whole live-report effect - no
+// record_result.py appends a row, which is the whole live-report effect, no
 // server, no database, no polling.
 const LOOT = path.resolve('loot');
 const jsonl = (f) => fs.existsSync(path.join(LOOT, f))
@@ -291,7 +291,7 @@ const mmss = (s) => s ? `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, '0'
 <script is:inline>
   // Replays the recorded session in the browser. No backend: the events are
   // already in the page, so this works on the published site exactly as it does
-  // against a live runner - the difference is only whether the file is growing.
+  // against a live runner: the difference is only whether the file is growing.
   (() => {
     const btn = document.getElementById('playbtn');
     const data = document.getElementById('evdata');
@@ -417,7 +417,7 @@ const mmss = (s) => s ? `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, '0'
   .lk-done  { color: var(--green, #98C379); }
   .lk-block { color: var(--orange); }
   .lk-warn  { color: var(--amber); }
-  /* The gate lines are the reasoning, not the output - they get the accent. */
+  /* The gate lines are the reasoning, not the output; they get the accent. */
   .lk-gate  { color: var(--amber); }
   .lk-cmd   { color: var(--cyan); }
   .lk-out   { color: var(--mut); }

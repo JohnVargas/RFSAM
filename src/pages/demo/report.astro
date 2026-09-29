@@ -3,8 +3,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-// Renders the runner's own reports. A deliberately small Markdown subset - the
-// one render_report.py and soa.py emit - rather than a new dependency: the repo
+// Renders the runner's own reports. A deliberately small Markdown subset (the
+// one render_report.py and soa.py emit) rather than a new dependency: the repo
 // ships four, and a report viewer does not justify a fifth.
 const LOOT = path.resolve('loot');
 const files = fs.existsSync(LOOT)

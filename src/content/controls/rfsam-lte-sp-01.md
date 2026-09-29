@@ -122,7 +122,7 @@ execution:
   basis: >-
     Steps 1, 2 and 5 are receive-only. Step 3 describes srsue "once attached",
     which implies PRACH and uplink, and step 4 requires a SIM7600 with a valid
-    test SIM - a registered UE transmits by definition. That transmission happens
+    test SIM: a registered UE transmits by definition. That transmission happens
     under the operator's licence, not the auditor's, so the engagement must
     declare a spectrum assignment, statutory authority, or containment.
 ---

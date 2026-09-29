@@ -178,7 +178,7 @@ execution:
     recovery, runs offline against a capture. But this is the control that shows
     what requires_tx cannot carry: intercepting third-party cellular traffic is
     unlawful in most jurisdictions including Peru, and by the corpus rule a control
-    that does not transmit carries no tier - so nothing machine-readable separates
+    that does not transmit carries no tier, so nothing machine-readable separates
     this from an offline LoRa analysis. The mandate and jurisdiction decide it.
 ---
 

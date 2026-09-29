@@ -165,7 +165,7 @@ execution:
   basis: >-
     The sniffer follows an established connection without joining it. The fresh
     connection the capture needs is provoked by opening the vendor app on the
-    bench device - a human action over the air interface of somebody else's
+    bench device: a human action over the air interface of somebody else's
     choosing, not a transmission by the assessor. That is the distinction this
     phase turns on: a deauthentication transmits, picking up a phone does not.
     Hence receive-only with hands required.

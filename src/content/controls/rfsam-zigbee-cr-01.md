@@ -171,7 +171,7 @@ execution:
     requires_root: false
   basis: >-
     Steps 1-5 are capture and offline key extraction; only step 6 transmits, and the
-    control already says so in three places - the step title reads "(Optional,
+    control already says so in three places: the step title reads "(Optional,
     transmit)", prerequisites separate capture-only dongles from transmit-capable
     radios and name which cannot inject, and the attack entry repeats it. Forcing a
     rejoin carries a denial-of-service risk per the rejoin-procedure flaws the

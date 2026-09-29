@@ -176,7 +176,7 @@ execution:
     requires_root: false
   basis: >-
     Step 4 (RollJam) holds a blocking carrier over the receiver of a gate or vehicle
-    while banking a code - that is jamming a physical access-control device, which
+    while banking a code: that is jamming a physical access-control device, which
     no tier describes and which reaches anyone in range. Step 5 (RollBack) replays a
     run of captured presses and can leave the receiver resynchronised to an older
     counter: a lasting change to the asset, which is why this is the only CR control

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""soa.py - Statement of Applicability over the whole control corpus.
+"""soa.py: Statement of Applicability over the whole control corpus.
 
 RFSAM describes what can be assessed; it does not decide what you are allowed to
 do. Whether a given control may be run turns on mandate and jurisdiction, which
@@ -8,7 +8,7 @@ for a contracted auditor and a compliance measurement for the regulator that own
 the band. So the corpus states what authority a control REQUIRES and the
 engagement states what authority the assessor HOLDS. This crosses the two.
 
-Like ISO 27001's Annex A, the point is not the list of what you did - it is the
+Like ISO 27001's Annex A, the point is not the list of what you did, it is the
 justified statement of what you excluded and why. So this walks all 51 controls,
 not the ones already in scope.
 

@@ -151,7 +151,7 @@ execution:
   basis: >-
     Steps 1-4 are a monitor-mode capture and offline dissection. Step 5, already
     marked "(Authorised scope only)", runs `aireplay-ng --deauth` to confirm that
-    a BSS without Protected Management Frames is susceptible - which injects
+    a BSS without Protected Management Frames is susceptible, which injects
     forged management frames and knocks a real client off its session, hence the
     dos side effect. The control's objective describes working "from a passive
     monitor-mode capture", so the transmitting step contradicts the framing
