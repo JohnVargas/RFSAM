@@ -121,7 +121,7 @@ lastResearched: 2026-06-14
 execution:
   automatable: assisted
   requires_tx: true
-  tx_steps: [2, 3, 4]
+  tx_steps: [2]
   tx_modes:
     - interrogation
     - connection-oriented

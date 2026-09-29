@@ -175,7 +175,7 @@ lastResearched: 2026-06-14
 execution:
   automatable: assisted
   requires_tx: true
-  tx_steps: [2, 3, 6]
+  tx_steps: [2, 3]
   tx_modes:
     - interrogation
   legal_tier: T3
