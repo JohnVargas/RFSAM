@@ -1,6 +1,6 @@
 // MITRE ATT&CK entries referenced by RFSAM controls.
 //
-// Only techniques that a control actually assesses are listed — this is not a
+// Only techniques that a control actually assesses are listed; this is not a
 // mirror of ATT&CK. URLs are version-pinned (v19) on purpose: ATT&CK renumbers
 // and revokes between releases (T0855/T0856 became T1692.001/.002 in v19), and a
 // permalink is what keeps a citation honest a year later. CISA's "Best Practices

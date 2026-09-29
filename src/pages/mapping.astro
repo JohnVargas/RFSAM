@@ -40,9 +40,9 @@ const cellOf = (pid, lid) => {
   const refs = cs.reduce((n, c) => n + (c.data.mitre?.length ?? 0) + (c.data.fight?.length ?? 0), 0);
   const declared = cs.some((c) => c.data.threatMapNote);
   const href = `/RFSAM/controls/${cs[0].id}`;
-  if (refs) return { state: 'mapped', label: String(refs), href, title: `${cs.map((c) => c.data.id).join(', ')} — ${refs} corpus ${refs === 1 ? 'entry' : 'entries'}` };
-  if (declared) return { state: 'uncharted', label: '∅', href, title: `${cs[0].data.id} — no corpus models this` };
-  return { state: 'unmapped', label: '?', href, title: `${cs.map((c) => c.data.id).join(', ')} — control exists, cites nothing yet` };
+  if (refs) return { state: 'mapped', label: String(refs), href, title: `${cs.map((c) => c.data.id).join(', ')}: ${refs} corpus ${refs === 1 ? 'entry' : 'entries'}` };
+  if (declared) return { state: 'uncharted', label: '∅', href, title: `${cs[0].data.id}: no corpus models this` };
+  return { state: 'unmapped', label: '?', href, title: `${cs.map((c) => c.data.id).join(', ')}: control exists, cites nothing yet` };
 };
 const heat = protocols.map((p) => ({ p, cells: LAYER_ORDER.map((lid) => ({ lid, ...cellOf(p.id, lid) })) }));
 
@@ -63,14 +63,14 @@ const byCorpus = corpora.map((c) => {
   <div class="container" style="max-width:900px">
     <h1 style="font-size:34px">Adversary-behaviour mapping</h1>
     <p style="color:var(--mut);margin-top:8px;max-width:70ch">
-      Where RFSAM controls line up with MITRE ATT&CK and MITRE FiGHT, and — more usefully — where they
+      Where RFSAM controls line up with MITRE ATT&CK and MITRE FiGHT, and, more usefully, where they
       do not. The mapping is a navigation aid, never a coverage score: a control is not a technique, and
       an unmapped technique is a question, not a failure. ATT&CK {attackVersion}, retrieved {attackRetrieved};
       FiGHT build {fightBuild}.
     </p>
 
     <div class="mono" style="display:flex;gap:14px;flex-wrap:wrap;margin-top:16px;font-size:11px;color:var(--mut2)">
-      <span>{rfEntries.length} RF-relevant corpus entries —</span>
+      <span>{rfEntries.length} RF-relevant corpus entries:</span>
       <span style="color:var(--green)">{covered.length} mapped · {pct(covered.length)}%</span>
       <span style="color:var(--amber)">{gaps.length} with no control · {pct(gaps.length)}%</span>
       <span style="color:var(--purple)">{uncharted.length} controls no corpus models</span>

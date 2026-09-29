@@ -72,7 +72,7 @@ const cellState = (ctrls) => {
   const label = ctrls.length > 1 && state !== 'out'
     ? String(ctrls.length)
     : { running: '●', blocked: 'B', out: '·', pending: '·' }[state] ?? (V[state]?.label.slice(0, 1) ?? '?');
-  const title = ctrls.map((c, i) => `${c.data.id} — ${states[i]}`).join(' · ');
+  const title = ctrls.map((c, i) => `${c.data.id}: ${states[i]}`).join(' · ');
   return { state, label, title, ids: ctrls.map((c) => c.data.id).join(',') };
 };
 
@@ -91,7 +91,7 @@ const mapRows = protocols
 const reached = corpus.filter((c) => inPlan.has(c.data.id)).length;
 const pct = (n) => plan.length ? Math.round((n / plan.length) * 100) : 0;
 const SEV = { critical: 'var(--red, #E06C75)', high: 'var(--orange)', medium: 'var(--amber)', low: 'var(--cyan)', info: 'var(--mut)' };
-const mmss = (s) => s ? `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, '0')}s` : '—';
+const mmss = (s) => s ? `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, '0')}s` : '-';
 ---
 <BaseLayout title="Session runner (demo)">
   <div class="container" style="max-width:900px">
@@ -99,7 +99,7 @@ const mmss = (s) => s ? `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, '0'
 
     {scope.simulated && (
       <div style="border:1px solid var(--amber);background:rgba(255,194,75,.08);border-radius:8px;padding:12px 16px;margin-top:14px">
-        <strong class="mono" style="font-size:11px;color:var(--amber);letter-spacing:.08em">SIMULATED SESSION — NOT A REAL ASSESSMENT</strong>
+        <strong class="mono" style="font-size:11px;color:var(--amber);letter-spacing:.08em">SIMULATED SESSION, NOT A REAL ASSESSMENT</strong>
         <p style="font-size:13px;color:var(--mut);margin-top:6px;line-height:1.6">{scope.note}</p>
       </div>
     )}
@@ -107,7 +107,7 @@ const mmss = (s) => s ? `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, '0'
     <p style="color:var(--mut);margin-top:16px;max-width:70ch;font-size:14px">
       The engine walks the controls in scope, records one row per control whether or not there was a
       finding, and this page re-renders from those rows. A control that was tested and held is not the
-      same as one nobody touched — that distinction is what makes the coverage number mean anything.
+      same as one nobody touched, and that distinction is what makes the coverage number mean anything.
     </p>
 
     <div class="mono" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px;font-size:11px">
@@ -160,7 +160,7 @@ const mmss = (s) => s ? `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, '0'
               <a href={`/RFSAM/controls/${row.slug}`} class="mono" style="font-size:11.5px;color:var(--amber);width:150px">{row.control}</a>
               <span class={`vbadge ${V[v].cls}`}>{V[v].label}</span>
               {r?.severity && <span class="mono" style={`font-size:10px;color:${SEV[r.severity]}`}>{r.severity}</span>}
-              <span class="mono" style="margin-left:auto;font-size:10px;color:var(--mut2)">{r?.method ?? '—'} · {mmss(r?.duration_s)}</span>
+              <span class="mono" style="margin-left:auto;font-size:10px;color:var(--mut2)">{r?.method ?? '-'} · {mmss(r?.duration_s)}</span>
               {logByControl[row.control]?.length && (
                 <button class="vbadge fchip logbtn" type="button"
                   data-control={row.control}

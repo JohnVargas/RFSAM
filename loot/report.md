@@ -1,6 +1,6 @@
-# RF assessment — DEMO-2026-001
+# RF assessment: DEMO-2026-001
 
-> **SIMULATED SESSION — NOT A REAL ASSESSMENT.** No radio was operated and no capture was
+> **SIMULATED SESSION, NOT A REAL ASSESSMENT.** No radio was operated and no capture was
 > taken. Every result below is synthetic and exists to exercise the runner. Do not cite,
 > forward or reuse any value in this document as evidence about a real device.
 
@@ -37,7 +37,7 @@ is a statement about the observation, not about the device.
 
 ## Findings
 
-### RFSAM-BLE-CR-01 — CRITICAL
+### RFSAM-BLE-CR-01: CRITICAL
 
 Captured a forced re-pairing with Sniffle; the SMP Pairing Request carries SC=0 with MITM=0 and NoInputNoOutput IO capability, i.e. LE Legacy Just Works, and crackle recovered TK=000000 and the LTK offline, decrypting the ATT traffic that carries the unlock command.
 
@@ -45,7 +45,7 @@ Conditions: `attested_by=operator`, `tool=sniffle + wireshark (btsmp) + crackle`
 
 Evidence: `loot/notes/ble-cr-01-pairing-attestation.md`
 
-### RFSAM-BLE-IG-01 — HIGH
+### RFSAM-BLE-IG-01: HIGH
 
 Teardown and passive advertising fingerprint identify a Telink TLSR8253 controller on a bare-metal vendor SDK predating the November 2019 SMP fix; the part matches the SweynTooth Zero-LTK entry in the published corpus and the module vendor offers no patched firmware.
 
@@ -53,7 +53,7 @@ Conditions: `attested_by=operator`, `tool=fccid.io internal photos + bettercap b
 
 Evidence: `loot/notes/ble-ig-01-soc-inventory.md`
 
-### RFSAM-BLE-LL-01 — MEDIUM
+### RFSAM-BLE-LL-01: MEDIUM
 
 Padlock advertises on a non-rotating public address with a constant Local Name token 'L8LOCK-0A31' and manufacturer data 0xFF carrying the same 4-byte serial across the whole 30-minute window, so no address randomisation is in play and the device is passively linkable.
 
@@ -67,7 +67,7 @@ sniff_receiver.py -s /dev/ttyACM0 -o loot/captures/ble-ll-01_adv_ch37-39_1800s.p
 
 Evidence: `loot/captures/ble-ll-01_adv_ch37-39_1800s.pcap`
 
-### RFSAM-BLE-AP-01 — MEDIUM
+### RFSAM-BLE-AP-01: MEDIUM
 
 GATT enumeration over the CatSniffer virtual HCI reached the full table without pairing: Device Name, Firmware Revision, Serial Number and a proprietary status characteristic all read in the clear, while the actuating lock characteristic rejected an unauthenticated write with ATT error 0x05 Insufficient Authentication.
 

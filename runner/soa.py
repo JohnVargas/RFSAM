@@ -72,14 +72,14 @@ def main():
         '',
         'RFSAM describes what can be assessed. It does not decide what you may lawfully do:',
         'that turns on the mandate and the jurisdiction declared above. This statement records',
-        f'a decision for all {len(rows)} controls in the corpus, including the ones excluded —',
+        f'a decision for all {len(rows)} controls in the corpus, including the ones excluded:',
         'an exclusion without a reason is not a decision.',
         '',
         f"**{n[APPLICABLE]} applicable · {n[EXCLUDED]} excluded · {n[UNDETERMINED]} undetermined**",
         '',
     ]
     if scope.get('simulated'):
-        L += ['> **SIMULATED ENGAGEMENT** — not a real assessment.', '']
+        L += ['> **SIMULATED ENGAGEMENT**, not a real assessment.', '']
     for status, heading in ((APPLICABLE, 'Applicable'), (UNDETERMINED, 'Undetermined'), (EXCLUDED, 'Excluded')):
         sel = [r for r in rows if r['status'] == status]
         if not sel:
@@ -91,7 +91,7 @@ def main():
         L += ['| control | layer | ' + ('reason' if status != APPLICABLE else 'requirements met') + ' |',
               '|---|---|---|']
         for r in sel:
-            note = r['reason'] or ' · '.join('/'.join(g) for g in r['requirements']) or '—'
+            note = r['reason'] or ' · '.join('/'.join(g) for g in r['requirements']) or '-'
             L.append(f"| `{r['control']}` | {r['layer']} | {note} |")
         L.append('')
     L += ['---', '', f"Generated {datetime.datetime.now().isoformat(timespec='seconds')} "

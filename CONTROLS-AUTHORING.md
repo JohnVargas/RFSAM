@@ -73,11 +73,11 @@ Full schema + table: `CONTRIBUTING.md` / `src/content.config.ts`. The must-gets:
 
 ---
 
-## `execution:` — the block an engine reads before proposing a control
+## `execution:`, the block an engine reads before proposing a control
 
 Optional today, required once every control carries one. It restates the control's own
 `## Procedure` in machine-readable form. **If the two disagree, the procedure is the truth
-and the block is the bug** — `npm run validate` enforces that by reading the body.
+and the block is the bug**: `npm run validate` enforces that by reading the body.
 
 **The derivation rule.** Any step that connects, pairs, interrogates or energises is a
 transmission. `requires_tx: true` follows from the procedure, never from the control's
@@ -88,7 +88,7 @@ force a re-pair does not. Same goal, opposite legal nature.
 **Say which steps emit** in `tx_steps`. TX usually lives in one step of an otherwise
 passive procedure, and naming it is what keeps the passive half runnable in a
 receive-only scope. Mirror it in the prose: mark the step title `(transmits)` and split
-passive from emitting steps in the Procedure header, before the first command —
+passive from emitting steps in the Procedure header, before the first command.
 `rfsam-zigbee-ll-01` is the house pattern.
 
 **Two independent axes.** `tx_modes` answers *how may I address the target*
@@ -97,7 +97,7 @@ passive from emitting steps in the Procedure header, before the first command �
 `dos`). An engagement grants those separately: permission to talk to a lock as a phone
 would is not permission to jam it, and neither is permission to leave a bond on it.
 
-**The tier is a property of the band**, not of intent — a benign transmission on licensed
+**The tier is a property of the band**, not of intent: a benign transmission on licensed
 spectrum is still T2. It is cross-checked against the protocol, so it cannot drift.
 Jamming and un-addressed transmission (a De Bruijn sweep opens every fixed-code receiver
 in range, not just the target) must be gated to `lab` whatever the tier says.

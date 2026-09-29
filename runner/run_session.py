@@ -37,7 +37,7 @@ def write_plan(plan):
             fh.write(json.dumps(r, ensure_ascii=False) + '\n')
 
 TICKS = {
-    'auto':     ["tuning {freq} — gain {gain} dB", "noise floor {nf} dBm, target at {rssi} dBm",
+    'auto':     ["tuning {freq}, gain {gain} dB", "noise floor {nf} dBm, target at {rssi} dBm",
                  "{n} frames so far", "window {left}s remaining"],
     'assisted': ["command handed to operator, waiting for output", "operator reports capture running",
                  "{n} PDUs returned so far", "window {left}s remaining"],
@@ -83,7 +83,7 @@ def main():
     write_plan(plan)
 
     scope = json.load(open(os.path.join(LOOT, 'scope.json'), encoding='utf-8'))
-    emit(f"session {scope['engagement']} starting — {len(plan)} controls in scope, "
+    emit(f"session {scope['engagement']} starting: {len(plan)} controls in scope, "
          f"time compression x{a.speed:g}", kind='start')
 
     for row in plan:
@@ -92,7 +92,7 @@ def main():
             continue
         row['state'], row['started_at'] = 'running', now()
         write_plan(plan)
-        emit(f"{row['control']} — {row['title'][:54]}", row['control'], 'start')
+        emit(f"{row['control']}: {row['title'][:54]}", row['control'], 'start')
 
         # Narrate the gate. This is the part that was invisible before: the log
         # showed what ran, never why the engine thought it was allowed to.
@@ -113,7 +113,7 @@ def main():
                 emit(f"gate: receive-only, no tx_modes claimed ✓ · hands needed: "
                      f"{ex.get('needs_physical') or 'none'}", row['control'], 'gate')
         else:
-            emit("gate: no execution metadata — cannot be derived, needs a human",
+            emit("gate: no execution metadata, cannot be derived, needs a human",
                  row['control'], 'warn')
 
         if res['verdict'] == 'blocked':
@@ -130,8 +130,8 @@ def main():
                 row['elapsed_s'] = int(total * (i + 1) / n_ticks)
                 write_plan(plan)
                 msg = ticks[i % len(ticks)].format(
-                    freq=f"{c.get('freq_hz', 2402000000) / 1e6:.0f} MHz", gain=c.get('gain_db', '—'),
-                    nf=c.get('noise_floor_dbm', '—'), rssi=c.get('rssi_dbm', '—'),
+                    freq=f"{c.get('freq_hz', 2402000000) / 1e6:.0f} MHz", gain=c.get('gain_db', '-'),
+                    nf=c.get('noise_floor_dbm', '-'), rssi=c.get('rssi_dbm', '-'),
                     n=int((c.get('packets') or c.get('data_pdus') or 400) * (i + 1) / n_ticks),
                     left=int(total - total * (i + 1) / n_ticks), step=random.choice(STEPS))
                 emit(msg, row['control'], 'info')

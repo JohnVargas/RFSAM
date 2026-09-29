@@ -36,10 +36,10 @@ def main():
     L = []
     A = L.append
 
-    A(f"# RF assessment — {scope.get('engagement')}")
+    A(f"# RF assessment: {scope.get('engagement')}")
     if scope.get('simulated'):
         A("")
-        A("> **SIMULATED SESSION — NOT A REAL ASSESSMENT.** No radio was operated and no capture was")
+        A("> **SIMULATED SESSION, NOT A REAL ASSESSMENT.** No radio was operated and no capture was")
         A("> taken. Every result below is synthetic and exists to exercise the runner. Do not cite,")
         A("> forward or reuse any value in this document as evidence about a real device.")
     A("")
@@ -71,13 +71,13 @@ def main():
     for row in plan:
         r = by_control.get(row['control'])
         if not r:
-            A(f"| {row['layer']} | {row['control']} | pending | — | — |")
+            A(f"| {row['layer']} | {row['control']} | pending | - | - |")
             continue
         if a.audience == 'client' and r['verdict'] == 'inconclusive':
             summary = 'Observed without reaching a verdict; see Limitations.'
         else:
             summary = r['summary']
-        A(f"| {row['layer']} | {row['control']} | **{MARK[r['verdict']]}** | {r.get('method') or '—'} | {summary} |")
+        A(f"| {row['layer']} | {row['control']} | **{MARK[r['verdict']]}** | {r.get('method') or '-'} | {summary} |")
     A("")
 
     findings = sorted([r for r in results if r['verdict'] == 'finding'],
@@ -86,7 +86,7 @@ def main():
         A("## Findings")
         A("")
         for r in findings:
-            A(f"### {r['control']} — {(r.get('severity') or '').upper()}")
+            A(f"### {r['control']}: {(r.get('severity') or '').upper()}")
             A("")
             A(r['summary'])
             A("")
