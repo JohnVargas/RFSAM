@@ -145,7 +145,7 @@
         "connection-oriented"
       ],
       "tx_containment": "none",
-      "tx_note": "Escaneo activo y conexion autorizados en el banco de pruebas. Inyeccion, jamming y hijack no."
+      "tx_note": "Active scanning and connection authorised on the bench. Injection, jamming and hijack are not."
     },
     {
       "band": "sub-GHz ISM",
@@ -157,7 +157,7 @@
       "rx": true,
       "tx_modes": [],
       "tx_containment": "none",
-      "tx_note": "Solo recepcion en sub-GHz."
+      "tx_note": "Receive-only on sub-GHz."
     },
     {
       "band": "near-field",
@@ -169,7 +169,7 @@
         "interrogation"
       ],
       "tx_containment": "none",
-      "tx_note": "Interrogacion solo sobre las tarjetas de prueba propias."
+      "tx_note": "Interrogation only against our own test cards."
     },
     {
       "band": "GNSS L1 / 1090 MHz",
@@ -180,7 +180,7 @@
       "rx": true,
       "tx_modes": [],
       "tx_containment": "none",
-      "tx_note": "Banda de seguridad de la vida: solo recepcion."
+      "tx_note": "Safety-of-life band: receive-only."
     },
     {
       "band": "celular",
@@ -192,7 +192,7 @@
       "rx": true,
       "tx_modes": [],
       "tx_containment": "none",
-      "tx_note": "Espectro licenciado: solo recepcion, sin licencia propia."
+      "tx_note": "Licensed spectrum: receive-only, no licence held."
     },
     {
       "band": "UWB",
@@ -202,7 +202,7 @@
       "rx": true,
       "tx_modes": [],
       "tx_containment": "none",
-      "tx_note": "Sin jaula disponible."
+      "tx_note": "No cage available."
     }
   ],
   "excluded_controls": [],
@@ -213,6 +213,6 @@
       "written-authorisation",
       "system-ownership"
     ],
-    "note": "Tercero bajo contrato, sin licencia de espectro ni camara blindada."
+    "note": "Third party under contract, no spectrum licence and no shielded chamber."
   }
 }
